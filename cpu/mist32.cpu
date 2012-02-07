@@ -1,0 +1,201 @@
+; MIST32 CPU description.  -*- Scheme -*-
+
+(include "simplify.inc")
+
+(define-arch
+  (name mist32)
+  (comment "Original MIST32")
+  (default-alignment forced)
+  (insn-lsb0? #t)
+  (machs mist32)
+  (isas mist32)
+)
+
+(define-isa
+  (name mist32)
+  (default-insn-bitsize 32)
+  (base-insn-bitsize 32)
+  (decode-assist (30 29 28 27 26 25 24 23 22 21))
+  (liw-insns 1)
+  (parallel-insns 1)
+)
+
+(define-cpu
+  (name mist32)
+  (comment "Base family")
+  (endian big)
+  (word-bitsize 32)
+)
+
+(define-mach
+  (name mist32)
+  (comment "Generic mist32 cpu")
+  (cpu mist32)
+)
+
+(define-model
+  (name mist32)
+  (comment "mist32")
+  (mach mist32)
+  (unit u-exec "Execution Unit" ()
+	1 1 ; issue done
+	() ; state
+	() ; inputs
+	() ; outputs
+	() ; profile action (default)
+	)
+)
+
+; Instruction fields
+(dnf f-ext   "extended bit"       () 31 1)
+(dnf f-op    "opcode"             () 30 10)
+
+(dnf f-isimm "immediate bit"      () 20 1)
+(dnf f-afe   "afe bit"            () 19 4)
+(dnf f-cc    "cond code bit"      () 19 4)
+
+(dnf f-rd    "destination"        () 9 5)
+(dnf f-rs    "source"             () 4 5)
+
+(dnf f-i11h  "immediate 11 high"  () 15 6)
+(dnf f-i11l  "immediate 11 low"   () 4 5)
+(dnmf f-i11   "11 bit immediate"   () UINT
+      (f-i11h f-i11l)
+      (sequence () ; insert
+		(set (ifield f-i11h) (srl (ifield f-i11) (const 5)))
+		(set (ifield f-i11l) (and (ifield f-i11) (const #x1f)))
+		)
+      (sequence () ; extract
+		(set (ifield f-i11) (or (sll (ifield f-i11h) (const 5))
+					(ifield f-i11l)))
+		)
+)
+
+(dnf f-i16h  "immediate 16 high" () 20 11)
+(dnf f-i16l  "immediate 16 low"  () 4 5)
+
+(dnf f-reserve1 "reserved field"  () 15 6)
+(dnf f-reserve2 "reserved field"  () 9 5)
+(dnf f-reserve3 "reserved field"  () 4 5)
+
+
+; insn enum
+(define-normal-insn-enum insn-ext "insn ext enums" () EXT_ f-ext
+  ("0")
+)
+(define-normal-insn-enum insn-op1 "insn opcode enums" () OP_ f-op
+  (.map .str (.iota 1024))
+)
+
+(define-normal-insn-enum insn-isimm "insn is immediate" () ISIMM_ f-isimm
+  ("0" "1")
+)
+(define-normal-insn-enum insn-afe "insn afe enums" () AFE_ f-afe
+  ("0")
+)
+(define-normal-insn-enum insn-cc "insn cc enums" () CC_ f-cc
+  (.map .str (.iota 16))
+)
+
+; register keyword
+(define-keyword
+  (name gr-names)
+  (print-name h-gr)
+  (prefix "")
+  (values (r0 0) (r1 1) (r2 2) (r3 3) (r4 4) (r5 5) (r6 6) (r7 7)
+	  (r8 8) (r9 9) (r10 10) (r11 11) (r12 12) (r13 13) (r14 14) (r15 15)
+	  (r16 16) (r17 17) (r18 18) (r19 19) (r20 20) (r21 21) (r22 22) (r23 23)
+	  (r24 24) (r25 25) (r26 26) (r27 27) (r28 28) (r29 29) (r30 30) (r31 31))
+)
+
+; hardware: register
+(dnh h-pc "program counter" (PC) (pc SI) () () ())
+(define-hardware
+  (name h-gr)
+  (comment "general registers")
+  (attrs PROFILE CACHE-ADDR)
+  (type register WI (32))
+  (indices extern-keyword gr-names)
+)
+
+; hardware: immediate
+(dnh h-uint11 "11bits uint" () (immediate (UINT 11)) () () ())
+
+; fields
+(dnop rd "destination" () h-gr f-rd)
+(dnop rs "source" () h-gr f-rs)
+(dnop i11 "11bits immediate" () h-uint11 f-i11)
+
+; macro insn
+
+; O2 Format
+(define-pmacro (o2-op mnemonic opcode)
+  (begin
+    (dni mnemonic
+	 (.str mnemonic " reg/reg")
+	 ()
+	 (.str mnemonic " $rd,$rs")
+	 (+ EXT_0 opcode ISIMM_0 AFE_0 (f-reserve1 0) rd rs)
+	 ()
+	 ()
+	 )
+    )
+)
+; O2-I11 Format
+(define-pmacro (o2-i11-op mnemonic opcode)
+  (begin
+    (dni mnemonic
+	 (.str mnemonic " reg/reg")
+	 ()
+	 (.str mnemonic " $rd,$rs")
+	 (+ EXT_0 opcode ISIMM_0 AFE_0 (f-reserve1 0) rd rs)
+	 ()
+	 ()
+	 )
+    (dni (.sym mnemonic "i")
+	 (.str mnemonic " reg/imm")
+	 () 
+	 (.str mnemonic "i $rd,$i11")
+	 (+ EXT_0 opcode ISIMM_1 AFE_0 i11 rd)
+	 ()
+	 ()
+	 )
+    )
+)
+; O1 Format
+(define-pmacro (o1-op mnemonic opcode)
+  (begin
+    (dni mnemonic
+	 (.str mnemonic " reg")
+	 ()
+	 (.str mnemonic " $rd")
+	 (+ EXT_0 opcode ISIMM_0 AFE_0 (f-reserve1 0) rd  (f-reserve3 0))
+	 ()
+	 ()
+	 )
+    )
+)
+
+(o2-i11-op add OP_0)
+(o2-i11-op sub OP_1)
+(o2-i11-op mull OP_2)
+(o2-i11-op mulh OP_3)
+(o2-i11-op div OP_4)
+; 5
+(o2-i11-op cmp OP_6)
+; 7 - 8
+(o1-op sch OP_9)
+; 10 - 63
+(o2-i11-op shl OP_64)
+(o2-i11-op shr OP_65)
+; 66 - 68
+(o2-i11-op sar OP_69)
+; 70 - 97
+(o2-op and OP_96)
+(o2-op or OP_97)
+(o2-op xor OP_98)
+(o1-op not OP_99)
+(o2-op nand OP_100)
+(o2-op nor OP_101)
+(o2-op xnor OP_102)
+; 103 - 105

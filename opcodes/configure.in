@@ -288,6 +288,7 @@ if test x${all_targets} = xfalse ; then
 	bfd_metag_arch)		ta="$ta metag-dis.lo" ;;
 	bfd_microblaze_arch)	ta="$ta microblaze-dis.lo" ;;
 	bfd_mips_arch)		ta="$ta mips-dis.lo mips-opc.lo mips16-opc.lo micromips-opc.lo" ;;
+	bfd_mist32_arch)	ta="$ta mist32-asm.lo mist32-desc.lo mist32-dis.lo mist32-ibld.lo mist32-opc.lo" using_cgen=yes ;;
 	bfd_mmix_arch)		ta="$ta mmix-dis.lo mmix-opc.lo" ;;
 	bfd_mn10200_arch)	ta="$ta m10200-dis.lo m10200-opc.lo" ;;
 	bfd_mn10300_arch)	ta="$ta m10300-dis.lo m10300-opc.lo" ;;

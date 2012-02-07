@@ -61,6 +61,7 @@
 #define ARCH_metag
 #define ARCH_microblaze
 #define ARCH_mips
+#define ARCH_mist32
 #define ARCH_mmix
 #define ARCH_mn10200
 #define ARCH_mn10300
@@ -526,6 +527,11 @@ disassembler (abfd)
 #ifdef ARCH_tilepro
     case bfd_arch_tilepro:
       disassemble = print_insn_tilepro;
+      break;
+#endif
+#ifdef ARCH_mist32
+    case bfd_arch_mist32:
+      disassemble = print_insn_mist32;
       break;
 #endif
     default:

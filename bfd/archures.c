@@ -478,6 +478,8 @@ DESCRIPTION
 .#define bfd_mach_aarch64_ilp32	32
 .  bfd_arch_nios2,
 .#define bfd_mach_nios2	0
+.  bfd_arch_mist32,
+.#define bfd_mach_mist32    1
 .  bfd_arch_last
 .  };
 */
@@ -564,6 +566,7 @@ extern const bfd_arch_info_type bfd_mep_arch;
 extern const bfd_arch_info_type bfd_metag_arch;
 extern const bfd_arch_info_type bfd_mips_arch;
 extern const bfd_arch_info_type bfd_microblaze_arch;
+extern const bfd_arch_info_type bfd_mist32_arch;
 extern const bfd_arch_info_type bfd_mmix_arch;
 extern const bfd_arch_info_type bfd_mn10200_arch;
 extern const bfd_arch_info_type bfd_mn10300_arch;
@@ -653,6 +656,7 @@ static const bfd_arch_info_type * const bfd_archures_list[] =
     &bfd_metag_arch,
     &bfd_microblaze_arch,
     &bfd_mips_arch,
+    &bfd_mist32_arch,
     &bfd_mmix_arch,
     &bfd_mn10200_arch,
     &bfd_mn10300_arch,

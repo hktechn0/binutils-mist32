@@ -286,6 +286,8 @@ enum EM
   EM_IQ2000 = 0xfeba,
   // NIOS
   EM_NIOS32 = 0xfebb
+  // mist32
+  EM_MIST32 = 0x1013,
   // Old AVR objects used 0x1057 (EM_AVR is correct).
   // Old MSP430 objects used 0x1059 (EM_MSP430 is correct).
   // Old FR30 objects used 0x3330 (EM_FR30 is correct).
