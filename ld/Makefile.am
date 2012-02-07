@@ -241,6 +241,7 @@ ALL_EMULATION_SOURCES = \
 	eelf32metag.c \
 	eelf32microblazeel.c \
 	eelf32microblaze.c \
+	eelf32mist32.c \
 	eelf32moxie.c \
 	eelf32mt.c \
 	eelf32openrisc.c \
@@ -2007,6 +2008,9 @@ ez8001.c: $(srcdir)/emulparams/z8001.sh \
 ez8002.c: $(srcdir)/emulparams/z8002.sh \
   $(srcdir)/emultempl/generic.em $(srcdir)/scripttempl/z8000.sc ${GEN_DEPENDS}
 	${GENSCRIPTS} z8002 "$(tdir_z8002)"
+eelf32mist32.c: $(srcdir)/emulparams/elf32mist32.sh \
+  $(ELF_GEN_DEPS) $(srcdir)/scripttempl/elf.sc ${GEN_DEPENDS}
+	${GENSCRIPTS} elf32mist32 "$(tdir_mist32)"
 
 eelf32_x86_64.c: $(srcdir)/emulparams/elf32_x86_64.sh \
   $(ELF_DEPS) $(srcdir)/scripttempl/elf.sc ${GEN_DEPENDS}

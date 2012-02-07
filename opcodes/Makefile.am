@@ -78,6 +78,7 @@ HFILES = \
 	mcore-opc.h \
 	mep-desc.h mep-opc.h \
 	microblaze-opc.h \
+	mist32-desc.h mist32-opc.h \
 	mt-desc.h mt-opc.h \
 	openrisc-desc.h openrisc-opc.h \
 	score-opc.h \
@@ -195,6 +196,11 @@ TARGET_LIBOPCODES_CFILES = \
 	mips-dis.c \
 	mips-opc.c \
 	mips16-opc.c \
+	mist32-desc.c \
+	mist32-opc.c \
+	mist32-ibld.c \
+	mist32-asm.c \
+	mist32-dis.c \
 	mmix-dis.c \
 	mmix-opc.c \
 	moxie-dis.c \
@@ -352,7 +358,7 @@ po/POTFILES.in: @MAINT@ Makefile
 
 CLEANFILES = \
 	stamp-epiphany stamp-fr30 stamp-frv stamp-ip2k stamp-iq2000 stamp-lm32 \
-	stamp-m32c stamp-m32r stamp-mep stamp-mt \
+	stamp-m32c stamp-m32r stamp-mep stamp-mist32 stamp-mt \
 	stamp-openrisc stamp-xc16x stamp-xstormy16 \
 	libopcodes.a stamp-lib
 
@@ -369,7 +375,7 @@ CGENDEPS = \
 	$(CGENDIR)/opc-opinst.scm \
 	cgen-asm.in cgen-dis.in cgen-ibld.in
 
-CGEN_CPUS = epiphany fr30 frv ip2k iq2000 lm32 m32c m32r mep mt openrisc xc16x xstormy16
+CGEN_CPUS = epiphany fr30 frv ip2k iq2000 lm32 m32c m32r mep mist32 mt openrisc xc16x xstormy16
 
 if CGEN_MAINT
 EPIPHANY_DEPS = stamp-epiphany
@@ -381,6 +387,7 @@ LM32_DEPS = stamp-lm32
 M32C_DEPS = stamp-m32c
 M32R_DEPS = stamp-m32r
 MEP_DEPS = stamp-mep
+MIST32_DEPS = stamp-mist32
 MT_DEPS = stamp-mt
 OPENRISC_DEPS = stamp-openrisc
 XC16X_DEPS = stamp-xc16x
@@ -395,6 +402,7 @@ LM32_DEPS =
 M32C_DEPS =
 M32R_DEPS =
 MEP_DEPS =
+MIST32_DEPS = 
 MT_DEPS =
 OPENRISC_DEPS = 
 XC16X_DEPS = 
@@ -482,6 +490,12 @@ $(srcdir)/mep-desc.h $(srcdir)/mep-desc.c $(srcdir)/mep-opc.h $(srcdir)/mep-opc.
 stamp-mep: $(CGENDEPS) $(CPUDIR)/mep.cpu $(CPUDIR)/mep-default.cpu $(CPUDIR)/mep-core.cpu $(CPUDIR)/mep-h1.cpu $(CPUDIR)/mep-ext-cop.cpu $(CPUDIR)/mep-sample-ucidsp.cpu $(CPUDIR)/mep-rhcop.cpu $(CPUDIR)/mep-fmax.cpu $(CPUDIR)/mep.opc
 	$(MAKE) run-cgen arch=mep prefix=mep options= \
 		archfile=$(CPUDIR)/mep.cpu opcfile=$(CPUDIR)/mep.opc extrafiles=
+
+$(srcdir)/mist32-desc.h $(srcdir)/mist32-desc.c $(srcdir)/mist32-opc.h $(srcdir)/mist32-opc.c $(srcdir)/mist32-ibld.c $(srcdir)/mist32-asm.c $(srcdir)/mist32-dis.c: $(MIST32_DEPS)
+	@true
+stamp-mist32: $(CGENDEPS) $(srcdir)/../cpu/mist32.cpu $(srcdir)/../cpu/mist32.opc
+	$(MAKE) run-cgen arch=mist32 prefix=mist32 options= \
+		archfile=$(srcdir)/../cpu/mist32.cpu opcfile=$(srcdir)/../cpu/mist32.opc extrafiles=
 
 $(srcdir)/mt-desc.h $(srcdir)/mt-desc.c $(srcdir)/mt-opc.h $(srcdir)/mt-opc.c $(srcdir)/mt-ibld.c $(srcdir)/mt-asm.c $(srcdir)/mt-dis.c: $(MT_DEPS)
 	@true
