@@ -1,17 +1,51 @@
 /* mist32 opcode support.  -*- C -*-
-   Copyright (C) 2011 Hirotaka Kawata
-   This file is part of CGEN.  */
+   
+   Copyright 2012 Hirotaka Kawata <hirotaka@techno-st.net>
+   
+   This file is part of the GNU Binutils.
+   
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 3 of the License, or
+   (at your option) any later version.
+   
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+   
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston,
+   MA 02110-1301, USA.  */
+
+/* This file is an addendum to mist32.cpu.  Heavy use of C code isn't
+   appropriate in .cpu files, so it resides here.  This especially applies
+   to assembly/disassembly where parsing/printing can be quite involved.
+   Such things aren't really part of the specification of the cpu, per se,
+   so .cpu files provide the general framework and .opc files handle the
+   nitty-gritty details as necessary.
+
+   Each section is delimited with start and end markers.
+
+   <arch>-opc.h additions use: "-- opc.h"
+   <arch>-opc.c additions use: "-- opc.c"
+   <arch>-asm.c additions use: "-- asm.c"
+   <arch>-dis.c additions use: "-- dis.c"
+   <arch>-ibd.h additions use: "-- ibd.h"  */
 
 /* -- opc.h */
-
 #undef  CGEN_DIS_HASH_SIZE
 #define CGEN_DIS_HASH_SIZE 256
 #undef  CGEN_DIS_HASH
 #define CGEN_DIS_HASH(buffer, value) ((unsigned char *) (buffer))[3]
+/* -- */
 
-/* ??? Until cgen disassembler complete and functioning well, redirect back
-   to old disassembler.  
-#define CGEN_PRINT_INSN(od, pc, info) print_insn_mist32_orig (pc, info)
-*/
+/* -- opc.c */
+/* -- */
 
+/* -- asm.c */
+/* -- */
+
+/* -- ibd.h */
 /* -- */
