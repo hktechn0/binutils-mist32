@@ -1,6 +1,7 @@
 /* tc-mist32.h -- Header file for the mist32.
    Copyright 2011
    Free Software Foundation. Inc.
+   Contributed by Hirotaka Kawata <hirotaka@techno-st.net>
 
    This file is part of GAS, the GNU Assembler.
 
@@ -19,18 +20,37 @@
    the Free Software Foundation, 51 Franklin Street - Fifth Floor,
    Boston, MA 02110-1301, USA.  */
 
+#define TC_MIST32
 
-#define TC_MI32
+#define LISTING_HEADER "mist32 GAS "
 
-#define LISTING_HEADER "MIST32 GAS "
-
+/* The target BFD architecture.  */
 #define TARGET_ARCH bfd_arch_mist32
 
-#define TARGET_FORMAT "elf32-mist32"
+extern unsigned long mist32_machine;
+#define TARGET_MACH (mist32_machine)
 
+#define TARGET_FORMAT "elf32-mist32"
 #define TARGET_BYTES_BIG_ENDIAN 1
 
+/* Permit temporary numeric labels.  */
+#define LOCAL_LABELS_FB	1
+
+#define DIFF_EXPR_OK	1	/* .-foo gets turned into PC relative relocs */
+
+/* We don't need to handle .word strangely.  */
 #define WORKING_DOT_WORD
 
-long md_pcrel_from_section (struct fix *, segT);
-#define MD_PCREL_FROM_SECTION(FIXP, SEC) md_pcrel_from_section (FIXP, SEC)
+/* Values passed to md_apply_fix don't include the symbol value.  */
+#define MD_APPLY_SYM_VALUE(FIX) 0
+
+#define md_apply_fix gas_cgen_md_apply_fix
+
+extern bfd_boolean mist32_fix_adjustable (struct fix *);
+#define tc_fix_adjustable(FIX) mist32_fix_adjustable (FIX)
+
+#define tc_gen_reloc gas_cgen_tc_gen_reloc
+
+/* Call md_pcrel_from_section(), not md_pcrel_from().  */
+extern long md_pcrel_from_section (struct fix *, segT);
+#define MD_PCREL_FROM_SECTION(FIX, SEC) md_pcrel_from_section (FIX, SEC)

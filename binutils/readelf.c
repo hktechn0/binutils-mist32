@@ -2092,7 +2092,7 @@ get_machine_name (unsigned e_machine)
     case EM_TILEGX:		return "Tilera TILE-Gx multicore architecture family";
     case EM_CUDA:		return "NVIDIA CUDA architecture";
     case EM_XGATE:		return "Motorola XGATE embedded processor";
-    case EM_MIST32:		return "mist32 architecture";
+    case EM_MIST32:		return "Open Architecture mist32";
     default:
       snprintf (buff, sizeof (buff), _("<unknown>: 0x%x"), e_machine);
       return buff;
@@ -10249,6 +10249,8 @@ is_32bit_abs_reloc (unsigned int reloc_type)
       return reloc_type == 1; /* R_MICROBLAZE_32.  */
     case EM_MIPS:
       return reloc_type == 2; /* R_MIPS_32.  */
+    case EM_MIST32:
+      return reloc_type == 1; /* R_MIST32_32.  */
     case EM_MMIX:
       return reloc_type == 4; /* R_MMIX_32.  */
     case EM_CYGNUS_MN10200:

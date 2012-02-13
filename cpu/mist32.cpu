@@ -171,7 +171,7 @@
 ; hardware: condition code
 (dnh h-cc "condition code" ()
      (register WI (16))
-     (keyword "#" (("" #x0) (al #x0) 
+     (keyword "#" ((al #x0) 
 		  (eq #x1) (z #x1)
 		  (neq #x2) (nz #x2)
 		  (mi #x3)
@@ -196,7 +196,7 @@
 (dnop rs    "source register"         () h-gr     f-rs)
 (dnop i11   "11bits immediate"        () h-uint11 f-i11)
 (dnop i16   "16bits immediate"        () h-uint16 f-i16)
-(dnop p16   "16bits address"          () h-uint16 f-p16)
+(dnop p16   "16bits absolute address"          () h-uint16 f-p16)
 (dnop p16r  "16bits relative unsigned address" () h-uint16 f-p16rel)
 (dnop sp16r "16bits relative signed address"   () h-uint16 f-sp16rel)
 (dnop cc    "condition code"          () h-cc     f-cc)
