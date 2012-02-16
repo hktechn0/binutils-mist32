@@ -89,9 +89,9 @@ md_begin (void)
 
   /* Set the machine number and endian.  */
   gas_cgen_cpu_desc = mist32_cgen_cpu_open (CGEN_CPU_OPEN_MACHS, 0,
-					      CGEN_CPU_OPEN_ENDIAN,
-					      CGEN_ENDIAN_BIG,
-					      CGEN_CPU_OPEN_END);
+					    CGEN_CPU_OPEN_ENDIAN,
+					    CGEN_ENDIAN_BIG,
+					    CGEN_CPU_OPEN_END);
 
   mist32_cgen_init_asm (gas_cgen_cpu_desc);
 
@@ -213,7 +213,12 @@ md_cgen_lookup_reloc (const CGEN_INSN *    insn ATTRIBUTE_UNUSED,
     case MIST32_OPERAND_SP16R:
       fixP->fx_pcrel = 1;
       return BFD_RELOC_MIST32_REL_U16;
-      
+
+    case MIST32_OPERAND_I16HI:
+      return BFD_RELOC_HI16;
+    case MIST32_OPERAND_I16LO:
+      return BFD_RELOC_LO16;
+
     default : /* Avoid -Wall warning.  */
       break;
     }
@@ -248,13 +253,17 @@ md_atof (int type, char *litP, int *sizeP)
 /* Return true if can adjust the reloc to be relative to its section
    (such as .data) instead of relative to some symbol.  */
 
+/*
 bfd_boolean
 mist32_fix_adjustable (fixS * fixP)
 {
+*/
   /* We need the symbol name for the VTABLE entries.  */
+/*
   if (fixP->fx_r_type == BFD_RELOC_VTABLE_INHERIT
       || fixP->fx_r_type == BFD_RELOC_VTABLE_ENTRY)
     return 0;
 
   return 1;
 }
+*/

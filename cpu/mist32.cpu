@@ -1,6 +1,7 @@
 ; mist32 architecture description.  -*- Scheme -*-
 ;
-; Copyright 2012 Hirotaka Kawata <hirotaka@techno-st.net>
+; Copyright 2011, 2012 Free Software Foundation, Inc.
+; Contributed by Hirotaka Kawata <hirotaka@techno-st.net>
 ;
 ; This file is part of the GNU Binutils.
 ;
@@ -99,7 +100,7 @@
       (f-i16h f-i16l)
       (sequence () ; insert
 		(set (ifield f-i16h) (srl (ifield f-i16) (const 5)))
-		(set (ifield f-i16l) (and (ifield f-i16) (const #x7ff)))
+		(set (ifield f-i16l) (and (ifield f-i16) (const #x1f)))
 		)
       (sequence () ; extract
 		(set (ifield f-i16) (or (sll (ifield f-i16h) (const 5))
@@ -190,16 +191,33 @@
      () ()
 )
 
-; Fields
+; Operands
 
 (dnop rd    "destination register"    () h-gr     f-rd)
 (dnop rs    "source register"         () h-gr     f-rs)
-(dnop i11   "11bits immediate"        () h-uint11 f-i11)
-(dnop i16   "16bits immediate"        () h-uint16 f-i16)
-(dnop p16   "16bits absolute address"          () h-uint16 f-p16)
-(dnop p16r  "16bits relative unsigned address" () h-uint16 f-p16rel)
-(dnop sp16r "16bits relative signed address"   () h-uint16 f-sp16rel)
+
+(dnop i11   "11bit immediate"         () h-uint11 f-i11)
+
+(dnop p16   "16bit absolute address"          () h-uint16 f-p16)
+(dnop p16r  "16bit relative unsigned address" () h-uint16 f-p16rel)
+(dnop sp16r "16bit relative signed address"   () h-uint16 f-sp16rel)
+
 (dnop cc    "condition code"          () h-cc     f-cc)
+
+(define-operand (name i16lo)
+  (comment "16 bit immediate, lo")
+  (attrs)
+  (type h-uint16)
+  (index f-i16)
+  (handlers (parse "lo16"))
+)
+(define-operand (name i16hi)
+  (comment "16 bit immediate, hi")
+  (attrs)
+  (type h-uint16)
+  (index f-i16)
+  (handlers (parse "hi16"))
+)
 
 ; Instructions Macro
 
@@ -264,13 +282,25 @@
     )
 )
 ; I16 Format
-(define-pmacro (i16-op mnemonic opcode)
+(define-pmacro (i16lo-op mnemonic opcode)
   (begin
     (dni mnemonic
 	 (.str mnemonic " reg/imm16")
 	 ()
-	 (.str mnemonic " $rd,$i16")
-	 (+ EXT_0 opcode i16 rd)
+	 (.str mnemonic " $rd,$i16lo")
+	 (+ EXT_0 opcode i16lo rd)
+	 ()
+	 ()
+	 )
+    )
+)
+(define-pmacro (i16hi-op mnemonic opcode)
+  (begin
+    (dni mnemonic
+	 (.str mnemonic " reg/imm16")
+	 ()
+	 (.str mnemonic " $rd,$i16hi")
+	 (+ EXT_0 opcode i16hi rd)
 	 ()
 	 ()
 	 )
@@ -385,8 +415,8 @@
 (o2-op      test            OP_103)
 ; 104
 ; 105
-(i16-op     wbl             OP_106)
-(i16-op     wbh             OP_107)
+(i16lo-op   wbl             OP_106)
+(i16hi-op   wbh             OP_107)
 (i11-op     clb             OP_108)
 (i11-op     stb             OP_109)
 (o1-op      clw             OP_110)

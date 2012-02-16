@@ -46,8 +46,10 @@ extern unsigned long mist32_machine;
 
 #define md_apply_fix gas_cgen_md_apply_fix
 
+/*
 extern bfd_boolean mist32_fix_adjustable (struct fix *);
 #define tc_fix_adjustable(FIX) mist32_fix_adjustable (FIX)
+*/
 
 #define tc_gen_reloc gas_cgen_tc_gen_reloc
 
