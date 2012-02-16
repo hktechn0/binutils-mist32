@@ -26,6 +26,132 @@
 #include "elf/mist32.h"
 #include "libiberty.h"
 
+/* R_MIST32_INSN_HI16 relocation for I16 format.  */
+
+static bfd_reloc_status_type
+mist32_elf_hi16_reloc (bfd *abfd,
+		       arelent *reloc_entry,
+		       asymbol *symbol,
+		       void * data,
+		       asection *input_section,
+		       bfd *output_bfd,
+		       char **error_message ATTRIBUTE_UNUSED)
+{
+  bfd_reloc_status_type ret;
+  bfd_vma relocation;
+  bfd_byte *addr;
+  unsigned long insn;
+  
+  /* This part is from bfd_elf_generic_reloc.
+     If we're relocating, and this an external symbol, we don't want
+     to change anything.  */
+  if (output_bfd != NULL
+      && (symbol->flags & BSF_SECTION_SYM) == 0
+      && (! reloc_entry->howto->partial_inplace
+	  || reloc_entry->addend == 0))
+    {
+      reloc_entry->address += input_section->output_offset;
+      return bfd_reloc_ok;
+    }
+
+  /* Sanity check the address (offset in section).  */
+  if (reloc_entry->address > bfd_get_section_limit (abfd, input_section))
+    return bfd_reloc_outofrange;
+
+  ret = bfd_reloc_ok;
+  if (bfd_is_und_section (symbol->section)
+      && output_bfd == NULL)
+    ret = bfd_reloc_undefined;
+
+  if (bfd_is_com_section (symbol->section))
+    relocation = 0;
+  else
+    relocation = symbol->value;
+
+  relocation += symbol->section->output_section->vma;
+  relocation += symbol->section->output_offset;
+  relocation += reloc_entry->addend;
+
+  /* adjust I16 format immediate */
+  relocation = (relocation >> 16) & 0x0000ffff;
+  relocation = (relocation & 0x001f) | ((relocation & 0xffe0) << 5);
+
+  /* reloc insn */
+  addr = (bfd_byte *) data + reloc_entry->address;
+  insn = bfd_get_32 (abfd, addr);
+  insn = (insn & 0xffe003e0) | relocation;
+  bfd_put_32 (abfd, (bfd_vma) insn, addr);
+
+  if (output_bfd != NULL)
+    reloc_entry->address += input_section->output_offset;
+
+  return ret;
+}
+
+/* R_MIST32_INSN_LO16 relocation for I16 format.  */
+
+static bfd_reloc_status_type
+mist32_elf_lo16_reloc (bfd *abfd,
+		       arelent *reloc_entry,
+		       asymbol *symbol,
+		       void * data,
+		       asection *input_section,
+		       bfd *output_bfd,
+		       char **error_message ATTRIBUTE_UNUSED)
+{
+  bfd_reloc_status_type ret;
+  bfd_vma relocation;
+  bfd_byte *addr;
+  unsigned long insn;
+  
+  /* This part is from bfd_elf_generic_reloc.
+     If we're relocating, and this an external symbol, we don't want
+     to change anything.  */
+  if (output_bfd != NULL
+      && (symbol->flags & BSF_SECTION_SYM) == 0
+      && (! reloc_entry->howto->partial_inplace
+	  || reloc_entry->addend == 0))
+    {
+      reloc_entry->address += input_section->output_offset;
+      return bfd_reloc_ok;
+    }
+
+  /* Sanity check the address (offset in section).  */
+  if (reloc_entry->address > bfd_get_section_limit (abfd, input_section))
+    return bfd_reloc_outofrange;
+
+  ret = bfd_reloc_ok;
+  if (bfd_is_und_section (symbol->section)
+      && output_bfd == NULL)
+    ret = bfd_reloc_undefined;
+
+  if (bfd_is_com_section (symbol->section))
+    relocation = 0;
+  else
+    relocation = symbol->value;
+
+  relocation += symbol->section->output_section->vma;
+  relocation += symbol->section->output_offset;
+  relocation += reloc_entry->addend;
+
+  /* adjust I16 format immediate */
+  relocation &=  0x0000ffff;
+  relocation = (relocation & 0x001f) | ((relocation & 0xffe0) << 5);
+
+  /* reloc insn */
+  addr = (bfd_byte *) data + reloc_entry->address;
+  insn = bfd_get_32 (abfd, addr);
+  insn = (insn & 0xffe003e0) | relocation;
+  bfd_put_32 (abfd, (bfd_vma) insn, addr);
+
+  if (output_bfd != NULL)
+    reloc_entry->address += input_section->output_offset;
+
+  return ret;
+}
+
+/* HOWTO */
+
 static reloc_howto_type mist32_elf_howto_table[]=
 {
   /* This reloc does nothing.  */
@@ -88,6 +214,36 @@ static reloc_howto_type mist32_elf_howto_table[]=
 	 0x0000ffff,		/* dst_mask */
 	 FALSE),		/* pcrel_offset */
 
+  /* Lower 16 bits of address. */
+  HOWTO (R_MIST32_INSN_LO_16,   /* type */
+	 0,			/* rightshift */
+	 1,			/* size (0 = byte, 1 = short, 2 = long) */
+	 16,			/* bitsize */
+	 FALSE,			/* pc_relative */
+	 0,			/* bitpos */
+	 complain_overflow_dont, /* complain_on_overflow */
+	 mist32_elf_lo16_reloc,	/* special_function */
+	 "R_MIST32_INSN_LO_16", /* name */
+	 FALSE,			/* partial_inplace */
+	 0,			/* src_mask */
+	 0x0000ffff,		/* dst_mask */
+	 FALSE),		/* pcrel_offset */
+
+  /* High 16 bits of address. */
+  HOWTO (R_MIST32_INSN_HI_16,   /* type */
+	 16,			/* rightshift */
+	 1,			/* size (0 = byte, 1 = short, 2 = long) */
+	 16,			/* bitsize */
+	 FALSE,			/* pc_relative */
+	 0,			/* bitpos */
+	 complain_overflow_dont, /* complain_on_overflow */
+	 mist32_elf_hi16_reloc,	/* special_function */
+	 "R_MIST32_INSN_HI_16",	/* name */
+	 FALSE,			/* partial_inplace */
+	 0,			/* src_mask */
+	 0x0000ffff,		/* dst_mask */
+	 FALSE),		/* pcrel_offset */
+
   /* A 8 bit absolute relocation.  */
   HOWTO (R_MIST32_8,		/* type */
 	 0,			/* rightshift */
@@ -135,7 +291,7 @@ static reloc_howto_type mist32_elf_howto_table[]=
 
 };
 
-/* Map BFD reloc types to OpenRISC ELF reloc types.  */
+/* Map BFD reloc types to mist32 ELF reloc types.  */
 
 struct mist32_reloc_map
 {
@@ -152,6 +308,8 @@ static const struct mist32_reloc_map mist32_reloc_map [] =
   { BFD_RELOC_MIST32_REL_16,	R_MIST32_INSN_REL_16 },
   { BFD_RELOC_MIST32_REL_U16,	R_MIST32_INSN_REL_U16 },
   { BFD_RELOC_MIST32_ABS_16,	R_MIST32_INSN_ABS_16 },
+  { BFD_RELOC_HI16, 		R_MIST32_INSN_HI_16 },
+  { BFD_RELOC_LO16, 		R_MIST32_INSN_LO_16 }
 };
 
 static reloc_howto_type *
@@ -184,7 +342,7 @@ mist32_reloc_name_lookup (bfd *abfd ATTRIBUTE_UNUSED, const char *r_name)
 }
 
 static void
-mist32_info_to_howto_rela
+mist32_info_to_howto
     (bfd *               abfd ATTRIBUTE_UNUSED,
      arelent *           cache_ptr,
      Elf_Internal_Rela * dst)
@@ -206,7 +364,10 @@ mist32_info_to_howto_rela
 #define TARGET_BIG_NAME		"elf32-mist32"
 
 #define elf_info_to_howto_rel		NULL
-#define elf_info_to_howto		mist32_info_to_howto_rela
+#define elf_info_to_howto		mist32_info_to_howto
+
+#define elf_backend_can_gc_sections	1
+#define elf_backend_rela_normal		1
 
 #define bfd_elf32_bfd_reloc_type_lookup mist32_reloc_type_lookup
 #define bfd_elf32_bfd_reloc_name_lookup mist32_reloc_name_lookup
