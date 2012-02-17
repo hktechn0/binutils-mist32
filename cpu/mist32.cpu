@@ -166,8 +166,9 @@
 )
 
 ; hardware: immediate
-(dnh h-uint11 "11bits uint" () (immediate (UINT 11)) () () ())
-(dnh h-uint16 "16bits uint" () (immediate (UINT 16)) () () ())
+(dnh h-uint11   "11 bit uint"          () (immediate (UINT 11)) () () ())
+(dnh h-uint16l  "16 bit uint for lo()" () (immediate (UINT 16)) () () ())
+(dnh h-uint16h  "16 bit uint for hi()" () (immediate (UINT 16)) () () ())
 
 ; hardware: condition code
 (dnh h-cc "condition code" ()
@@ -180,41 +181,39 @@
 		  (en #x5)
 		  (on #x6)
 		  (ovf #x7)
-		  (uio #x8) (c #x8)
+		  (ueo #x8) (c #x8)
 		  (uu #x9) (nc #x9)
 		  (uo #xa)
-		  (uiu #xb)
-		  (sio #xc)
+		  (ueu #xb)
+		  (seo #xc)
 		  (su #xd)
 		  (so #xe)
-		  (siu #xf)))
+		  (seu #xf)))
      () ()
 )
 
 ; Operands
 
-(dnop rd    "destination register"    () h-gr     f-rd)
-(dnop rs    "source register"         () h-gr     f-rs)
+(dnop rd    "destination register"            () h-gr     f-rd)
+(dnop rs    "source register"                 () h-gr     f-rs)
+(dnop cc    "condition code"                  () h-cc     f-cc)
 
-(dnop i11   "11bit immediate"         () h-uint11 f-i11)
+(dnop p16   "16bit absolute address"          () h-iaddr  f-p16)
+(dnop p16r  "16bit relative unsigned address" () h-iaddr  f-p16rel)
+(dnop sp16r "16bit relative signed address"   () h-iaddr  f-sp16rel)
 
-(dnop p16   "16bit absolute address"          () h-uint16 f-p16)
-(dnop p16r  "16bit relative unsigned address" () h-uint16 f-p16rel)
-(dnop sp16r "16bit relative signed address"   () h-uint16 f-sp16rel)
-
-(dnop cc    "condition code"          () h-cc     f-cc)
-
+(dnop i11   "11bit immediate"                 () h-uint11 f-i11)
 (define-operand (name i16lo)
   (comment "16 bit immediate, lo")
   (attrs)
-  (type h-uint16)
+  (type h-uint16l)
   (index f-i16)
   (handlers (parse "lo16"))
 )
 (define-operand (name i16hi)
   (comment "16 bit immediate, hi")
   (attrs)
-  (type h-uint16)
+  (type h-uint16h)
   (index f-i16)
   (handlers (parse "hi16"))
 )
@@ -470,4 +469,4 @@
 ; 235 - 255
 (c-op       nop             OP_256)
 (c-op       halt            OP_257)
-(o2-op      mov             OP_258)
+(o2-op      move            OP_258)

@@ -36,6 +36,10 @@
    <arch>-ibd.h additions use: "-- ibd.h"  */
 
 /* -- opc.h */
+#undef  CGEN_DIS_HASH_SIZE
+#define CGEN_DIS_HASH_SIZE 1024
+#undef  CGEN_DIS_HASH
+#define CGEN_DIS_HASH(buffer, value) ((value & 0x7fe00000) >> 21)
 /* -- */
 
 /* -- opc.c */
