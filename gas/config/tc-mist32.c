@@ -27,9 +27,6 @@
 #include "opcodes/mist32-opc.h"
 #include "cgen.h"
 
-/* for ISSPACE */
-#include "safe-ctype.h"
-
 typedef struct mist32_insn mist32_insn;
 
 struct mist32_insn
@@ -107,51 +104,19 @@ md_assemble (char *str)
 {
   mist32_insn insn;
   char *errmsg;
-
+  
   /* Initialize GAS's cgen interface for a new instruction.  */
   gas_cgen_init_parse ();
-
+  
   insn.insn = mist32_cgen_assemble_insn
     (gas_cgen_cpu_desc, str, & insn.fields, insn.buffer, &errmsg);
-
+  
   if (!insn.insn)
     {
-      /* Abbreviation support for immediate instruction. (without 'i' postfix) */
-      mist32_insn insni;
-      char *stri, *p;
-      char errbuf[150];
-
-      strcpy(errbuf, errmsg);
-
-      stri = calloc(strlen(str) + 2, sizeof(char));
-      p = stri;
-
-      while(ISSPACE(*str))
-	*(p++) = *(str++);
-      while(!ISSPACE(*str))
-	*(p++) = *(str++);
-
-      *(p++) = 'i';
-
-      while(*(str))
-	*(p++) = *(str++);
-
-      gas_cgen_init_parse ();
-
-      insni.insn = mist32_cgen_assemble_insn
-	(gas_cgen_cpu_desc, stri, & insni.fields, insni.buffer, &errmsg);
-
-      free(stri);
-
-      /* FIXME : print error only no i postfix. */
-      if(!insni.insn) {
-	as_bad ("%s", errbuf);
-	return;
-      }
-
-      insn = insni;
+      as_bad ("%s", errmsg);
+      return;
     }
-
+  
   /* Doesn't really matter what we pass for RELAX_P here.  */
   gas_cgen_finish_insn (insn.insn, insn.buffer,
 			CGEN_FIELDS_BITSIZE (& insn.fields), 1, NULL);
