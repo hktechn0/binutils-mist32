@@ -97,6 +97,41 @@ parse_hi16 (CGEN_CPU_DESC cd, const char ** strp,
 
 static const char *
 parse_lo16 (CGEN_CPU_DESC cd, const char ** strp,
+	    int opindex, long * valuep)
+{
+  const char *errmsg;
+  enum cgen_parse_operand_result result_type;
+
+  if (**strp == '#')
+    ++*strp;
+
+  if (strncasecmp (*strp, "lo(", 3) == 0)
+    {
+      bfd_vma value;
+
+      *strp += 3;
+      errmsg = cgen_parse_address (cd, strp, opindex, BFD_RELOC_LO16,
+				   & result_type, & value);
+      if (**strp != ')')
+        return MISSING_CLOSING_PARENTHESIS;
+
+      if (errmsg == NULL
+	  && result_type == CGEN_PARSE_OPERAND_RESULT_NUMBER)
+	value = ((value & 0xffff) ^ 0x8000) - 0x8000;
+      *valuep = value;
+
+      ++*strp;
+    }
+  else
+    {
+      errmsg = cgen_parse_signed_integer (cd, strp, opindex, valuep);
+    }
+
+  return errmsg;
+}
+
+static const char *
+parse_ulo16 (CGEN_CPU_DESC cd, const char ** strp,
 	    int opindex, unsigned long * valuep)
 {
   const char *errmsg;

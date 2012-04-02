@@ -210,13 +210,14 @@ md_cgen_lookup_reloc (const CGEN_INSN *    insn ATTRIBUTE_UNUSED,
     case MIST32_OPERAND_P16R:
       fixP->fx_pcrel = 1;
       return BFD_RELOC_MIST32_REL_16;
-    case MIST32_OPERAND_SP16R:
+    case MIST32_OPERAND_UP16R:
       fixP->fx_pcrel = 1;
       return BFD_RELOC_MIST32_REL_U16;
 
-    case MIST32_OPERAND_I16HI:
+    case MIST32_OPERAND_I16H:
       return BFD_RELOC_HI16;
-    case MIST32_OPERAND_I16LO:
+    case MIST32_OPERAND_I16L:
+    case MIST32_OPERAND_UI16L:
       return BFD_RELOC_LO16;
 
     default : /* Avoid -Wall warning.  */

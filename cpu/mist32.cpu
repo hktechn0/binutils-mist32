@@ -80,47 +80,67 @@
 (dnf f-rd    "destination"        () 9 5)
 (dnf f-rs    "source"             () 4 5)
 
-(dnf f-i11h  "immediate 11 high"  () 15 6)
-(dnf f-i11l  "immediate 11 low"   () 4 5)
-(dnmf f-i11  "11 bit immediate"   () UINT
+(dnf  f-i11h "11 bit immediate high"       () 15 6)
+(dnf  f-i11l "11 bit immediate low"        () 4 5)
+(dnmf f-i11  "11 bit immediate"            () INT
+      (f-i11h f-i11l)
+      (sequence () ; insert
+		(set (ifield f-i11h) (and (const #x3f)
+					  (sra (ifield f-i11) (const 5))))
+		(set (ifield f-i11l) (and (ifield f-i11) (const #x1f))))
+      (sequence () ; extract
+		(set (ifield f-i11) (sub (xor (const #x400)
+					      (or (sll (ifield f-i11h) (const 5))
+						  (ifield f-i11l)))
+					 (const #x400))))
+)
+(dnmf f-ui11 "11 bit unsigned immediate"   () UINT
       (f-i11h f-i11l)
       (sequence () ; insert
 		(set (ifield f-i11h) (srl (ifield f-i11) (const 5)))
-		(set (ifield f-i11l) (and (ifield f-i11) (const #x1f)))
-		)
+		(set (ifield f-i11l) (and (ifield f-i11) (const #x1f))))
       (sequence () ; extract
 		(set (ifield f-i11) (or (sll (ifield f-i11h) (const 5))
-					(ifield f-i11l)))
-		)
+					(ifield f-i11l))))
 )
 
-(dnf f-i16h  "immediate 16 high" () 20 11)
-(dnf f-i16l  "immediate 16 low"  () 4 5)
-(dnmf f-i16  "16 bit immediate"  () UINT
+(dnf  f-i16h "16 bit immediate high"      () 20 11)
+(dnf  f-i16l "16 bit immediate low"       () 4 5)
+(dnmf f-i16  "16 bit immediate"           () INT
       (f-i16h f-i16l)
       (sequence () ; insert
-		(set (ifield f-i16h) (srl (ifield f-i16) (const 5)))
-		(set (ifield f-i16l) (and (ifield f-i16) (const #x1f)))
-		)
+		(set (ifield f-i16h) (and (const #x7ff)
+					  (sra (ifield f-i16) (const 5))))
+		(set (ifield f-i16l) (and (ifield f-i16) (const #x1f))))
       (sequence () ; extract
-		(set (ifield f-i16) (or (sll (ifield f-i16h) (const 5))
-					(ifield f-i16l)))
-		)
+		(set (ifield f-i16) (sub (xor (const #x8000)
+					      (or (sll (ifield f-i16h) (const 5))
+						  (ifield f-i16l)))
+					 (const #x8000))))
+)
+(dnmf f-ui16  "16 bit unsigned immediate"  () UINT
+      (f-i16h f-i16l)
+      (sequence () ; insert
+		(set (ifield f-i16h) (srl (ifield f-ui16) (const 5)))
+		(set (ifield f-i16l) (and (ifield f-ui16) (const #x1f))))
+      (sequence () ; extract
+		(set (ifield f-ui16) (or (sll (ifield f-i16h) (const 5))
+					(ifield f-i16l))))
 )
 
-(df f-p16  "16 bit unsigned absolute addr" (ABS-ADDR)
+(df f-p16 "16 bit unsigned absolute addr" (ABS-ADDR)
     15 16 UINT
     ; 2 shifted to right, 16bit -> 18bit
     ((value pc) (srl WI (and WI pc (const -4)) (const 2)))
     ((value pc) (sll WI value (const 2)))
 )
-(df f-p16rel  "16 bit unsigned PC relative addr" (PCREL-ADDR)
+(df f-up16r "16 bit unsigned PC relative addr" (PCREL-ADDR)
     15 16 UINT
     ; 2 shifted to right, 16bit -> 18bit
     ((value pc) (srl WI (sub WI value (and WI pc (const -4))) (const 2)))
     ((value pc) (add WI (sll WI value (const 2)) (and WI pc (const -4))))
 )
-(df f-sp16rel  "16 bit signed PC relative addr" (PCREL-ADDR)
+(df f-p16r "16 bit signed PC relative addr" (PCREL-ADDR)
     15 16 INT
     ; 2 shifted to right, 16bit -> 18bit
     ((value pc) (sra WI (sub WI value (and WI pc (const -4))) (const 2)))
@@ -153,7 +173,7 @@
 (dnh h-pc "program counter" (PC) (pc SI) () () ())
 (dnh h-gr "general registers" ()
      (register WI (32))
-     (keyword "" ((bp 31)
+     (keyword "" ((rglobl 28) (rtmp 29) (rbase 30) (rret 31)
 		  (r0 0) (r1 1) (r2 2) (r3 3)
 		  (r4 4) (r5 5) (r6 6) (r7 7)
 		  (r8 8) (r9 9) (r10 10) (r11 11)
@@ -166,29 +186,30 @@
 )
 
 ; hardware: immediate
-(dnh h-uint11   "11 bit uint"          () (immediate (UINT 11)) () () ())
-(dnh h-uint16l  "16 bit uint for lo()" () (immediate (UINT 16)) () () ())
-(dnh h-uint16h  "16 bit uint for hi()" () (immediate (UINT 16)) () () ())
+(dnh h-int11  "11 bit int"  () (immediate (INT  11)) () () ())
+(dnh h-uint11 "11 bit uint" () (immediate (UINT 11)) () () ())
+(dnh h-int16  "16 bit int"  () (immediate (INT  16)) () () ())
+(dnh h-uint16 "16 bit uint" () (immediate (UINT 16)) () () ())
 
 ; hardware: condition code
 (dnh h-cc "condition code" ()
      (register WI (16))
-     (keyword "#" ((al #x0) 
-		  (eq #x1) (z #x1)
-		  (neq #x2) (nz #x2)
-		  (mi #x3)
-		  (pl #x4)
-		  (en #x5)
-		  (on #x6)
-		  (ovf #x7)
-		  (ueo #x8) (c #x8)
-		  (uu #x9) (nc #x9)
-		  (uo #xa)
-		  (ueu #xb)
-		  (seo #xc)
-		  (su #xd)
-		  (so #xe)
-		  (seu #xf)))
+     (keyword "#" ((al  #x0) 
+		   (eq  #x1) (z   #x1)
+		   (neq #x2) (nz  #x2) (ne  #x2)
+		             (mi  #x3)
+		             (pl  #x4)
+		             (en  #x5)
+		             (on  #x6)
+		             (ovf #x7)
+		   (ueo #x8) (c   #x8) (geu #x8)
+		   (uu  #x9) (nc  #x9) (ltu #x9)
+		   (uo  #xa)           (gtu #xa)
+		   (ueu #xb)           (leu #xb)
+		   (seo #xc)           (ge  #xc)
+		   (su  #xd)           (lt  #xd)
+		   (so  #xe)           (gt  #xe)
+		   (seu #xf)           (le  #xf)))
      () ()
 )
 
@@ -198,25 +219,36 @@
 (dnop rs    "source register"                 () h-gr     f-rs)
 (dnop cc    "condition code"                  () h-cc     f-cc)
 
-(dnop p16   "16bit absolute address"          () h-iaddr  f-p16)
-(dnop p16r  "16bit relative unsigned address" () h-iaddr  f-p16rel)
-(dnop sp16r "16bit relative signed address"   () h-iaddr  f-sp16rel)
+(dnop p16   "16bit absolute unsigned address" () h-iaddr  f-p16)
+(dnop up16r "16bit relative unsigned address" () h-iaddr  f-up16r)
+(dnop p16r  "16bit relative address"          () h-iaddr  f-p16r)
 
-(dnop i11   "11bit immediate"                 () h-uint11 f-i11)
-(define-operand (name i16lo)
+(dnop i11   "11bit immediate"                 () h-int11  f-i11)
+(dnop ui11  "11bit unsigned immediate"        () h-uint11 f-i11)
+
+(define-operand (name i16l)
   (comment "16 bit immediate, lo")
   (attrs)
-  (type h-uint16l)
+  (type h-int16)
   (index f-i16)
   (handlers (parse "lo16"))
 )
-(define-operand (name i16hi)
+(define-operand (name ui16l)
+  (comment "16 bit unsigned immediate, lo")
+  (attrs)
+  (type h-uint16)
+  (index f-ui16)
+  (handlers (parse "ulo16"))
+)
+(define-operand (name i16h)
   (comment "16 bit immediate, hi")
   (attrs)
-  (type h-uint16h)
-  (index f-i16)
+  (type h-uint16)
+  (index f-ui16)
   (handlers (parse "hi16"))
 )
+
+(dnop i32   "32bit immediate for li"  (SEM-ONLY) h-uint    f-nil)
 
 ; Instructions Macro
 
@@ -254,6 +286,27 @@
 	 )
     )
 )
+; O2-I11 Unsigned Format
+(define-pmacro (o2-ui11-op mnemonic opcode)
+  (begin
+    (dni mnemonic
+	 (.str mnemonic " reg/reg")
+	 ()
+	 (.str mnemonic " $rd,$rs")
+	 (+ EXT_0 opcode ISIMM_0 AFE_0 (f-reserve1 0) rd rs)
+	 ()
+	 ()
+	 )
+    (dni (.sym mnemonic "i")
+	 (.str mnemonic " reg/uimm11")
+	 () 
+	 (.str mnemonic " $rd,$ui11")
+	 (+ EXT_0 opcode ISIMM_1 AFE_0 ui11 rd)
+	 ()
+	 ()
+	 )
+    )
+)
 ; O1 Format
 (define-pmacro (o1-op mnemonic opcode)
   (begin
@@ -280,26 +333,52 @@
 	 )
     )
 )
-; I16 Format
-(define-pmacro (i16lo-op mnemonic opcode)
+; I11 Unsigned Format
+(define-pmacro (ui11-op mnemonic opcode)
   (begin
     (dni mnemonic
-	 (.str mnemonic " reg/imm16")
-	 ()
-	 (.str mnemonic " $rd,$i16lo")
-	 (+ EXT_0 opcode i16lo rd)
+	 (.str mnemonic " reg/uimm11")
+	 () 
+	 (.str mnemonic " $rd,$ui11")
+	 (+ EXT_0 opcode ISIMM_1 AFE_0 ui11 rd)
 	 ()
 	 ()
 	 )
     )
 )
-(define-pmacro (i16hi-op mnemonic opcode)
+; I16 Format
+(define-pmacro (i16l-op mnemonic opcode)
   (begin
     (dni mnemonic
 	 (.str mnemonic " reg/imm16")
 	 ()
-	 (.str mnemonic " $rd,$i16hi")
-	 (+ EXT_0 opcode i16hi rd)
+	 (.str mnemonic " $rd,$i16l")
+	 (+ EXT_0 opcode i16l rd)
+	 ()
+	 ()
+	 )
+    )
+)
+(define-pmacro (i16h-op mnemonic opcode)
+  (begin
+    (dni mnemonic
+	 (.str mnemonic " reg/imm16")
+	 ()
+	 (.str mnemonic " $rd,$i16h")
+	 (+ EXT_0 opcode i16h rd)
+	 ()
+	 ()
+	 )
+    )
+)
+; I16 Unsigned Format
+(define-pmacro (ui16l-op mnemonic opcode)
+  (begin
+    (dni mnemonic
+	 (.str mnemonic " reg/uimm16")
+	 ()
+	 (.str mnemonic " $rd,$ui16l")
+	 (+ EXT_0 opcode ui16l rd)
 	 ()
 	 ()
 	 )
@@ -319,7 +398,7 @@
     )
 )
 ; JO1, JI16 (JMP) Format, absolute address
-(define-pmacro (jmp-op mnemonic opcode)
+(define-pmacro (b-op mnemonic opcode)
   (begin
     (dni mnemonic
 	 (.str mnemonic " reg")
@@ -340,7 +419,7 @@
     )
 )
 ; JO1, JI16 (JMP) Format, unsigned PC relative
-(define-pmacro (jmp-r-op mnemonic opcode)
+(define-pmacro (bur-op mnemonic opcode)
   (begin
     (dni mnemonic
 	 (.str mnemonic " reg")
@@ -351,7 +430,28 @@
 	 ()
 	 )
     (dni (.sym mnemonic "i")
-	 (.str mnemonic " uaddr16(pc relative)")
+	 (.str mnemonic " uaddr16 (PC relative)")
+	 () 
+	 (.str mnemonic " $up16r,$cc")
+	 (+ EXT_0 opcode ISIMM_1 cc up16r)
+	 ()
+	 ()
+	 )
+    )
+)
+; JO1, JI16 (JMP) Format, signed PC relative
+(define-pmacro (br-op mnemonic opcode)
+  (begin
+    (dni mnemonic
+	 (.str mnemonic " reg")
+	 ()
+	 (.str mnemonic " $rd,$cc")
+	 (+ EXT_0 opcode ISIMM_0 cc (f-reserve1 0) rd (f-reserve3 0))	
+ ()
+	 ()
+	 )
+    (dni (.sym mnemonic "i")
+	 (.str mnemonic " addr16 (PC relative)")
 	 () 
 	 (.str mnemonic " $p16r,$cc")
 	 (+ EXT_0 opcode ISIMM_1 cc p16r)
@@ -360,50 +460,36 @@
 	 )
     )
 )
-; JO1, JI16 (JMP) Format, signed PC relative
-(define-pmacro (jmp-sr-op mnemonic opcode)
-  (begin
-    (dni mnemonic
-	 (.str mnemonic " reg")
-	 ()
-	 (.str mnemonic " $rd,$cc")
-	 (+ EXT_0 opcode ISIMM_0 cc (f-reserve1 0) rd (f-reserve3 0))
-	 ()
-	 ()
-	 )
-    (dni (.sym mnemonic "i")
-	 (.str mnemonic " addr16(pc relative)")
-	 () 
-	 (.str mnemonic " $sp16r,$cc")
-	 (+ EXT_0 opcode ISIMM_1 cc sp16r)
-	 ()
-	 ()
-	 )
-    )
-)
 
 ; Instructions
 
+; Arithmetic
 (o2-i11-op  add             OP_0)
 (o2-i11-op  sub             OP_1)
 (o2-i11-op  mull            OP_2)
 (o2-i11-op  mulh            OP_3)
-(o2-i11-op  div             OP_4)
-(o2-i11-op  mod             OP_5)
+(o2-ui11-op udiv            OP_4)
+(o2-ui11-op umod            OP_5)
 (o2-i11-op  cmp             OP_6)
-(o2-i11-op  sdiv            OP_7)
-(o2-i11-op  smod            OP_8)
-(o1-op      sch             OP_9)
-; 10 - 63
-(o2-i11-op  shl             OP_64)
-(o2-i11-op  shr             OP_65)
-; 66 - 68
-(o2-i11-op  sar             OP_69)
-; 70
-; 71
-(o2-i11-op  rol             OP_72)
-(o2-i11-op  ror             OP_73)
-; 74 - 95
+(o2-i11-op  div             OP_7)
+(o2-i11-op  mod             OP_8)
+(o1-op      neg             OP_9)
+;; 10 - 27
+(o2-op      sext8           OP_28)
+(o2-op      sext16          OP_29)
+;; 30 - 63
+
+; Shift
+(o2-ui11-op shl             OP_64)
+(o2-ui11-op shr             OP_65)
+;; 66 - 68
+(o2-ui11-op sar             OP_69)
+;; 70 - 71
+(o2-ui11-op rol             OP_72)
+(o2-ui11-op ror             OP_73)
+;; 74 - 95
+
+; Logic
 (o2-op      and             OP_96)
 (o2-op      or              OP_97)
 (o2-op      xor             OP_98)
@@ -412,61 +498,73 @@
 (o2-op      nor             OP_101)
 (o2-op      xnor            OP_102)
 (o2-op      test            OP_103)
-; 104
-; 105
-(i16lo-op   wbl             OP_106)
-(i16hi-op   wbh             OP_107)
-(i11-op     clb             OP_108)
-(i11-op     stb             OP_109)
-(o1-op      clw             OP_110)
-(o1-op      stw             OP_111)
-(o1-op      rvbi            OP_112)
-(o1-op      rvby            OP_113)
-(o2-i11-op  gbi             OP_114)
-(o2-i11-op  gby             OP_115)
-; 116 - 127
-(o2-i11-op  ld8b            OP_128)
-(o2-i11-op  ld16b           OP_129)
-(o2-i11-op  ld32b           OP_130)
-(o2-i11-op  st8b            OP_131)
-(o2-i11-op  st16b           OP_132)
-(o2-i11-op  st32b           OP_133)
-; 134
-; 135
+;; 104 - 105
+(ui16l-op   wl16            OP_106)
+(i16h-op    wh16            OP_107)
+(ui11-op    clrb            OP_108)
+(ui11-op    setb            OP_109)
+(o1-op      clr             OP_110)
+(o1-op      set             OP_111)
+(o1-op      revb            OP_112)
+(o1-op      rev8            OP_113)
+(o2-ui11-op getb            OP_114)
+(o2-ui11-op get8            OP_115)
+;; 116 - 117
+(i16l-op    lil             OP_118)
+(i16h-op    lih             OP_119)
+;; 120 - 121
+(ui16l-op   ulil            OP_122)
+;; 120 - 127
+
+; Memory Access
+(o2-i11-op  ld8             OP_128)
+(o2-i11-op  ld16            OP_129)
+(o2-i11-op  ld32            OP_130)
+(o2-i11-op  st8             OP_131)
+(o2-i11-op  st16            OP_132)
+(o2-i11-op  st32            OP_133)
+;; 134 - 135
 (o1-op      push            OP_136)
-(c-op       ppush           OP_137)
-; 138 - 143
+(c-op       pushpc          OP_137)
+;; 138 - 143
 (o1-op      pop             OP_144)
-; 145 - 159
-(jmp-r-op   upjmp           OP_160)
-(jmp-sr-op  spjmp           OP_161)
-(jmp-op     djmp            OP_162)
-; 163 - 175
-(jmp-r-op   nupjmp          OP_176)
-(jmp-sr-op  nspjmp          OP_177)
-(jmp-op     ndjmp           OP_178)
-; 179 - 191
-(o1-op      sysrspr         OP_192)
-(o1-op      sysrpdtr        OP_193)
-(o1-op      sysrcid         OP_194)
-(o1-op      sysrissrat      OP_195)
-(o1-op      sysrmode        OP_196)
-(o1-op      sysriei         OP_197)
-(o1-op      sysrsiei        OP_198)
-(o1-op      sysrhiei        OP_199)
-(o1-op      sysrtispr       OP_200)
-(o1-op      sysrkpdtr       OP_201)
-(o1-op      sysrrmmum       OP_202)
-; 203 - 223
-(o1-op      syswspr         OP_224)
-; 225 - 228
-(o1-op      syswiei         OP_229)
-(o1-op      syswsiei        OP_230)
-(o1-op      syswhiei        OP_231)
-(o1-op      syswtispr       OP_232)
-(o1-op      syswkpdtr       OP_233)
-(o1-op      syswmmum        OP_234)
-; 235 - 255
+;; 145 - 159
+
+; Branch
+(bur-op     bur             OP_160)
+(br-op      br              OP_161)
+(b-op       b               OP_162)
+;; 163 - 175
+(bur-op     burn            OP_176)
+(br-op      brn             OP_177)
+(b-op       bn              OP_178)
+;; 179 - 191
+
+; System
+(o1-op      srspr           OP_192)
+(o1-op      srpdtr          OP_193)
+(o1-op      srcid           OP_194)
+;(o1-op     srissrat        OP_195)
+(o1-op      srmodr          OP_196)
+(o1-op      srier           OP_197)
+(o1-op      srsier          OP_198)
+(o1-op      srhier          OP_199)
+(o1-op      srtispr         OP_200)
+(o1-op      srkpdtr         OP_201)
+(o1-op      srmmur          OP_202)
+;; 203 - 223
+(o1-op      srsprw          OP_224)
+;; 225 - 228
+(o1-op      sriew           OP_229)
+(o1-op      srsiew          OP_230)
+(o1-op      srhiew          OP_231)
+(o1-op      srtispw         OP_232)
+(o1-op      srkpdtw         OP_233)
+(o1-op      srmmuw          OP_234)
+;; 235 - 255
+
+; Other
 (c-op       nop             OP_256)
 (c-op       halt            OP_257)
 (o2-op      move            OP_258)
+(o2-i11-op  movepc          OP_259)
