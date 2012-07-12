@@ -447,7 +447,7 @@
 	 ()
 	 (.str mnemonic " $rd,$cc")
 	 (+ EXT_0 opcode ISIMM_0 cc (f-reserve1 0) rd (f-reserve3 0))	
- ()
+	 ()
 	 ()
 	 )
     (dni (.sym mnemonic "i")
@@ -474,10 +474,18 @@
 (o2-i11-op  div             OP_7)
 (o2-i11-op  mod             OP_8)
 (o1-op      neg             OP_9)
-;; 10 - 27
+;; 10 - 13
+(o2-op      addc            OP_14)
+;; 15
+(o2-op      inc             OP_16)
+(o2-op      dec             OP_17)
+;; 18 - 27
 (o2-op      sext8           OP_28)
 (o2-op      sext16          OP_29)
-;; 30 - 63
+;; 30 - 32
+
+; Floating
+;; 32 - 63
 
 ; Shift
 (o2-ui11-op shl             OP_64)
@@ -540,31 +548,52 @@
 (b-op       bn              OP_178)
 ;; 179 - 191
 
-; System
+; System Read
 (o1-op      srspr           OP_192)
 (o1-op      srpdtr          OP_193)
-(o1-op      srcid           OP_194)
-;(o1-op     srissrat        OP_195)
-(o1-op      srmodr          OP_196)
-(o1-op      srier           OP_197)
-(o1-op      srsier          OP_198)
-(o1-op      srhier          OP_199)
-(o1-op      srtispr         OP_200)
+(o1-op      srpidr          OP_194)
+(o1-op      srcidr          OP_195)
+(o1-op      srmoder         OP_196)
+(o1-op      srieir          OP_197)
+;(o1-op     srsieir         OP_198)
+;(o1-op     srhieir         OP_199)
+(o1-op      srtisr          OP_200)
 (o1-op      srkpdtr         OP_201)
 (o1-op      srmmur          OP_202)
-;; 203 - 223
-(o1-op      srsprw          OP_224)
-;; 225 - 228
-(o1-op      sriew           OP_229)
-(o1-op      srsiew          OP_230)
-(o1-op      srhiew          OP_231)
-(o1-op      srtispw         OP_232)
+(o1-op      sriosr          OP_203)
+(o1-op      srtidr          OP_204)
+(o1-op      srppsr          OP_205)
+(o1-op      srppcr          OP_206)
+(o1-op      srpspr          OP_207)
+(o1-op      srppdtr         OP_208)
+(o1-op      srptidr         OP_209)
+;; 210 - 223
+
+; System Write
+(o1-op      srspw           OP_224)
+(o1-op      srpdtw          OP_225)
+;; 226 - 228
+(o1-op      srieiw          OP_229)
+;(o1-op     srsieiw         OP_230)
+;(o1-op     srhieiw         OP_231)
+(o1-op      srtisw          OP_232)
 (o1-op      srkpdtw         OP_233)
 (o1-op      srmmuw          OP_234)
-;; 235 - 255
+;; 235 - 236
+(o1-op      srppsw          OP_237)
+(o1-op      srppcw          OP_238)
+(o1-op      srpspw          OP_239)
+(o1-op      srppdtw         OP_240)
+(o1-op      srptidw         OP_241)
+(o1-op      sridtw          OP_242)
+;; 243 - 255
 
 ; Other
 (c-op       nop             OP_256)
 (c-op       halt            OP_257)
 (o2-op      move            OP_258)
 (o2-i11-op  movepc          OP_259)
+;; 260 - 287
+
+; OS Support
+(i11-op     swi             OP_288)
