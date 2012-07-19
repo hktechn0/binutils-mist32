@@ -104,6 +104,38 @@
 					(ifield f-i11l))))
 )
 
+(dnf  f-p11hi "11 bit absolute address high"       (ABS-ADDR) 15 6)
+(dnf  f-p11lo "11 bit absolute address low"        (ABS-ADDR) 4 5)
+(dnmf f-p11b  "11 bit byte align absolute address" (ABS-ADDR) UINT
+      (f-p11hi f-p11lo)
+      (sequence () ; insert
+		(set (ifield f-p11hi) (srl (ifield f-p11b) (const 5)))
+		(set (ifield f-p11lo) (and (ifield f-p11b) (const #x1f))))
+      (sequence () ; extract
+		(set (ifield f-p11b) (or (sll (ifield f-p11hi) (const 5))
+					 (ifield f-p11lo))))
+)
+(dnmf f-p11h "11 bit halfword align absolute address" (ABS-ADDR) UINT
+      (f-p11hi f-p11lo)
+      (sequence () ; insert
+		(set (ifield f-p11hi) (srl (ifield f-p11h) (const 6)))
+		(set (ifield f-p11lo) (srl (and (ifield f-p11h) (const #x3e)) 
+					   (const 1))))
+      (sequence () ; extract
+		(set (ifield f-p11h) (or (sll (ifield f-p11hi) (const 6))
+					 (sll (ifield f-p11lo) (const 1)))))
+)
+(dnmf f-p11w "11 bit word align absolute address" (ABS-ADDR) UINT
+      (f-p11hi f-p11lo)
+      (sequence () ; insert
+		(set (ifield f-p11hi) (srl (ifield f-p11w) (const 7)))
+		(set (ifield f-p11lo) (srl (and (ifield f-p11w) (const #x7c)) 
+					   (const 2))))
+      (sequence () ; extract
+		(set (ifield f-p11w) (or (sll (ifield f-p11hi) (const 7))
+					 (sll (ifield f-p11lo) (const 2)))))
+)
+
 (dnf  f-i16h "16 bit immediate high"      () 20 11)
 (dnf  f-i16l "16 bit immediate low"       () 4 5)
 (dnmf f-i16  "16 bit immediate"           () INT
@@ -128,19 +160,19 @@
 					(ifield f-i16l))))
 )
 
-(df f-p16 "16 bit unsigned absolute addr" (ABS-ADDR)
+(df f-p16 "16 bit absolute address" (ABS-ADDR)
     15 16 UINT
     ; 2 shifted to right, 16bit -> 18bit
     ((value pc) (srl WI (and WI pc (const -4)) (const 2)))
     ((value pc) (sll WI value (const 2)))
 )
-(df f-up16r "16 bit unsigned PC relative addr" (PCREL-ADDR)
+(df f-up16r "16 bit unsigned PC relative address" (PCREL-ADDR)
     15 16 UINT
     ; 2 shifted to right, 16bit -> 18bit
     ((value pc) (srl WI (sub WI value (and WI pc (const -4))) (const 2)))
     ((value pc) (add WI (sll WI value (const 2)) (and WI pc (const -4))))
 )
-(df f-p16r "16 bit signed PC relative addr" (PCREL-ADDR)
+(df f-p16r "16 bit signed PC relative address" (PCREL-ADDR)
     15 16 INT
     ; 2 shifted to right, 16bit -> 18bit
     ((value pc) (sra WI (sub WI value (and WI pc (const -4))) (const 2)))
@@ -223,6 +255,10 @@
 (dnop up16r "16bit relative unsigned address" () h-iaddr  f-up16r)
 (dnop p16r  "16bit relative address"          () h-iaddr  f-p16r)
 
+(dnop p11b  "11bit byte align address"        () h-iaddr  f-p11b)
+(dnop p11h  "11bit half word align address"   () h-iaddr  f-p11h)
+(dnop p11w  "11bit word align address"        () h-iaddr  f-p11w)
+
 (dnop i11   "11bit immediate"                 () h-int11  f-i11)
 (dnop ui11  "11bit unsigned immediate"        () h-uint11 f-i11)
 
@@ -302,6 +338,69 @@
 	 () 
 	 (.str mnemonic " $rd,$ui11")
 	 (+ EXT_0 opcode ISIMM_1 AFE_0 ui11 rd)
+	 ()
+	 ()
+	 )
+    )
+)
+; O2-I11 Byte Align Address Format
+(define-pmacro (o2-p11b-op mnemonic opcode)
+  (begin
+    (dni mnemonic
+	 (.str mnemonic " reg/reg")
+	 ()
+	 (.str mnemonic " $rd,$rs")
+	 (+ EXT_0 opcode ISIMM_0 AFE_0 (f-reserve1 0) rd rs)
+	 ()
+	 ()
+	 )
+    (dni (.sym mnemonic "i")
+	 (.str mnemonic " reg/addr11_byte")
+	 () 
+	 (.str mnemonic " $rd,$p11b")
+	 (+ EXT_0 opcode ISIMM_1 AFE_0 p11b rd)
+	 ()
+	 ()
+	 )
+    )
+)
+; O2-I11 Half Word Align Address Format
+(define-pmacro (o2-p11h-op mnemonic opcode)
+  (begin
+    (dni mnemonic
+	 (.str mnemonic " reg/reg")
+	 ()
+	 (.str mnemonic " $rd,$rs")
+	 (+ EXT_0 opcode ISIMM_0 AFE_0 (f-reserve1 0) rd rs)
+	 ()
+	 ()
+	 )
+    (dni (.sym mnemonic "i")
+	 (.str mnemonic " reg/addr11_halfword")
+	 () 
+	 (.str mnemonic " $rd,$p11h")
+	 (+ EXT_0 opcode ISIMM_1 AFE_0 p11h rd)
+	 ()
+	 ()
+	 )
+    )
+)
+; O2-I11 Word Align Address Format
+(define-pmacro (o2-p11w-op mnemonic opcode)
+  (begin
+    (dni mnemonic
+	 (.str mnemonic " reg/reg")
+	 ()
+	 (.str mnemonic " $rd,$rs")
+	 (+ EXT_0 opcode ISIMM_0 AFE_0 (f-reserve1 0) rd rs)
+	 ()
+	 ()
+	 )
+    (dni (.sym mnemonic "i")
+	 (.str mnemonic " reg/addr11_word")
+	 () 
+	 (.str mnemonic " $rd,$p11w")
+	 (+ EXT_0 opcode ISIMM_1 AFE_0 p11w rd)
 	 ()
 	 ()
 	 )
@@ -525,12 +624,12 @@
 ;; 120 - 127
 
 ; Memory Access
-(o2-i11-op  ld8             OP_128)
-(o2-i11-op  ld16            OP_129)
-(o2-i11-op  ld32            OP_130)
-(o2-i11-op  st8             OP_131)
-(o2-i11-op  st16            OP_132)
-(o2-i11-op  st32            OP_133)
+(o2-p11b-op ld8             OP_128)
+(o2-p11h-op ld16            OP_129)
+(o2-p11w-op ld32            OP_130)
+(o2-p11b-op st8             OP_131)
+(o2-p11h-op st16            OP_132)
+(o2-p11w-op st32            OP_133)
 ;; 134 - 135
 (o1-op      push            OP_136)
 (c-op       pushpc          OP_137)
@@ -592,8 +691,8 @@
 (c-op       nop             OP_256)
 (c-op       halt            OP_257)
 (o2-op      move            OP_258)
-(o2-i11-op  movepc          OP_259)
+(o2-p11w-op movepc          OP_259)
 ;; 260 - 287
 
 ; OS Support
-(i11-op     swi             OP_288)
+(ui11-op     swi             OP_288)
