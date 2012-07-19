@@ -182,7 +182,7 @@ static reloc_howto_type mist32_elf_howto_table[]=
 	 FALSE,			/* partial_inplace */
 	 0x00000000,		/* src_mask */
 	 0x0000ffff,		/* dst_mask */
-	 FALSE),		/* pcrel_offset */
+	 TRUE),			/* pcrel_offset */
 
   /* A PC relative unsigned 16 bit relocation, right shifted by 2.  */
   HOWTO (R_MIST32_INSN_REL_U16, /* type */
@@ -197,7 +197,7 @@ static reloc_howto_type mist32_elf_howto_table[]=
 	 FALSE,			/* partial_inplace */
 	 0x00000000,		/* src_mask */
 	 0x0000ffff,		/* dst_mask */
-	 FALSE),		/* pcrel_offset */
+	 TRUE),			/* pcrel_offset */
 
   /* A absolute 16 bit relocation, right shifted by 2.  */
   HOWTO (R_MIST32_INSN_ABS_16,  /* type */
