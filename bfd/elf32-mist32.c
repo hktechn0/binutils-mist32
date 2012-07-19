@@ -191,7 +191,7 @@ static reloc_howto_type mist32_elf_howto_table[]=
 	 16,			/* bitsize */
 	 TRUE,			/* pc_relative */
 	 0,			/* bitpos */
-	 complain_overflow_signed, /* complain_on_overflow */
+	 complain_overflow_unsigned, /* complain_on_overflow */
 	 bfd_elf_generic_reloc,	/* special_function */
 	 "R_MIST32_INSN_REL_U16", /* name */
 	 FALSE,			/* partial_inplace */
@@ -206,7 +206,7 @@ static reloc_howto_type mist32_elf_howto_table[]=
 	 16,			/* bitsize */
 	 FALSE,			/* pc_relative */
 	 0,			/* bitpos */
-	 complain_overflow_unsigned, /* complain_on_overflow */
+	 complain_overflow_signed, /* complain_on_overflow */
 	 bfd_elf_generic_reloc,	/* special_function */
 	 "R_MIST32_INSN_ABS_16", /* name */
 	 FALSE,			/* partial_inplace */
