@@ -708,12 +708,12 @@
 (o1-op      srspw           OP_224)
 (o1-op      srpdtw          OP_225)
 ;; 226 - 228
-(o1-op      srieiw          OP_229)
+(o1-i11-op  srieiw          OP_229)
 ;(o1-op     srsieiw         OP_230)
 ;(o1-op     srhieiw         OP_231)
 (o1-op      srtisw          OP_232)
 (o1-op      srkpdtw         OP_233)
-(o1-op      srmmuw          OP_234)
+(o1-i11-op  srmmuw          OP_234)
 ;; 235 - 236
 (o1-op      srppsw          OP_237)
 (o1-op      srppcw          OP_238)
@@ -731,4 +731,4 @@
 ;; 260 - 287
 
 ; OS Support
-(ui11-op     swi            OP_288)
+(ui11-op    swi             OP_288)
