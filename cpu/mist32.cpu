@@ -732,3 +732,5 @@
 
 ; OS Support
 (ui11-op    swi             OP_288)
+; (tas)
+(c-op       idts            OP_290)
