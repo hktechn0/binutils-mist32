@@ -85,8 +85,8 @@
 (dnmf f-i11  "11 bit immediate"            () INT
       (f-i11h f-i11l)
       (sequence () ; insert
-		(set (ifield f-i11h) (and (const #x3f)
-					  (sra (ifield f-i11) (const 5))))
+		(set (ifield f-i11h) (and (sra (ifield f-i11) (const 5))
+					  (const #x3f)))
 		(set (ifield f-i11l) (and (ifield f-i11) (const #x1f))))
       (sequence () ; extract
 		(set (ifield f-i11) (sub (xor (const #x400)
@@ -102,6 +102,20 @@
       (sequence () ; extract
 		(set (ifield f-i11) (or (sll (ifield f-i11h) (const 5))
 					(ifield f-i11l))))
+)
+(dnmf f-i11w "11 bit word align immediate" () INT
+      (f-i11h f-i11l)
+      (sequence () ; insert
+		(set (ifield f-i11h) (and (sra (ifield f-i11w) (const 7))
+					  (const #x3f)))
+		(set (ifield f-i11l) (and (sra (ifield f-i11w) (const 2))
+					  (const #x1f))))
+      (sequence () ; extract
+		(set (ifield f-i11w) (sub
+				      (xor (const #x1000)
+					   (or (sll (ifield f-i11h) (const 7))
+					       (sll (ifield f-i11l) (const 2))))
+				      (const #x1000))))
 )
 
 (dnf  f-p11hi "11 bit absolute address high"       (ABS-ADDR) 15 6)
@@ -129,8 +143,8 @@
       (f-p11hi f-p11lo)
       (sequence () ; insert
 		(set (ifield f-p11hi) (srl (ifield f-p11w) (const 7)))
-		(set (ifield f-p11lo) (srl (and (ifield f-p11w) (const #x7c)) 
-					   (const 2))))
+		(set (ifield f-p11lo) (and (srl (ifield f-p11w) (const 2))
+					   (const #x1f))))
       (sequence () ; extract
 		(set (ifield f-p11w) (or (sll (ifield f-p11hi) (const 7))
 					 (sll (ifield f-p11lo) (const 2)))))
@@ -141,8 +155,8 @@
 (dnmf f-i16  "16 bit immediate"           () INT
       (f-i16h f-i16l)
       (sequence () ; insert
-		(set (ifield f-i16h) (and (const #x7ff)
-					  (sra (ifield f-i16) (const 5))))
+		(set (ifield f-i16h) (and (sra (ifield f-i16) (const 5))
+					  (const #x7ff)))
 		(set (ifield f-i16l) (and (ifield f-i16) (const #x1f))))
       (sequence () ; extract
 		(set (ifield f-i16) (sub (xor (const #x8000)
@@ -260,7 +274,8 @@
 (dnop p11w  "11bit word align address"        () h-iaddr  f-p11w)
 
 (dnop i11   "11bit immediate"                 () h-int11  f-i11)
-(dnop ui11  "11bit unsigned immediate"        () h-uint11 f-i11)
+(dnop ui11  "11bit unsigned immediate"        () h-uint11 f-ui11)
+(dnop i11w  "11bit word align immediate"      () h-int11  f-i11w)
 
 (define-operand (name i16l)
   (comment "16 bit immediate, lo")
@@ -338,6 +353,27 @@
 	 () 
 	 (.str mnemonic " $rd,$ui11")
 	 (+ EXT_0 opcode ISIMM_1 AFE_0 ui11 rd)
+	 ()
+	 ()
+	 )
+    )
+)
+; O2-I11 Word Align Immediate Format (for movepc)
+(define-pmacro (o2-i11w-op mnemonic opcode)
+  (begin
+    (dni mnemonic
+	 (.str mnemonic " reg/reg")
+	 ()
+	 (.str mnemonic " $rd,$rs")
+	 (+ EXT_0 opcode ISIMM_0 AFE_0 (f-reserve1 0) rd rs)
+	 ()
+	 ()
+	 )
+    (dni (.sym mnemonic "i")
+	 (.str mnemonic " reg/imm11_word")
+	 () 
+	 (.str mnemonic " $rd,$i11w")
+	 (+ EXT_0 opcode ISIMM_1 AFE_0 i11w rd)
 	 ()
 	 ()
 	 )
@@ -691,8 +727,8 @@
 (c-op       nop             OP_256)
 (c-op       halt            OP_257)
 (o2-op      move            OP_258)
-(o2-p11w-op movepc          OP_259)
+(o2-i11w-op movepc          OP_259)
 ;; 260 - 287
 
 ; OS Support
-(ui11-op     swi             OP_288)
+(ui11-op     swi            OP_288)
