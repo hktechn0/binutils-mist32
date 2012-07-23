@@ -455,6 +455,27 @@
 	 )
     )
 )
+; O1-I11 Unsigned Format
+(define-pmacro (o1-ui11-op mnemonic opcode)
+  (begin
+    (dni mnemonic
+	 (.str mnemonic " reg")
+	 ()
+	 (.str mnemonic " $rd")
+	 (+ EXT_0 opcode ISIMM_0 AFE_0 (f-reserve1 0) rd  (f-reserve3 0))
+	 ()
+	 ()
+	 )
+    (dni (.sym mnemonic "i")
+	 (.str mnemonic " reg/uimm11")
+	 () 
+	 (.str mnemonic " $rd,$ui11")
+	 (+ EXT_0 opcode ISIMM_1 AFE_0 ui11 rd)
+	 ()
+	 ()
+	 )
+    )
+)
 ; I11 Format
 (define-pmacro (i11-op mnemonic opcode)
   (begin
@@ -708,12 +729,12 @@
 (o1-op      srspw           OP_224)
 (o1-op      srpdtw          OP_225)
 ;; 226 - 228
-(o1-i11-op  srieiw          OP_229)
+(o1-ui11-op srieiw          OP_229)
 ;(o1-op     srsieiw         OP_230)
 ;(o1-op     srhieiw         OP_231)
 (o1-op      srtisw          OP_232)
 (o1-op      srkpdtw         OP_233)
-(o1-i11-op  srmmuw          OP_234)
+(o1-ui11-op srmmuw          OP_234)
 ;; 235 - 236
 (o1-op      srppsw          OP_237)
 (o1-op      srppcw          OP_238)
