@@ -97,11 +97,11 @@
 (dnmf f-ui11 "11 bit unsigned immediate"   () UINT
       (f-i11h f-i11l)
       (sequence () ; insert
-		(set (ifield f-i11h) (srl (ifield f-i11) (const 5)))
-		(set (ifield f-i11l) (and (ifield f-i11) (const #x1f))))
+		(set (ifield f-i11h) (srl (ifield f-ui11) (const 5)))
+		(set (ifield f-i11l) (and (ifield f-ui11) (const #x1f))))
       (sequence () ; extract
-		(set (ifield f-i11) (or (sll (ifield f-i11h) (const 5))
-					(ifield f-i11l))))
+		(set (ifield f-ui11) (or (sll (ifield f-i11h) (const 5))
+					 (ifield f-i11l))))
 )
 (dnmf f-i11w "11 bit word align immediate" () INT
       (f-i11h f-i11l)
