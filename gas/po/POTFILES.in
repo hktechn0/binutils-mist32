@@ -104,6 +104,8 @@ config/tc-microblaze.c
 config/tc-microblaze.h
 config/tc-mips.c
 config/tc-mips.h
+config/tc-mist32.c
+config/tc-mist32.h
 config/tc-mmix.c
 config/tc-mmix.h
 config/tc-mn10200.c

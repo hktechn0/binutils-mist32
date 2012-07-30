@@ -144,6 +144,13 @@ micromips-opc.c
 mips-dis.c
 mips-opc.c
 mips16-opc.c
+mist32-asm.c
+mist32-desc.c
+mist32-desc.h
+mist32-dis.c
+mist32-ibld.c
+mist32-opc.c
+mist32-opc.h
 mmix-dis.c
 mmix-opc.c
 moxie-dis.c

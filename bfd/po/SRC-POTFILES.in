@@ -105,6 +105,7 @@ cpu-mep.c
 cpu-metag.c
 cpu-microblaze.c
 cpu-mips.c
+cpu-mist32.c
 cpu-mmix.c
 cpu-moxie.c
 cpu-msp430.c
@@ -199,6 +200,7 @@ elf32-mep.c
 elf32-metag.c
 elf32-microblaze.c
 elf32-mips.c
+elf32-mist32.c
 elf32-moxie.c
 elf32-msp430.c
 elf32-mt.c
