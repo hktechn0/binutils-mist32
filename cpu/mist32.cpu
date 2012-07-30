@@ -698,7 +698,8 @@
 (bur-op     bur             OP_160)
 (br-op      br              OP_161)
 (b-op       b               OP_162)
-;; 163 - 175
+(c-op       ib              OP_163)
+;; 164 - 175
 (bur-op     burn            OP_176)
 (br-op      brn             OP_177)
 (b-op       bn              OP_178)
