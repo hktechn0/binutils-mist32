@@ -1,0 +1,124 @@
+/* Instruction opcode header for mist32.
+
+THIS FILE IS MACHINE GENERATED WITH CGEN.
+
+Copyright 1996-2010 Free Software Foundation, Inc.
+
+This file is part of the GNU Binutils and/or GDB, the GNU debugger.
+
+   This file is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 3, or (at your option)
+   any later version.
+
+   It is distributed in the hope that it will be useful, but WITHOUT
+   ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+   or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public
+   License for more details.
+
+   You should have received a copy of the GNU General Public License along
+   with this program; if not, write to the Free Software Foundation, Inc.,
+   51 Franklin Street - Fifth Floor, Boston, MA 02110-1301, USA.
+
+*/
+
+#ifndef MIST32_OPC_H
+#define MIST32_OPC_H
+
+/* -- opc.h */
+#undef  CGEN_DIS_HASH_SIZE
+#define CGEN_DIS_HASH_SIZE 1024
+#undef  CGEN_DIS_HASH
+#define CGEN_DIS_HASH(buffer, value) ((value & 0x7fe00000) >> 21)
+/* -- */
+/* Enum declaration for mist32 instruction types.  */
+typedef enum cgen_insn_type {
+  MIST32_INSN_INVALID, MIST32_INSN_ADD, MIST32_INSN_ADDI, MIST32_INSN_SUB
+ , MIST32_INSN_SUBI, MIST32_INSN_MULL, MIST32_INSN_MULLI, MIST32_INSN_MULH
+ , MIST32_INSN_MULHI, MIST32_INSN_UDIV, MIST32_INSN_UDIVI, MIST32_INSN_UMOD
+ , MIST32_INSN_UMODI, MIST32_INSN_CMP, MIST32_INSN_CMPI, MIST32_INSN_DIV
+ , MIST32_INSN_DIVI, MIST32_INSN_MOD, MIST32_INSN_MODI, MIST32_INSN_NEG
+ , MIST32_INSN_ADDC, MIST32_INSN_INC, MIST32_INSN_DEC, MIST32_INSN_SEXT8
+ , MIST32_INSN_SEXT16, MIST32_INSN_SHL, MIST32_INSN_SHLI, MIST32_INSN_SHR
+ , MIST32_INSN_SHRI, MIST32_INSN_SAR, MIST32_INSN_SARI, MIST32_INSN_ROL
+ , MIST32_INSN_ROLI, MIST32_INSN_ROR, MIST32_INSN_RORI, MIST32_INSN_AND
+ , MIST32_INSN_OR, MIST32_INSN_XOR, MIST32_INSN_NOT, MIST32_INSN_NAND
+ , MIST32_INSN_NOR, MIST32_INSN_XNOR, MIST32_INSN_TEST, MIST32_INSN_WL16
+ , MIST32_INSN_WH16, MIST32_INSN_CLRB, MIST32_INSN_SETB, MIST32_INSN_CLR
+ , MIST32_INSN_SET, MIST32_INSN_REVB, MIST32_INSN_REV8, MIST32_INSN_GETB
+ , MIST32_INSN_GETBI, MIST32_INSN_GET8, MIST32_INSN_GET8I, MIST32_INSN_LIL
+ , MIST32_INSN_LIH, MIST32_INSN_ULIL, MIST32_INSN_LD8, MIST32_INSN_LD8I
+ , MIST32_INSN_LD16, MIST32_INSN_LD16I, MIST32_INSN_LD32, MIST32_INSN_LD32I
+ , MIST32_INSN_ST8, MIST32_INSN_ST8I, MIST32_INSN_ST16, MIST32_INSN_ST16I
+ , MIST32_INSN_ST32, MIST32_INSN_ST32I, MIST32_INSN_PUSH, MIST32_INSN_PUSHPC
+ , MIST32_INSN_POP, MIST32_INSN_BUR, MIST32_INSN_BURI, MIST32_INSN_BR
+ , MIST32_INSN_BRI, MIST32_INSN_B, MIST32_INSN_BI, MIST32_INSN_IB
+ , MIST32_INSN_BURN, MIST32_INSN_BURNI, MIST32_INSN_BRN, MIST32_INSN_BRNI
+ , MIST32_INSN_BN, MIST32_INSN_BNI, MIST32_INSN_SRSPR, MIST32_INSN_SRPDTR
+ , MIST32_INSN_SRPIDR, MIST32_INSN_SRCIDR, MIST32_INSN_SRMODER, MIST32_INSN_SRIEIR
+ , MIST32_INSN_SRTISR, MIST32_INSN_SRKPDTR, MIST32_INSN_SRMMUR, MIST32_INSN_SRIOSR
+ , MIST32_INSN_SRTIDR, MIST32_INSN_SRPPSR, MIST32_INSN_SRPPCR, MIST32_INSN_SRPSPR
+ , MIST32_INSN_SRPPDTR, MIST32_INSN_SRPTIDR, MIST32_INSN_SRSPW, MIST32_INSN_SRPDTW
+ , MIST32_INSN_SRIEIW, MIST32_INSN_SRIEIWI, MIST32_INSN_SRTISW, MIST32_INSN_SRKPDTW
+ , MIST32_INSN_SRMMUW, MIST32_INSN_SRMMUWI, MIST32_INSN_SRPPSW, MIST32_INSN_SRPPCW
+ , MIST32_INSN_SRPSPW, MIST32_INSN_SRPPDTW, MIST32_INSN_SRPTIDW, MIST32_INSN_SRIDTW
+ , MIST32_INSN_NOP, MIST32_INSN_HALT, MIST32_INSN_MOVE, MIST32_INSN_MOVEPC
+ , MIST32_INSN_MOVEPCI, MIST32_INSN_SWI, MIST32_INSN_IDTS
+} CGEN_INSN_TYPE;
+
+/* Index of `invalid' insn place holder.  */
+#define CGEN_INSN_INVALID MIST32_INSN_INVALID
+
+/* Total number of insns in table.  */
+#define MAX_INSNS ((int) MIST32_INSN_IDTS + 1)
+
+/* This struct records data prior to insertion or after extraction.  */
+struct cgen_fields
+{
+  int length;
+  long f_nil;
+  long f_anyof;
+  long f_ext;
+  long f_op;
+  long f_isimm;
+  long f_afe;
+  long f_cc;
+  long f_rd;
+  long f_rs;
+  long f_i11h;
+  long f_i11l;
+  long f_i11;
+  long f_ui11;
+  long f_i11w;
+  long f_p11hi;
+  long f_p11lo;
+  long f_p11b;
+  long f_p11h;
+  long f_p11w;
+  long f_i16h;
+  long f_i16l;
+  long f_i16;
+  long f_ui16;
+  long f_p16;
+  long f_up16r;
+  long f_p16r;
+  long f_reserve1;
+  long f_reserve2;
+  long f_reserve3;
+};
+
+#define CGEN_INIT_PARSE(od) \
+{\
+}
+#define CGEN_INIT_INSERT(od) \
+{\
+}
+#define CGEN_INIT_EXTRACT(od) \
+{\
+}
+#define CGEN_INIT_PRINT(od) \
+{\
+}
+
+
+#endif /* MIST32_OPC_H */
