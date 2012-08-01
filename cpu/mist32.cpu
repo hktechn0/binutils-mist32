@@ -721,29 +721,41 @@
 (o1-op      srtidr          OP_204)
 (o1-op      srppsr          OP_205)
 (o1-op      srppcr          OP_206)
-(o1-op      srpspr          OP_207)
+;(o1-op     srpspr          OP_207)
 (o1-op      srppdtr         OP_208)
 (o1-op      srptidr         OP_209)
-;; 210 - 223
+;; 210      sridtr
+(o1-op      srpsr           OP_211)
+(c-op       srfrcr          OP_212)
+(o1-op      srfrclr         OP_213)
+(o1-op      srfrchr         OP_214)
+;; 215 - 223
 
 ; System Write
 (o1-op      srspw           OP_224)
 (o1-op      srpdtw          OP_225)
-;; 226 - 228
+;; 226      srpidw
+;; 227      srcidr
+;; 228      srmoder
 (o1-ui11-op srieiw          OP_229)
 ;(o1-op     srsieiw         OP_230)
 ;(o1-op     srhieiw         OP_231)
 (o1-op      srtisw          OP_232)
 (o1-op      srkpdtw         OP_233)
 (o1-ui11-op srmmuw          OP_234)
-;; 235 - 236
+;; 235      sriosw
+;; 236      srtidw
 (o1-op      srppsw          OP_237)
 (o1-op      srppcw          OP_238)
-(o1-op      srpspw          OP_239)
+;(o1-op     srpspw          OP_239)
 (o1-op      srppdtw         OP_240)
 (o1-op      srptidw         OP_241)
 (o1-op      sridtw          OP_242)
-;; 243 - 255
+(o1-op      srpsw           OP_243)
+(o1-op      srfrcw          OP_244)
+(o1-op      srfrclw         OP_245)
+(o1-op      srfrchw         OP_246)
+;; 247 - 255
 
 ; Other
 (c-op       nop             OP_256)

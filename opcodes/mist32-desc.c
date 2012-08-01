@@ -926,11 +926,6 @@ static const CGEN_IBASE mist32_cgen_insn_table[MAX_INSNS] =
     MIST32_INSN_SRPPCR, "srppcr", "srppcr", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
   },
-/* srpspr $rd */
-  {
-    MIST32_INSN_SRPSPR, "srpspr", "srpspr", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
 /* srppdtr $rd */
   {
     MIST32_INSN_SRPPDTR, "srppdtr", "srppdtr", 32,
@@ -939,6 +934,26 @@ static const CGEN_IBASE mist32_cgen_insn_table[MAX_INSNS] =
 /* srptidr $rd */
   {
     MIST32_INSN_SRPTIDR, "srptidr", "srptidr", 32,
+    { 0, { { { (1<<MACH_BASE), 0 } } } }
+  },
+/* srpsr $rd */
+  {
+    MIST32_INSN_SRPSR, "srpsr", "srpsr", 32,
+    { 0, { { { (1<<MACH_BASE), 0 } } } }
+  },
+/* srfrcr */
+  {
+    MIST32_INSN_SRFRCR, "srfrcr", "srfrcr", 32,
+    { 0, { { { (1<<MACH_BASE), 0 } } } }
+  },
+/* srfrclr $rd */
+  {
+    MIST32_INSN_SRFRCLR, "srfrclr", "srfrclr", 32,
+    { 0, { { { (1<<MACH_BASE), 0 } } } }
+  },
+/* srfrchr $rd */
+  {
+    MIST32_INSN_SRFRCHR, "srfrchr", "srfrchr", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
   },
 /* srspw $rd */
@@ -991,11 +1006,6 @@ static const CGEN_IBASE mist32_cgen_insn_table[MAX_INSNS] =
     MIST32_INSN_SRPPCW, "srppcw", "srppcw", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
   },
-/* srpspw $rd */
-  {
-    MIST32_INSN_SRPSPW, "srpspw", "srpspw", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
 /* srppdtw $rd */
   {
     MIST32_INSN_SRPPDTW, "srppdtw", "srppdtw", 32,
@@ -1009,6 +1019,26 @@ static const CGEN_IBASE mist32_cgen_insn_table[MAX_INSNS] =
 /* sridtw $rd */
   {
     MIST32_INSN_SRIDTW, "sridtw", "sridtw", 32,
+    { 0, { { { (1<<MACH_BASE), 0 } } } }
+  },
+/* srpsw $rd */
+  {
+    MIST32_INSN_SRPSW, "srpsw", "srpsw", 32,
+    { 0, { { { (1<<MACH_BASE), 0 } } } }
+  },
+/* srfrcw $rd */
+  {
+    MIST32_INSN_SRFRCW, "srfrcw", "srfrcw", 32,
+    { 0, { { { (1<<MACH_BASE), 0 } } } }
+  },
+/* srfrclw $rd */
+  {
+    MIST32_INSN_SRFRCLW, "srfrclw", "srfrclw", 32,
+    { 0, { { { (1<<MACH_BASE), 0 } } } }
+  },
+/* srfrchw $rd */
+  {
+    MIST32_INSN_SRFRCHW, "srfrchw", "srfrchw", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
   },
 /* nop */

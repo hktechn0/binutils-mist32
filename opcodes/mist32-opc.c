@@ -718,12 +718,6 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
     { { MNEM, ' ', OP (RD), 0 } },
     & ifmt_neg, { 0x19c00000 }
   },
-/* srpspr $rd */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), 0 } },
-    & ifmt_neg, { 0x19e00000 }
-  },
 /* srppdtr $rd */
   {
     { 0, 0, 0, 0 },
@@ -735,6 +729,30 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
     { 0, 0, 0, 0 },
     { { MNEM, ' ', OP (RD), 0 } },
     & ifmt_neg, { 0x1a200000 }
+  },
+/* srpsr $rd */
+  {
+    { 0, 0, 0, 0 },
+    { { MNEM, ' ', OP (RD), 0 } },
+    & ifmt_neg, { 0x1a600000 }
+  },
+/* srfrcr */
+  {
+    { 0, 0, 0, 0 },
+    { { MNEM, 0 } },
+    & ifmt_pushpc, { 0x1a800000 }
+  },
+/* srfrclr $rd */
+  {
+    { 0, 0, 0, 0 },
+    { { MNEM, ' ', OP (RD), 0 } },
+    & ifmt_neg, { 0x1aa00000 }
+  },
+/* srfrchr $rd */
+  {
+    { 0, 0, 0, 0 },
+    { { MNEM, ' ', OP (RD), 0 } },
+    & ifmt_neg, { 0x1ac00000 }
   },
 /* srspw $rd */
   {
@@ -796,12 +814,6 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
     { { MNEM, ' ', OP (RD), 0 } },
     & ifmt_neg, { 0x1dc00000 }
   },
-/* srpspw $rd */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), 0 } },
-    & ifmt_neg, { 0x1de00000 }
-  },
 /* srppdtw $rd */
   {
     { 0, 0, 0, 0 },
@@ -819,6 +831,30 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
     { 0, 0, 0, 0 },
     { { MNEM, ' ', OP (RD), 0 } },
     & ifmt_neg, { 0x1e400000 }
+  },
+/* srpsw $rd */
+  {
+    { 0, 0, 0, 0 },
+    { { MNEM, ' ', OP (RD), 0 } },
+    & ifmt_neg, { 0x1e600000 }
+  },
+/* srfrcw $rd */
+  {
+    { 0, 0, 0, 0 },
+    { { MNEM, ' ', OP (RD), 0 } },
+    & ifmt_neg, { 0x1e800000 }
+  },
+/* srfrclw $rd */
+  {
+    { 0, 0, 0, 0 },
+    { { MNEM, ' ', OP (RD), 0 } },
+    & ifmt_neg, { 0x1ea00000 }
+  },
+/* srfrchw $rd */
+  {
+    { 0, 0, 0, 0 },
+    { { MNEM, ' ', OP (RD), 0 } },
+    & ifmt_neg, { 0x1ec00000 }
   },
 /* nop */
   {
