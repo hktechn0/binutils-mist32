@@ -752,7 +752,7 @@
 (o1-op      srptidw         OP_241)
 (o1-op      sridtw          OP_242)
 (o1-op      srpsw           OP_243)
-(o1-op      srfrcw          OP_244)
+(c-op       srfrcw          OP_244)
 (o1-op      srfrclw         OP_245)
 (o1-op      srfrchw         OP_246)
 ;; 247 - 255
@@ -765,6 +765,6 @@
 ;; 260 - 287
 
 ; OS Support
-(ui11-op    swi             OP_288)
+(o1-ui11-op swi             OP_288)
 ; (tas)
 (c-op       idts            OP_290)
