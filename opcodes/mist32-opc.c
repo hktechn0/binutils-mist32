@@ -838,11 +838,11 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
     { { MNEM, ' ', OP (RD), 0 } },
     & ifmt_neg, { 0x1e600000 }
   },
-/* srfrcw $rd */
+/* srfrcw */
   {
     { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), 0 } },
-    & ifmt_neg, { 0x1e800000 }
+    { { MNEM, 0 } },
+    & ifmt_pushpc, { 0x1e800000 }
   },
 /* srfrclw $rd */
   {
@@ -886,11 +886,17 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
     { { MNEM, ' ', OP (RD), ',', OP (I11W), 0 } },
     & ifmt_movepci, { 0x20700000 }
   },
-/* swi $rd,$ui11 */
+/* swi $rd */
   {
     { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), ',', OP (UI11), 0 } },
-    & ifmt_udivi, { 0x24100000 }
+    { { MNEM, ' ', OP (RD), 0 } },
+    & ifmt_neg, { 0x24000000 }
+  },
+/* swi $ui11 */
+  {
+    { 0, 0, 0, 0 },
+    { { MNEM, ' ', OP (UI11), 0 } },
+    & ifmt_srieiwi, { 0x24100000 }
   },
 /* idts */
   {
