@@ -629,7 +629,7 @@
 (o2-i11-op  cmp             OP_6)
 (o2-i11-op  div             OP_7)
 (o2-i11-op  mod             OP_8)
-(o1-op      neg             OP_9)
+(o2-op      neg             OP_9)
 ;; 10 - 13
 (o2-op      addc            OP_14)
 ;; 15
@@ -657,7 +657,7 @@
 (o2-op      and             OP_96)
 (o2-op      or              OP_97)
 (o2-op      xor             OP_98)
-(o1-op      not             OP_99)
+(o2-op      not             OP_99)
 (o2-op      nand            OP_100)
 (o2-op      nor             OP_101)
 (o2-op      xnor            OP_102)
@@ -669,8 +669,8 @@
 (ui11-op    setb            OP_109)
 (o1-op      clr             OP_110)
 (o1-op      set             OP_111)
-(o1-op      revb            OP_112)
-(o1-op      rev8            OP_113)
+(o2-op      revb            OP_112)
+(o2-op      rev8            OP_113)
 (o2-ui11-op getb            OP_114)
 (o2-ui11-op get8            OP_115)
 ;; 116 - 117

@@ -526,7 +526,7 @@ static const CGEN_IBASE mist32_cgen_insn_table[MAX_INSNS] =
     MIST32_INSN_MODI, "modi", "mod", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
   },
-/* neg $rd */
+/* neg $rd,$rs */
   {
     MIST32_INSN_NEG, "neg", "neg", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
@@ -621,7 +621,7 @@ static const CGEN_IBASE mist32_cgen_insn_table[MAX_INSNS] =
     MIST32_INSN_XOR, "xor", "xor", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
   },
-/* not $rd */
+/* not $rd,$rs */
   {
     MIST32_INSN_NOT, "not", "not", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
@@ -676,12 +676,12 @@ static const CGEN_IBASE mist32_cgen_insn_table[MAX_INSNS] =
     MIST32_INSN_SET, "set", "set", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
   },
-/* revb $rd */
+/* revb $rd,$rs */
   {
     MIST32_INSN_REVB, "revb", "revb", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
   },
-/* rev8 $rd */
+/* rev8 $rd,$rs */
   {
     MIST32_INSN_REV8, "rev8", "rev8", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
