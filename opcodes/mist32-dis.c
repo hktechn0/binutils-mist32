@@ -248,7 +248,7 @@ print_insn_normal (CGEN_CPU_DESC cd,
     {
       if (CGEN_SYNTAX_MNEMONIC_P (*syn))
 	{
-	  (*info->fprintf_func) (info->stream, "%s\t", CGEN_INSN_MNEMONIC (insn));
+	  (*info->fprintf_func) (info->stream, "%s", CGEN_INSN_MNEMONIC (insn));
 	  continue;
 	}
       if (CGEN_SYNTAX_CHAR_P (*syn))
