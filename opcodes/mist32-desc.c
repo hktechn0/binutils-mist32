@@ -126,8 +126,8 @@ static const CGEN_MACH mist32_cgen_mach_table[] = {
 
 static CGEN_KEYWORD_ENTRY mist32_cgen_opval_h_gr_entries[] =
 {
-  { "rglobl", 28, {0, {{{0, 0}}}}, 0, 0 },
-  { "rtmp", 29, {0, {{{0, 0}}}}, 0, 0 },
+  { "rtmp", 7, {0, {{{0, 0}}}}, 0, 0 },
+  { "rglobl", 29, {0, {{{0, 0}}}}, 0, 0 },
   { "rbase", 30, {0, {{{0, 0}}}}, 0, 0 },
   { "rret", 31, {0, {{{0, 0}}}}, 0, 0 },
   { "r0", 0, {0, {{{0, 0}}}}, 0, 0 },
