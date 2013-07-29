@@ -1668,6 +1668,7 @@ proc check_shared_lib_support { } {
 	 && ![istarget mep-*-*]
 	 && ![istarget microblaze-*-*]
 	 && ![istarget mips*-*-elf]
+	 && ![istarget mist32-*-*]
 	 && ![istarget mn10200-*-*]
 	 && ![istarget moxie-*-*]
 	 && ![istarget msp430-*-*]
