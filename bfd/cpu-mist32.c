@@ -32,7 +32,7 @@ const bfd_arch_info_type bfd_mist32_arch =
    0,				/* Machine number - 0 for now.  */
    "mist32",			/* Architecture name.  */
    "mist32",			/* Printable name.  */
-   4,				/* Section align power.  */
+   2,				/* Section align power.  */
    TRUE,			/* This is the default architecture.  */
    bfd_default_compatible,	/* Architecture comparison function.  */
    bfd_default_scan,		/* String to architecture conversion.  */
