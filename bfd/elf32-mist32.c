@@ -157,7 +157,7 @@ static reloc_howto_type mist32_elf_howto_table[]=
   /* This reloc does nothing.  */
   HOWTO (R_MIST32_NONE,	        /* type */
 	 0,			/* rightshift */
-	 0,			/* size (0 = byte, 1 = short, 2 = long) */
+	 2,			/* size (0 = byte, 1 = short, 2 = long) */
 	 32,			/* bitsize */
 	 FALSE,			/* pc_relative */
 	 0,			/* bitpos */
@@ -167,6 +167,51 @@ static reloc_howto_type mist32_elf_howto_table[]=
 	 FALSE,			/* partial_inplace */
 	 0,			/* src_mask */
 	 0,			/* dst_mask */
+	 FALSE),		/* pcrel_offset */
+
+  /* A 32 bit absolute relocation.  */
+  HOWTO (R_MIST32_32,		/* type */
+	 0,			/* rightshift */
+	 2,			/* size (0 = byte, 1 = short, 2 = long) */
+	 32,			/* bitsize */
+	 FALSE,			/* pc_relative */
+	 0,			/* bitpos */
+	 complain_overflow_bitfield, /* complain_on_overflow */
+	 bfd_elf_generic_reloc,	/* special_function */
+	 "R_MIST32_32",		/* name */
+	 FALSE,			/* partial_inplace */
+	 0x00000000,		/* src_mask */
+	 0xffffffff,		/* dst_mask */
+	 FALSE),		/* pcrel_offset */
+
+  /* Lower 16 bits of address. */
+  HOWTO (R_MIST32_INSN_LO_16,   /* type */
+	 0,			/* rightshift */
+	 2,			/* size (0 = byte, 1 = short, 2 = long) */
+	 16,			/* bitsize */
+	 FALSE,			/* pc_relative */
+	 0,			/* bitpos */
+	 complain_overflow_dont, /* complain_on_overflow */
+	 mist32_elf_lo16_reloc,	/* special_function */
+	 "R_MIST32_INSN_LO_16", /* name */
+	 FALSE,			/* partial_inplace */
+	 0x00000000,		/* src_mask */
+	 0x0000ffff,		/* dst_mask */
+	 FALSE),		/* pcrel_offset */
+
+  /* High 16 bits of address. */
+  HOWTO (R_MIST32_INSN_HI_16,   /* type */
+	 16,			/* rightshift */
+	 2,			/* size (0 = byte, 1 = short, 2 = long) */
+	 16,			/* bitsize */
+	 FALSE,			/* pc_relative */
+	 0,			/* bitpos */
+	 complain_overflow_dont, /* complain_on_overflow */
+	 mist32_elf_hi16_reloc,	/* special_function */
+	 "R_MIST32_INSN_HI_16",	/* name */
+	 FALSE,			/* partial_inplace */
+	 0x00000000,		/* src_mask */
+	 0x0000ffff,		/* dst_mask */
 	 FALSE),		/* pcrel_offset */
 
   /* A PC relative signed 16 bit relocation, right shifted by 2.  */
@@ -213,82 +258,6 @@ static reloc_howto_type mist32_elf_howto_table[]=
 	 0x00000000,		/* src_mask */
 	 0x0000ffff,		/* dst_mask */
 	 FALSE),		/* pcrel_offset */
-
-  /* Lower 16 bits of address. */
-  HOWTO (R_MIST32_INSN_LO_16,   /* type */
-	 0,			/* rightshift */
-	 1,			/* size (0 = byte, 1 = short, 2 = long) */
-	 16,			/* bitsize */
-	 FALSE,			/* pc_relative */
-	 0,			/* bitpos */
-	 complain_overflow_dont, /* complain_on_overflow */
-	 mist32_elf_lo16_reloc,	/* special_function */
-	 "R_MIST32_INSN_LO_16", /* name */
-	 FALSE,			/* partial_inplace */
-	 0,			/* src_mask */
-	 0x0000ffff,		/* dst_mask */
-	 FALSE),		/* pcrel_offset */
-
-  /* High 16 bits of address. */
-  HOWTO (R_MIST32_INSN_HI_16,   /* type */
-	 16,			/* rightshift */
-	 1,			/* size (0 = byte, 1 = short, 2 = long) */
-	 16,			/* bitsize */
-	 FALSE,			/* pc_relative */
-	 0,			/* bitpos */
-	 complain_overflow_dont, /* complain_on_overflow */
-	 mist32_elf_hi16_reloc,	/* special_function */
-	 "R_MIST32_INSN_HI_16",	/* name */
-	 FALSE,			/* partial_inplace */
-	 0,			/* src_mask */
-	 0x0000ffff,		/* dst_mask */
-	 FALSE),		/* pcrel_offset */
-
-  /* A 8 bit absolute relocation.  */
-  HOWTO (R_MIST32_8,		/* type */
-	 0,			/* rightshift */
-	 0,			/* size (0 = byte, 1 = short, 2 = long) */
-	 8,			/* bitsize */
-	 FALSE,			/* pc_relative */
-	 0,			/* bitpos */
-	 complain_overflow_bitfield, /* complain_on_overflow */
-	 bfd_elf_generic_reloc,	/* special_function */
-	 "R_MIST32_8",		/* name */
-	 TRUE,			/* partial_inplace */
-	 0x00000000,		/* src_mask */
-	 0x000000ff,		/* dst_mask */
-	 FALSE),		/* pcrel_offset */
-
-  /* A 16 bit absolute relocation.  */
-  HOWTO (R_MIST32_16,		/* type */
-	 0,			/* rightshift */
-	 1,			/* size (0 = byte, 1 = short, 2 = long) */
-	 16,			/* bitsize */
-	 FALSE,			/* pc_relative */
-	 0,			/* bitpos */
-	 complain_overflow_bitfield, /* complain_on_overflow */
-	 bfd_elf_generic_reloc,	/* special_function */
-	 "R_MIST32_16",		/* name */
-	 TRUE,			/* partial_inplace */
-	 0x00000000,		/* src_mask */
-	 0x0000ffff,		/* dst_mask */
-	 FALSE),		/* pcrel_offset */
-
-  /* A 32 bit absolute relocation.  */
-  HOWTO (R_MIST32_32,		/* type */
-	 0,			/* rightshift */
-	 2,			/* size (0 = byte, 1 = short, 2 = long) */
-	 32,			/* bitsize */
-	 FALSE,			/* pc_relative */
-	 0,			/* bitpos */
-	 complain_overflow_bitfield, /* complain_on_overflow */
-	 bfd_elf_generic_reloc,	/* special_function */
-	 "R_MIST32_32",		/* name */
-	 TRUE,			/* partial_inplace */
-	 0x00000000,		/* src_mask */
-	 0xffffffff,		/* dst_mask */
-	 FALSE),		/* pcrel_offset */
-
 };
 
 /* Map BFD reloc types to mist32 ELF reloc types.  */
@@ -303,13 +272,11 @@ static const struct mist32_reloc_map mist32_reloc_map [] =
 {
   { BFD_RELOC_NONE,		R_MIST32_NONE },
   { BFD_RELOC_32,		R_MIST32_32 },
-  { BFD_RELOC_16,		R_MIST32_16 },
-  { BFD_RELOC_8,		R_MIST32_8 },
+  { BFD_RELOC_HI16, 		R_MIST32_INSN_HI_16 },
+  { BFD_RELOC_LO16, 		R_MIST32_INSN_LO_16 },
   { BFD_RELOC_MIST32_REL_16,	R_MIST32_INSN_REL_16 },
   { BFD_RELOC_MIST32_REL_U16,	R_MIST32_INSN_REL_U16 },
   { BFD_RELOC_MIST32_ABS_16,	R_MIST32_INSN_ABS_16 },
-  { BFD_RELOC_HI16, 		R_MIST32_INSN_HI_16 },
-  { BFD_RELOC_LO16, 		R_MIST32_INSN_LO_16 }
 };
 
 static reloc_howto_type *
@@ -361,9 +328,34 @@ mist32_final_link_relocate (reloc_howto_type *howto,
 			    bfd_vma relocation)
 {
   bfd_reloc_status_type r = bfd_reloc_ok;
+  bfd_vma x;
 
   switch (howto->type)
     {
+    case R_MIST32_INSN_HI_16:
+      contents   += rel->r_offset;
+      relocation += rel->r_addend;
+
+      relocation = (relocation >> 16) & 0x0000ffff;
+      relocation = (relocation & 0x001f) | ((relocation & 0xffe0) << 5);
+
+      x = bfd_get_32 (input_bfd, contents);
+      x = (x & 0xffe003e0) | relocation;
+      bfd_put_32 (input_bfd, x, contents);
+      break;
+
+    case R_MIST32_INSN_LO_16:
+      contents   += rel->r_offset;
+      relocation += rel->r_addend;
+
+      relocation &=  0x0000ffff;
+      relocation = (relocation & 0x001f) | ((relocation & 0xffe0) << 5);
+
+      x = bfd_get_32 (input_bfd, contents);
+      x = (x & 0xffe003e0) | relocation;
+      bfd_put_32 (input_bfd, x, contents);
+      break;
+
     default:
       r = _bfd_final_link_relocate (howto, input_bfd, input_section,
 				    contents, rel->r_offset,
