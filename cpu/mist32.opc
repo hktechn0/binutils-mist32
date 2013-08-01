@@ -168,5 +168,11 @@ parse_ulo16 (CGEN_CPU_DESC cd, const char ** strp,
 
 /* -- */
 
+/* -- dis.c */
+/* disassembler print hack */
+#undef CGEN_SYNTAX_CHAR
+#define CGEN_SYNTAX_CHAR(c) ((c == ' ') ? '\t' : (unsigned char)c)
+/* -- */
+
 /* -- ibd.h */
 /* -- */
