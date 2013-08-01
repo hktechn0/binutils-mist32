@@ -35,24 +35,16 @@ extern unsigned long mist32_machine;
 
 /* Permit temporary numeric labels.  */
 #define LOCAL_LABELS_FB	1
-
-#define DIFF_EXPR_OK	1	/* .-foo gets turned into PC relative relocs */
+/* .-foo gets turned into PC relative relocs */
+#define DIFF_EXPR_OK	1
 
 /* We don't need to handle .word strangely.  */
 #define WORKING_DOT_WORD
 
-/* Values passed to md_apply_fix don't include the symbol value.  */
-#define MD_APPLY_SYM_VALUE(FIX) 0
-
 #define md_apply_fix gas_cgen_md_apply_fix
-
-/*
-extern bfd_boolean mist32_fix_adjustable (struct fix *);
-#define tc_fix_adjustable(FIX) mist32_fix_adjustable (FIX)
-*/
 
 #define tc_gen_reloc gas_cgen_tc_gen_reloc
 
 /* Call md_pcrel_from_section(), not md_pcrel_from().  */
-extern long md_pcrel_from_section (struct fix *, segT);
 #define MD_PCREL_FROM_SECTION(FIX, SEC) md_pcrel_from_section (FIX, SEC)
+extern long md_pcrel_from_section (struct fix *, segT);

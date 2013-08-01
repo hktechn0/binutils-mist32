@@ -81,7 +81,6 @@ const pseudo_typeS md_pseudo_table[] =
   { NULL, 	NULL, 		0 }
 };
 
-
 void
 md_begin (void)
 {
@@ -122,7 +121,6 @@ md_assemble (char *str)
 			CGEN_FIELDS_BITSIZE (& insn.fields), 1, NULL);
 }
 
-
 /* The syntax in the manual says constants begin with '#'.
    We just ignore it.  */
 
@@ -149,7 +147,6 @@ md_undefined_symbol (char *name ATTRIBUTE_UNUSED)
   return 0;
 }
 
-
 /* Interface to relax_segment.  */
 int
 md_estimate_size_before_relax (fragS *fragP ATTRIBUTE_UNUSED, segT segment ATTRIBUTE_UNUSED)
@@ -171,7 +168,7 @@ md_convert_frag (bfd *   abfd ATTRIBUTE_UNUSED,
 /* Functions concerning relocs.  */
 
 /* The location from which a PC relative jump should be calculated,
-   given a PC relative reloc.  */
+   given a PC relative reloc. */
 
 long
 md_pcrel_from_section (fixS * fixP, segT sec)
@@ -180,16 +177,15 @@ md_pcrel_from_section (fixS * fixP, segT sec)
       && (! S_IS_DEFINED (fixP->fx_addsy)
 	  || S_GET_SEGMENT (fixP->fx_addsy) != sec))
     /* The symbol is undefined (or is defined but not in this section).
-       Let the linker figure it out.  */
+       Let the linker figure it out. */
     return 0;
 
   return (fixP->fx_frag->fr_address + fixP->fx_where) & ~3;
 }
 
-
 /* Return the bfd reloc type for OPERAND of INSN at fixup FIXP.
    Returns BFD_RELOC_NONE if no reloc type can be found.
-   *FIXP may be modified if desired.  */
+   *FIXP may be modified if desired. */
 
 bfd_reloc_code_real_type
 md_cgen_lookup_reloc (const CGEN_INSN *    insn ATTRIBUTE_UNUSED,
@@ -215,9 +211,11 @@ md_cgen_lookup_reloc (const CGEN_INSN *    insn ATTRIBUTE_UNUSED,
       return BFD_RELOC_MIST32_REL_U16;
 
     case MIST32_OPERAND_I16H:
+      fixP->fx_pcrel = 0;
       return BFD_RELOC_HI16;
     case MIST32_OPERAND_I16L:
     case MIST32_OPERAND_UI16L:
+      fixP->fx_pcrel = 0;
       return BFD_RELOC_LO16;
 
     default : /* Avoid -Wall warning.  */
@@ -226,7 +224,6 @@ md_cgen_lookup_reloc (const CGEN_INSN *    insn ATTRIBUTE_UNUSED,
 
   return BFD_RELOC_NONE;
 }
-
 
 /* Write a value out to the object file, using the appropriate endianness.  */
 
@@ -249,22 +246,3 @@ md_atof (int type, char *litP, int *sizeP)
 {
   return ieee_md_atof (type, litP, sizeP, TRUE);
 }
-
-
-/* Return true if can adjust the reloc to be relative to its section
-   (such as .data) instead of relative to some symbol.  */
-
-/*
-bfd_boolean
-mist32_fix_adjustable (fixS * fixP)
-{
-*/
-  /* We need the symbol name for the VTABLE entries.  */
-/*
-  if (fixP->fx_r_type == BFD_RELOC_VTABLE_INHERIT
-      || fixP->fx_r_type == BFD_RELOC_VTABLE_ENTRY)
-    return 0;
-
-  return 1;
-}
-*/
