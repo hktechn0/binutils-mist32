@@ -58,6 +58,10 @@ static int read_insn
 
 /* -- disassembler routines inserted here.  */
 
+/* -- dis.c */
+#undef CGEN_SYNTAX_CHAR
+#define CGEN_SYNTAX_CHAR(c) ((c == ' ') ? '\t' : (unsigned char)c)
+/* -- */
 
 void mist32_cgen_print_operand
   (CGEN_CPU_DESC, int, PTR, CGEN_FIELDS *, void const *, bfd_vma, int);
