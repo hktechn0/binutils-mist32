@@ -5757,6 +5757,9 @@ assembler and not (currently) written to any object files.  */
   BFD_RELOC_MIST32_REL_16,
   BFD_RELOC_MIST32_REL_U16,
   BFD_RELOC_MIST32_ABS_16,
+  BFD_RELOC_MIST32_ABS_11B,
+  BFD_RELOC_MIST32_ABS_11H,
+  BFD_RELOC_MIST32_ABS_11,
   BFD_RELOC_UNUSED };
 typedef enum bfd_reloc_code_real bfd_reloc_code_real_type;
 reloc_howto_type *bfd_reloc_type_lookup

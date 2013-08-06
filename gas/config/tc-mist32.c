@@ -197,10 +197,19 @@ md_cgen_lookup_reloc (const CGEN_INSN *    insn ATTRIBUTE_UNUSED,
     fixP->fx_pcrel = 1;
     return BFD_RELOC_MIST32_xx;
   */
+
+  fixP->fx_pcrel = 0;
+
   switch (operand->type)
     {
+    case MIST32_OPERAND_P11B:
+      return BFD_RELOC_MIST32_ABS_11B;
+    case MIST32_OPERAND_P11H:
+      return BFD_RELOC_MIST32_ABS_11H;
+    case MIST32_OPERAND_P11W:
+      return BFD_RELOC_MIST32_ABS_11;
+
     case MIST32_OPERAND_P16:
-      fixP->fx_pcrel = 0;
       return BFD_RELOC_MIST32_ABS_16;
 
     case MIST32_OPERAND_P16R:
@@ -211,11 +220,9 @@ md_cgen_lookup_reloc (const CGEN_INSN *    insn ATTRIBUTE_UNUSED,
       return BFD_RELOC_MIST32_REL_U16;
 
     case MIST32_OPERAND_I16H:
-      fixP->fx_pcrel = 0;
       return BFD_RELOC_HI16;
     case MIST32_OPERAND_I16L:
     case MIST32_OPERAND_UI16L:
-      fixP->fx_pcrel = 0;
       return BFD_RELOC_LO16;
 
     default : /* Avoid -Wall warning.  */
