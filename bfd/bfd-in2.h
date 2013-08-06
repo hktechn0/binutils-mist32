@@ -2283,6 +2283,8 @@ enum bfd_architecture
 #define bfd_mach_aarch64_ilp32 32
   bfd_arch_nios2,
 #define bfd_mach_nios2 0
+  bfd_arch_mist32,
+#define bfd_mach_mist32    1
   bfd_arch_last
   };
 
@@ -6066,6 +6068,14 @@ assembler and not (currently) written to any object files.  */
 
 /* Adapteva EPIPHANY - 8 bit immediate for 16 bit mov instruction.  */
   BFD_RELOC_EPIPHANY_IMM8,
+
+/* mist32 Relocations.  */
+  BFD_RELOC_MIST32_REL_16,
+  BFD_RELOC_MIST32_REL_U16,
+  BFD_RELOC_MIST32_ABS_16,
+  BFD_RELOC_MIST32_ABS_11B,
+  BFD_RELOC_MIST32_ABS_11H,
+  BFD_RELOC_MIST32_ABS_11,
   BFD_RELOC_UNUSED };
 
 typedef enum bfd_reloc_code_real bfd_reloc_code_real_type;
