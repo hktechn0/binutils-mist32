@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: bug-binutils@gnu.org\n"
-"POT-Creation-Date: 2013-08-07 08:58+0900\n"
+"POT-Creation-Date: 2013-08-08 12:13+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -193,7 +193,7 @@ msgid "Warning: Writing section `%s' to huge (ie negative) file offset 0x%lx."
 msgstr ""
 
 #: bout.c:1146 elf-m10300.c:2665 elf32-avr.c:1706 elf32-frv.c:5641
-#: elf64-ia64-vms.c:354 elfxx-sparc.c:2869 reloc.c:7038 reloc16.c:160
+#: elf64-ia64-vms.c:354 elfxx-sparc.c:2869 reloc.c:7044 reloc16.c:160
 #: elf32-ia64.c:351 elf64-ia64.c:351
 msgid "%P%F: --relax and -r may not be used together\n"
 msgstr ""
@@ -690,9 +690,10 @@ msgstr ""
 #: elf32-h8300.c:525 elf32-i860.c:1212 elf32-ip2k.c:1468 elf32-iq2000.c:688
 #: elf32-lm32.c:1160 elf32-m32c.c:553 elf32-m32r.c:3066 elf32-m68hc1x.c:1283
 #: elf32-mep.c:535 elf32-metag.c:1992 elf32-microblaze.c:1559
-#: elf32-moxie.c:282 elf32-mt.c:395 elf32-openrisc.c:404 elf32-score.c:2729
-#: elf32-score7.c:2537 elf32-spu.c:5042 elf32-tilepro.c:3665 elf32-v850.c:2281
-#: elf32-xstormy16.c:936 elf64-mmix.c:1537 elfxx-tilegx.c:4050
+#: elf32-mist32.c:418 elf32-moxie.c:282 elf32-mt.c:395 elf32-openrisc.c:404
+#: elf32-score.c:2729 elf32-score7.c:2537 elf32-spu.c:5042
+#: elf32-tilepro.c:3665 elf32-v850.c:2281 elf32-xstormy16.c:936
+#: elf64-mmix.c:1537 elfxx-tilegx.c:4050
 msgid "internal error: out of range error"
 msgstr ""
 
@@ -701,9 +702,9 @@ msgstr ""
 #: elf32-d10v.c:517 elf32-fr30.c:593 elf32-frv.c:4043 elf32-h8300.c:529
 #: elf32-i860.c:1216 elf32-iq2000.c:692 elf32-lm32.c:1164 elf32-m32c.c:557
 #: elf32-m32r.c:3070 elf32-m68hc1x.c:1287 elf32-mep.c:539 elf32-metag.c:1996
-#: elf32-microblaze.c:1563 elf32-moxie.c:286 elf32-msp430.c:1321
-#: elf32-openrisc.c:408 elf32-score.c:2733 elf32-score7.c:2541
-#: elf32-spu.c:5046 elf32-tilepro.c:3669 elf32-v850.c:2285
+#: elf32-microblaze.c:1563 elf32-mist32.c:422 elf32-moxie.c:286
+#: elf32-msp430.c:1321 elf32-openrisc.c:408 elf32-score.c:2733
+#: elf32-score7.c:2541 elf32-spu.c:5046 elf32-tilepro.c:3669 elf32-v850.c:2285
 #: elf32-xstormy16.c:940 elf64-mmix.c:1541 elfxx-mips.c:9976
 #: elfxx-tilegx.c:4054
 msgid "internal error: unsupported relocation error"
@@ -722,10 +723,10 @@ msgstr ""
 #: elf32-h8300.c:537 elf32-i860.c:1224 elf32-ip2k.c:1483 elf32-iq2000.c:700
 #: elf32-lm32.c:1172 elf32-m32c.c:565 elf32-m32r.c:3078 elf32-m68hc1x.c:1295
 #: elf32-mep.c:547 elf32-metag.c:2004 elf32-microblaze.c:1571
-#: elf32-moxie.c:294 elf32-msp430.c:1329 elf32-mt.c:403 elf32-openrisc.c:416
-#: elf32-score.c:2746 elf32-score7.c:2549 elf32-spu.c:5054
-#: elf32-tilepro.c:3677 elf32-v850.c:2305 elf32-xstormy16.c:948
-#: elf64-mmix.c:1549 elfxx-tilegx.c:4062
+#: elf32-mist32.c:430 elf32-moxie.c:294 elf32-msp430.c:1329 elf32-mt.c:403
+#: elf32-openrisc.c:416 elf32-score.c:2746 elf32-score7.c:2549
+#: elf32-spu.c:5054 elf32-tilepro.c:3677 elf32-v850.c:2305
+#: elf32-xstormy16.c:948 elf64-mmix.c:1549 elfxx-tilegx.c:4062
 msgid "internal error: unknown error"
 msgstr ""
 
@@ -1309,9 +1310,9 @@ msgstr ""
 #: elf32-avr.c:1264 elf32-bfin.c:3228 elf32-cris.c:2024 elf32-epiphany.c:567
 #: elf32-fr30.c:597 elf32-frv.c:4047 elf32-i860.c:1220 elf32-ip2k.c:1479
 #: elf32-iq2000.c:696 elf32-m32c.c:561 elf32-mep.c:543 elf32-metag.c:2000
-#: elf32-moxie.c:290 elf32-msp430.c:1325 elf32-mt.c:399 elf32-openrisc.c:412
-#: elf32-tilepro.c:3673 elf32-v850.c:2289 elf32-xstormy16.c:944
-#: elf64-mmix.c:1545 elfxx-tilegx.c:4058
+#: elf32-mist32.c:426 elf32-moxie.c:290 elf32-msp430.c:1325 elf32-mt.c:399
+#: elf32-openrisc.c:412 elf32-tilepro.c:3673 elf32-v850.c:2289
+#: elf32-xstormy16.c:944 elf64-mmix.c:1545 elfxx-tilegx.c:4058
 msgid "internal error: dangerous relocation"
 msgstr ""
 
@@ -4092,11 +4093,11 @@ msgstr ""
 msgid "Partition[%d] length = 0x%.8lx (%ld)\n"
 msgstr ""
 
-#: reloc.c:7085
+#: reloc.c:7091
 msgid "INPUT_SECTION_FLAGS are not supported.\n"
 msgstr ""
 
-#: reloc.c:7240
+#: reloc.c:7246
 msgid "%X%P: %B(%A): relocation \"%R\" goes out of range\n"
 msgstr ""
 

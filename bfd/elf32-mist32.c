@@ -26,197 +26,6 @@
 #include "elf/mist32.h"
 #include "libiberty.h"
 
-/* R_MIST32_INSN_HI16 relocation for I16 format.  */
-
-static bfd_reloc_status_type
-mist32_elf_hi16_reloc (bfd *abfd,
-		       arelent *reloc_entry,
-		       asymbol *symbol,
-		       void * data,
-		       asection *input_section,
-		       bfd *output_bfd,
-		       char **error_message ATTRIBUTE_UNUSED)
-{
-  bfd_reloc_status_type ret;
-  bfd_vma relocation;
-  bfd_byte *addr;
-  unsigned long insn;
-  
-  /* This part is from bfd_elf_generic_reloc.
-     If we're relocating, and this an external symbol, we don't want
-     to change anything.  */
-  if (output_bfd != NULL
-      && (symbol->flags & BSF_SECTION_SYM) == 0
-      && (! reloc_entry->howto->partial_inplace
-	  || reloc_entry->addend == 0))
-    {
-      reloc_entry->address += input_section->output_offset;
-      return bfd_reloc_ok;
-    }
-
-  /* Sanity check the address (offset in section).  */
-  if (reloc_entry->address > bfd_get_section_limit (abfd, input_section))
-    return bfd_reloc_outofrange;
-
-  ret = bfd_reloc_ok;
-  if (bfd_is_und_section (symbol->section)
-      && output_bfd == NULL)
-    ret = bfd_reloc_undefined;
-
-  if (bfd_is_com_section (symbol->section))
-    relocation = 0;
-  else
-    relocation = symbol->value;
-
-  relocation += symbol->section->output_section->vma;
-  relocation += symbol->section->output_offset;
-  relocation += reloc_entry->addend;
-
-  /* adjust I16 format immediate */
-  relocation = (relocation >> 16) & 0x0000ffff;
-  relocation = (relocation & 0x001f) | ((relocation & 0xffe0) << 5);
-
-  /* reloc insn */
-  addr = (bfd_byte *) data + reloc_entry->address;
-  insn = bfd_get_32 (abfd, addr);
-  insn = (insn & 0xffe003e0) | relocation;
-  bfd_put_32 (abfd, (bfd_vma) insn, addr);
-
-  if (output_bfd != NULL)
-    reloc_entry->address += input_section->output_offset;
-
-  return ret;
-}
-
-/* R_MIST32_INSN_LO16 relocation for I16 format.  */
-
-static bfd_reloc_status_type
-mist32_elf_lo16_reloc (bfd *abfd,
-		       arelent *reloc_entry,
-		       asymbol *symbol,
-		       void * data,
-		       asection *input_section,
-		       bfd *output_bfd,
-		       char **error_message ATTRIBUTE_UNUSED)
-{
-  bfd_reloc_status_type ret;
-  bfd_vma relocation;
-  bfd_byte *addr;
-  unsigned long insn;
-  
-  /* This part is from bfd_elf_generic_reloc.
-     If we're relocating, and this an external symbol, we don't want
-     to change anything.  */
-  if (output_bfd != NULL
-      && (symbol->flags & BSF_SECTION_SYM) == 0
-      && (! reloc_entry->howto->partial_inplace
-	  || reloc_entry->addend == 0))
-    {
-      reloc_entry->address += input_section->output_offset;
-      return bfd_reloc_ok;
-    }
-
-  /* Sanity check the address (offset in section).  */
-  if (reloc_entry->address > bfd_get_section_limit (abfd, input_section))
-    return bfd_reloc_outofrange;
-
-  ret = bfd_reloc_ok;
-  if (bfd_is_und_section (symbol->section)
-      && output_bfd == NULL)
-    ret = bfd_reloc_undefined;
-
-  if (bfd_is_com_section (symbol->section))
-    relocation = 0;
-  else
-    relocation = symbol->value;
-
-  relocation += symbol->section->output_section->vma;
-  relocation += symbol->section->output_offset;
-  relocation += reloc_entry->addend;
-
-  /* adjust I16 format immediate */
-  relocation &=  0x0000ffff;
-  relocation = (relocation & 0x001f) | ((relocation & 0xffe0) << 5);
-
-  /* reloc insn */
-  addr = (bfd_byte *) data + reloc_entry->address;
-  insn = bfd_get_32 (abfd, addr);
-  insn = (insn & 0xffe003e0) | relocation;
-  bfd_put_32 (abfd, (bfd_vma) insn, addr);
-
-  if (output_bfd != NULL)
-    reloc_entry->address += input_section->output_offset;
-
-  return ret;
-}
-
-/* R_MIST32_INSN_11* relocation for P11* format.  */
-
-static bfd_reloc_status_type
-mist32_elf_p11_reloc (bfd *abfd,
-		      arelent *reloc_entry,
-		      asymbol *symbol,
-		      void * data,
-		      asection *input_section,
-		      bfd *output_bfd,
-		      char **error_message ATTRIBUTE_UNUSED)
-{
-  bfd_reloc_status_type ret;
-  bfd_vma relocation;
-  bfd_byte *addr;
-  unsigned long insn;
-
-  /* This part is from bfd_elf_generic_reloc.
-     If we're relocating, and this an external symbol, we don't want
-     to change anything.  */
-  if (output_bfd != NULL
-      && (symbol->flags & BSF_SECTION_SYM) == 0
-      && (! reloc_entry->howto->partial_inplace
-	  || reloc_entry->addend == 0))
-    {
-      reloc_entry->address += input_section->output_offset;
-      return bfd_reloc_ok;
-    }
-
-  /* Sanity check the address (offset in section).  */
-  if (reloc_entry->address > bfd_get_section_limit (abfd, input_section))
-    return bfd_reloc_outofrange;
-
-  ret = bfd_reloc_ok;
-  if (bfd_is_und_section (symbol->section)
-      && output_bfd == NULL)
-    ret = bfd_reloc_undefined;
-
-  if (bfd_is_com_section (symbol->section))
-    relocation = 0;
-  else
-    relocation = symbol->value;
-
-  relocation += symbol->section->output_section->vma;
-  relocation += symbol->section->output_offset;
-  relocation += reloc_entry->addend;
-
-  if (reloc_entry->howto->rightshift)
-    relocation >>= reloc_entry->howto->rightshift;
-
-  if (relocation > 0x7ff)
-    ret = bfd_reloc_overflow;
-
-  /* adjust P11 format immediate */
-  relocation = (relocation & 0x001f) | ((relocation & 0x7e0) << 5);
-
-  /* reloc insn */
-  addr = (bfd_byte *) data + reloc_entry->address;
-  insn = bfd_get_32 (abfd, addr);
-  insn = (insn & 0xffff03e0) | relocation;
-  bfd_put_32 (abfd, (bfd_vma) insn, addr);
-
-  if (output_bfd != NULL)
-    reloc_entry->address += input_section->output_offset;
-
-  return ret;
-}
-
 /* HOWTO */
 
 static reloc_howto_type mist32_elf_howto_table[]=
@@ -259,7 +68,7 @@ static reloc_howto_type mist32_elf_howto_table[]=
 	 FALSE,			/* pc_relative */
 	 0,			/* bitpos */
 	 complain_overflow_dont, /* complain_on_overflow */
-	 mist32_elf_lo16_reloc,	/* special_function */
+	 bfd_elf_generic_reloc,	/* special_function */
 	 "R_MIST32_INSN_LO_16", /* name */
 	 FALSE,			/* partial_inplace */
 	 0x00000000,		/* src_mask */
@@ -274,7 +83,7 @@ static reloc_howto_type mist32_elf_howto_table[]=
 	 FALSE,			/* pc_relative */
 	 0,			/* bitpos */
 	 complain_overflow_dont, /* complain_on_overflow */
-	 mist32_elf_hi16_reloc,	/* special_function */
+	 bfd_elf_generic_reloc,	/* special_function */
 	 "R_MIST32_INSN_HI_16",	/* name */
 	 FALSE,			/* partial_inplace */
 	 0x00000000,		/* src_mask */
@@ -330,11 +139,11 @@ static reloc_howto_type mist32_elf_howto_table[]=
   HOWTO (R_MIST32_INSN_ABS_11B, /* type */
 	 0,			/* rightshift */
 	 2,			/* size (0 = byte, 1 = short, 2 = long) */
-	 16,			/* bitsize */
+	 11,			/* bitsize */
 	 FALSE,			/* pc_relative */
 	 0,			/* bitpos */
 	 complain_overflow_unsigned, /* complain_on_overflow */
-	 mist32_elf_p11_reloc,	/* special_function */
+	 bfd_elf_generic_reloc,	/* special_function */
 	 "R_MIST32_INSN_ABS_11B", /* name */
 	 FALSE,			/* partial_inplace */
 	 0x00000000,		/* src_mask */
@@ -345,11 +154,11 @@ static reloc_howto_type mist32_elf_howto_table[]=
   HOWTO (R_MIST32_INSN_ABS_11H, /* type */
 	 1,			/* rightshift */
 	 2,			/* size (0 = byte, 1 = short, 2 = long) */
-	 16,			/* bitsize */
+	 11,			/* bitsize */
 	 FALSE,			/* pc_relative */
 	 0,			/* bitpos */
 	 complain_overflow_unsigned, /* complain_on_overflow */
-	 mist32_elf_p11_reloc,	/* special_function */
+	 bfd_elf_generic_reloc,	/* special_function */
 	 "R_MIST32_INSN_ABS_11H", /* name */
 	 FALSE,			/* partial_inplace */
 	 0x00000000,		/* src_mask */
@@ -360,11 +169,11 @@ static reloc_howto_type mist32_elf_howto_table[]=
   HOWTO (R_MIST32_INSN_ABS_11,  /* type */
 	 2,			/* rightshift */
 	 2,			/* size (0 = byte, 1 = short, 2 = long) */
-	 16,			/* bitsize */
+	 11,			/* bitsize */
 	 FALSE,			/* pc_relative */
 	 0,			/* bitpos */
 	 complain_overflow_signed, /* complain_on_overflow */
-	 mist32_elf_p11_reloc,	/* special_function */
+	 bfd_elf_generic_reloc,	/* special_function */
 	 "R_MIST32_INSN_ABS_11", /* name */
 	 FALSE,			/* partial_inplace */
 	 0x00000000,		/* src_mask */
@@ -471,10 +280,31 @@ mist32_final_link_relocate (reloc_howto_type *howto,
       bfd_put_32 (input_bfd, x, contents);
       break;
 
+    case R_MIST32_INSN_ABS_11B:
+    case R_MIST32_INSN_ABS_11H:
+    case R_MIST32_INSN_ABS_11:
+      contents   += rel->r_offset;
+      relocation += rel->r_addend;
+
+      if (howto->rightshift)
+	relocation >>= howto->rightshift;
+
+      if (relocation > 0x7ff)
+	  r = bfd_reloc_overflow;
+
+      relocation &=  0x00007ff;
+      relocation = (relocation & 0x001f) | ((relocation & 0x7e0) << 5);
+
+      x = bfd_get_32 (input_bfd, contents);
+      x = (x & 0xffff03e0) | relocation;
+      bfd_put_32 (input_bfd, x, contents);
+      break;
+
     default:
       r = _bfd_final_link_relocate (howto, input_bfd, input_section,
 				    contents, rel->r_offset,
 				    relocation, rel->r_addend);
+      break;
     }
 
   return r;

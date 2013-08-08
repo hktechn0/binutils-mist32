@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: bug-binutils@gnu.org\n"
-"POT-Creation-Date: 2013-08-07 08:58+0900\n"
+"POT-Creation-Date: 2013-08-07 09:09+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -463,7 +463,7 @@ msgstr ""
 
 #: epiphany-dis.c:277 fr30-dis.c:299 frv-dis.c:396 ip2k-dis.c:288
 #: iq2000-dis.c:189 lm32-dis.c:147 m32c-dis.c:891 m32r-dis.c:279
-#: mep-dis.c:1187 mist32-dis.c:141 mt-dis.c:290 openrisc-dis.c:135
+#: mep-dis.c:1187 mist32-dis.c:145 mt-dis.c:290 openrisc-dis.c:135
 #: xc16x-dis.c:420 xstormy16-dis.c:168
 #, c-format
 msgid "Unrecognized field %d while printing insn.\n"
