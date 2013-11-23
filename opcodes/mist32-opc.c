@@ -872,10 +872,10 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
     { { MNEM, ' ', OP (RD), 0 } },
     & ifmt_clr, { 0x1ec00000 }
   },
-/* srspadd */
+/* srspadd $p16 */
   {
     { 0, 0, 0, 0 },
-    { { MNEM, 0 } },
+    { { MNEM, ' ', OP (P16), 0 } },
     & ifmt_srspadd, { 0x1ff00000 }
   },
 /* nop */

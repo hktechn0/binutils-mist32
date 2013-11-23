@@ -557,9 +557,9 @@
 (define-pmacro (cp16-op mnemonic opcode)
   (begin
     (dni mnemonic
-	 (.str mnemonic)
+	 (.str mnemonic " addr16_word")
 	 ()
-	 (.str mnemonic)
+	 (.str mnemonic " $p16")
 	 (+ EXT_0 opcode ISIMM_1 AFE_0 p16)
 	 ()
 	 ()
