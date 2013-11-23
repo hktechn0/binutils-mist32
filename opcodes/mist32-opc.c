@@ -758,6 +758,12 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
     { { MNEM, ' ', OP (RD), 0 } },
     & ifmt_clr, { 0x1ac00000 }
   },
+/* srpflagr $rd */
+  {
+    { 0, 0, 0, 0 },
+    { { MNEM, ' ', OP (RD), 0 } },
+    & ifmt_clr, { 0x1ae00000 }
+  },
 /* srspw $rd */
   {
     { 0, 0, 0, 0 },
@@ -855,6 +861,12 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
     & ifmt_clr, { 0x1ea00000 }
   },
 /* srfrchw $rd */
+  {
+    { 0, 0, 0, 0 },
+    { { MNEM, ' ', OP (RD), 0 } },
+    & ifmt_clr, { 0x1ec00000 }
+  },
+/* srpflagw $rd */
   {
     { 0, 0, 0, 0 },
     { { MNEM, ' ', OP (RD), 0 } },
