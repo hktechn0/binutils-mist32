@@ -111,6 +111,10 @@ static const CGEN_IFMT ifmt_srieiwi ATTRIBUTE_UNUSED = {
   32, 32, 0xffff03e0, { { F (F_EXT) }, { F (F_OP) }, { F (F_ISIMM) }, { F (F_AFE) }, { F (F_RESERVE2) }, { F (F_UI11) }, { 0 } }
 };
 
+static const CGEN_IFMT ifmt_srspadd ATTRIBUTE_UNUSED = {
+  32, 32, 0xffff0000, { { F (F_EXT) }, { F (F_OP) }, { F (F_ISIMM) }, { F (F_AFE) }, { F (F_P16) }, { 0 } }
+};
+
 static const CGEN_IFMT ifmt_movepci ATTRIBUTE_UNUSED = {
   32, 32, 0xffff0000, { { F (F_EXT) }, { F (F_OP) }, { F (F_ISIMM) }, { F (F_AFE) }, { F (F_RD) }, { F (F_I11W) }, { 0 } }
 };
@@ -855,6 +859,12 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
     { 0, 0, 0, 0 },
     { { MNEM, ' ', OP (RD), 0 } },
     & ifmt_clr, { 0x1ec00000 }
+  },
+/* srspadd */
+  {
+    { 0, 0, 0, 0 },
+    { { MNEM, 0 } },
+    & ifmt_srspadd, { 0x1ff00000 }
   },
 /* nop */
   {
