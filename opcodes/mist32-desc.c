@@ -1041,6 +1041,11 @@ static const CGEN_IBASE mist32_cgen_insn_table[MAX_INSNS] =
     MIST32_INSN_SRFRCHW, "srfrchw", "srfrchw", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
   },
+/* srspadd */
+  {
+    MIST32_INSN_SRSPADD, "srspadd", "srspadd", 32,
+    { 0, { { { (1<<MACH_BASE), 0 } } } }
+  },
 /* nop */
   {
     MIST32_INSN_NOP, "nop", "nop", 32,

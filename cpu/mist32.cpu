@@ -553,6 +553,19 @@
 	 )
     )
 )
+; CI16 Word Align Address Format
+(define-pmacro (cp16-op mnemonic opcode)
+  (begin
+    (dni mnemonic
+	 (.str mnemonic)
+	 ()
+	 (.str mnemonic)
+	 (+ EXT_0 opcode ISIMM_1 AFE_0 p16)
+	 ()
+	 ()
+	 )
+    )
+)
 ; JO1, JI16 (JMP) Format, absolute address
 (define-pmacro (b-op mnemonic opcode)
   (begin
@@ -755,7 +768,8 @@
 (c-op       srfrcw          OP_244)
 (o1-op      srfrclw         OP_245)
 (o1-op      srfrchw         OP_246)
-;; 247 - 255
+;; 247 - 254
+(cp16-op    srspadd         OP_255)
 
 ; Other
 (c-op       nop             OP_256)

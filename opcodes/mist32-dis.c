@@ -59,6 +59,7 @@ static int read_insn
 /* -- disassembler routines inserted here.  */
 
 /* -- dis.c */
+/* disassembler print hack */
 #undef CGEN_SYNTAX_CHAR
 #define CGEN_SYNTAX_CHAR(c) ((c == ' ') ? '\t' : (unsigned char)c)
 /* -- */
