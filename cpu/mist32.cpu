@@ -769,7 +769,7 @@
 (c-op       srfrcw          OP_244)
 (o1-op      srfrclw         OP_245)
 (o1-op      srfrchw         OP_246)
-(o1-op      srpflagw        OP_246)
+(o1-op      srpflagw        OP_247)
 ;; 248 - 254
 (cp16-op    srspadd         OP_255)
 
