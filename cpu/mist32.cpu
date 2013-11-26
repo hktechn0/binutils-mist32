@@ -782,5 +782,5 @@
 
 ; OS Support
 (o1-ui11-op swi             OP_288)
-; (tas)
+(o2-p11w-op tas             OP_289)
 (c-op       idts            OP_290)
