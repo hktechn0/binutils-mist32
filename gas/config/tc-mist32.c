@@ -50,7 +50,7 @@ struct mist32_insn
 
 const char comment_chars[]        = ";";
 const char line_comment_chars[]   = "#;";
-const char line_separator_chars[] = "";
+const char line_separator_chars[] = "!";
 const char EXP_CHARS[]            = "eE";
 const char FLT_CHARS[]            = "RrFf";
 
