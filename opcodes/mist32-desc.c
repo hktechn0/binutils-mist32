@@ -1091,6 +1091,16 @@ static const CGEN_IBASE mist32_cgen_insn_table[MAX_INSNS] =
     MIST32_INSN_SWII, "swii", "swi", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
   },
+/* tas $rd,$rs */
+  {
+    MIST32_INSN_TAS, "tas", "tas", 32,
+    { 0, { { { (1<<MACH_BASE), 0 } } } }
+  },
+/* tas $rd,$p11w */
+  {
+    MIST32_INSN_TASI, "tasi", "tas", 32,
+    { 0, { { { (1<<MACH_BASE), 0 } } } }
+  },
 /* idts */
   {
     MIST32_INSN_IDTS, "idts", "idts", 32,
