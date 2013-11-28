@@ -926,6 +926,11 @@ static const CGEN_IBASE mist32_cgen_insn_table[MAX_INSNS] =
     MIST32_INSN_SRPPCR, "srppcr", "srppcr", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
   },
+/* sruspr $rd */
+  {
+    MIST32_INSN_SRUSPR, "sruspr", "sruspr", 32,
+    { 0, { { { (1<<MACH_BASE), 0 } } } }
+  },
 /* srppdtr $rd */
   {
     MIST32_INSN_SRPPDTR, "srppdtr", "srppdtr", 32,
@@ -1009,6 +1014,11 @@ static const CGEN_IBASE mist32_cgen_insn_table[MAX_INSNS] =
 /* srppcw $rd */
   {
     MIST32_INSN_SRPPCW, "srppcw", "srppcw", 32,
+    { 0, { { { (1<<MACH_BASE), 0 } } } }
+  },
+/* sruspw $rd */
+  {
+    MIST32_INSN_SRUSPW, "sruspw", "sruspw", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
   },
 /* srppdtw $rd */

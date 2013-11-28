@@ -734,7 +734,7 @@
 (o1-op      srtidr          OP_204)
 (o1-op      srppsr          OP_205)
 (o1-op      srppcr          OP_206)
-;; 207
+(o1-op      sruspr          OP_207)
 (o1-op      srppdtr         OP_208)
 (o1-op      srptidr         OP_209)
 ;; 210      sridtr
@@ -761,7 +761,7 @@
 ;; 236      srtidw
 (o1-op      srppsw          OP_237)
 (o1-op      srppcw          OP_238)
-;; 239
+(o1-op      sruspw          OP_239)
 (o1-op      srppdtw         OP_240)
 (o1-op      srptidw         OP_241)
 (o1-op      sridtw          OP_242)
