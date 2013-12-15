@@ -792,6 +792,11 @@ static const CGEN_IBASE mist32_cgen_insn_table[MAX_INSNS] =
     MIST32_INSN_PUSH, "push", "push", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
   },
+/* push $ci16 */
+  {
+    MIST32_INSN_PUSHI, "pushi", "push", 32,
+    { 0, { { { (1<<MACH_BASE), 0 } } } }
+  },
 /* pushpc */
   {
     MIST32_INSN_PUSHPC, "pushpc", "pushpc", 32,

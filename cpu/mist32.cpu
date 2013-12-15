@@ -485,6 +485,27 @@
 	 )
     )
 )
+; O1-CI16 Format
+(define-pmacro (o1-ci16-op mnemonic opcode)
+  (begin
+    (dni mnemonic
+	 (.str mnemonic " reg")
+	 ()
+	 (.str mnemonic " $rd")
+	 (+ EXT_0 opcode ISIMM_0 AFE_0 (f-reserve1 0) rd (f-reserve3 0))
+	 ()
+	 ()
+	 )
+    (dni (.sym mnemonic "i")
+	 (.str mnemonic " imm16")
+	 ()
+	 (.str mnemonic " $ci16")
+	 (+ EXT_0 opcode ISIMM_1 AFE_0 ci16)
+	 ()
+	 ()
+	 )
+    )
+)
 ; I11 Format
 (define-pmacro (i11-op mnemonic opcode)
   (begin
@@ -710,7 +731,7 @@
 (o2-p11h-op st16            OP_132)
 (o2-p11w-op st32            OP_133)
 ;; 134 - 135
-(o1-op      push            OP_136)
+(o1-ci16-op push            OP_136)
 (c-op       pushpc          OP_137)
 ;; 138 - 143
 (o1-op      pop             OP_144)
