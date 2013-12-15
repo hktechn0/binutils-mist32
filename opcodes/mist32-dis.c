@@ -98,6 +98,12 @@ mist32_cgen_print_operand (CGEN_CPU_DESC cd,
     case MIST32_OPERAND_CC :
       print_keyword (cd, info, & mist32_cgen_opval_h_cc, fields->f_cc, 0);
       break;
+    case MIST32_OPERAND_CI16 :
+      print_normal (cd, info, fields->f_ci16, 0|(1<<CGEN_OPERAND_SIGNED), pc, length);
+      break;
+    case MIST32_OPERAND_CP16 :
+      print_normal (cd, info, fields->f_cp16, 0|(1<<CGEN_OPERAND_SIGNED), pc, length);
+      break;
     case MIST32_OPERAND_I11 :
       print_normal (cd, info, fields->f_i11, 0|(1<<CGEN_OPERAND_SIGNED)|(1<<CGEN_OPERAND_VIRTUAL), pc, length);
       break;
