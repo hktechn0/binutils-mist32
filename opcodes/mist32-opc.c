@@ -87,6 +87,10 @@ static const CGEN_IFMT ifmt_ld32i ATTRIBUTE_UNUSED = {
   32, 32, 0xffff0000, { { F (F_EXT) }, { F (F_OP) }, { F (F_ISIMM) }, { F (F_AFE) }, { F (F_RD) }, { F (F_P11W) }, { 0 } }
 };
 
+static const CGEN_IFMT ifmt_pushi ATTRIBUTE_UNUSED = {
+  32, 32, 0xffff0000, { { F (F_EXT) }, { F (F_OP) }, { F (F_ISIMM) }, { F (F_AFE) }, { F (F_CI16) }, { 0 } }
+};
+
 static const CGEN_IFMT ifmt_pushpc ATTRIBUTE_UNUSED = {
   32, 32, 0xffffffff, { { F (F_EXT) }, { F (F_OP) }, { F (F_ISIMM) }, { F (F_AFE) }, { F (F_RESERVE1) }, { F (F_RESERVE2) }, { F (F_RESERVE3) }, { 0 } }
 };
@@ -553,6 +557,12 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
     { 0, 0, 0, 0 },
     { { MNEM, ' ', OP (RD), 0 } },
     & ifmt_clr, { 0x11000000 }
+  },
+/* push $ci16 */
+  {
+    { 0, 0, 0, 0 },
+    { { MNEM, ' ', OP (CI16), 0 } },
+    & ifmt_pushi, { 0x11100000 }
   },
 /* pushpc */
   {
