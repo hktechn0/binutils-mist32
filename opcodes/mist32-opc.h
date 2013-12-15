@@ -103,6 +103,8 @@ struct cgen_fields
   long f_i16l;
   long f_i16;
   long f_ui16;
+  long f_ci16;
+  long f_cp16;
   long f_p16;
   long f_up16r;
   long f_p16r;

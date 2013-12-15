@@ -265,6 +265,8 @@ const CGEN_IFLD mist32_cgen_ifld_table[] =
   { MIST32_F_I16L, "f-i16l", 0, 32, 4, 5, { 0, { { { (1<<MACH_BASE), 0 } } } }  },
   { MIST32_F_I16, "f-i16", 0, 0, 0, 0,{ 0|A(VIRTUAL), { { { (1<<MACH_BASE), 0 } } } }  },
   { MIST32_F_UI16, "f-ui16", 0, 0, 0, 0,{ 0|A(VIRTUAL), { { { (1<<MACH_BASE), 0 } } } }  },
+  { MIST32_F_CI16, "f-ci16", 0, 32, 15, 16, { 0, { { { (1<<MACH_BASE), 0 } } } }  },
+  { MIST32_F_CP16, "f-cp16", 0, 32, 15, 16, { 0, { { { (1<<MACH_BASE), 0 } } } }  },
   { MIST32_F_P16, "f-p16", 0, 32, 15, 16, { 0|A(ABS_ADDR), { { { (1<<MACH_BASE), 0 } } } }  },
   { MIST32_F_UP16R, "f-up16r", 0, 32, 15, 16, { 0|A(PCREL_ADDR), { { { (1<<MACH_BASE), 0 } } } }  },
   { MIST32_F_P16R, "f-p16r", 0, 32, 15, 16, { 0|A(PCREL_ADDR), { { { (1<<MACH_BASE), 0 } } } }  },
@@ -364,30 +366,6 @@ const CGEN_OPERAND mist32_cgen_operand_table[] =
   { "cc", MIST32_OPERAND_CC, HW_H_CC, 19, 4,
     { 0, { (const PTR) &mist32_cgen_ifld_table[MIST32_F_CC] } }, 
     { 0, { { { (1<<MACH_BASE), 0 } } } }  },
-/* p16: 16bit absolute unsigned address */
-  { "p16", MIST32_OPERAND_P16, HW_H_IADDR, 15, 16,
-    { 0, { (const PTR) &mist32_cgen_ifld_table[MIST32_F_P16] } }, 
-    { 0|A(ABS_ADDR), { { { (1<<MACH_BASE), 0 } } } }  },
-/* up16r: 16bit relative unsigned address */
-  { "up16r", MIST32_OPERAND_UP16R, HW_H_IADDR, 15, 16,
-    { 0, { (const PTR) &mist32_cgen_ifld_table[MIST32_F_UP16R] } }, 
-    { 0|A(PCREL_ADDR), { { { (1<<MACH_BASE), 0 } } } }  },
-/* p16r: 16bit relative address */
-  { "p16r", MIST32_OPERAND_P16R, HW_H_IADDR, 15, 16,
-    { 0, { (const PTR) &mist32_cgen_ifld_table[MIST32_F_P16R] } }, 
-    { 0|A(PCREL_ADDR), { { { (1<<MACH_BASE), 0 } } } }  },
-/* p11b: 11bit byte align address */
-  { "p11b", MIST32_OPERAND_P11B, HW_H_IADDR, 4, 11,
-    { 2, { (const PTR) &MIST32_F_P11B_MULTI_IFIELD[0] } }, 
-    { 0|A(ABS_ADDR)|A(VIRTUAL), { { { (1<<MACH_BASE), 0 } } } }  },
-/* p11h: 11bit half word align address */
-  { "p11h", MIST32_OPERAND_P11H, HW_H_IADDR, 4, 11,
-    { 2, { (const PTR) &MIST32_F_P11H_MULTI_IFIELD[0] } }, 
-    { 0|A(ABS_ADDR)|A(VIRTUAL), { { { (1<<MACH_BASE), 0 } } } }  },
-/* p11w: 11bit word align address */
-  { "p11w", MIST32_OPERAND_P11W, HW_H_IADDR, 4, 11,
-    { 2, { (const PTR) &MIST32_F_P11W_MULTI_IFIELD[0] } }, 
-    { 0|A(ABS_ADDR)|A(VIRTUAL), { { { (1<<MACH_BASE), 0 } } } }  },
 /* i11: 11bit immediate */
   { "i11", MIST32_OPERAND_I11, HW_H_INT11, 4, 11,
     { 2, { (const PTR) &MIST32_F_I11_MULTI_IFIELD[0] } }, 
@@ -400,6 +378,38 @@ const CGEN_OPERAND mist32_cgen_operand_table[] =
   { "i11w", MIST32_OPERAND_I11W, HW_H_INT11, 4, 11,
     { 2, { (const PTR) &MIST32_F_I11W_MULTI_IFIELD[0] } }, 
     { 0|A(VIRTUAL), { { { (1<<MACH_BASE), 0 } } } }  },
+/* p11b: 11bit byte align address */
+  { "p11b", MIST32_OPERAND_P11B, HW_H_IADDR, 4, 11,
+    { 2, { (const PTR) &MIST32_F_P11B_MULTI_IFIELD[0] } }, 
+    { 0|A(ABS_ADDR)|A(VIRTUAL), { { { (1<<MACH_BASE), 0 } } } }  },
+/* p11h: 11bit half word align address */
+  { "p11h", MIST32_OPERAND_P11H, HW_H_IADDR, 4, 11,
+    { 2, { (const PTR) &MIST32_F_P11H_MULTI_IFIELD[0] } }, 
+    { 0|A(ABS_ADDR)|A(VIRTUAL), { { { (1<<MACH_BASE), 0 } } } }  },
+/* p11w: 11bit word align address */
+  { "p11w", MIST32_OPERAND_P11W, HW_H_IADDR, 4, 11,
+    { 2, { (const PTR) &MIST32_F_P11W_MULTI_IFIELD[0] } }, 
+    { 0|A(ABS_ADDR)|A(VIRTUAL), { { { (1<<MACH_BASE), 0 } } } }  },
+/* ci16: 16bit immediate for CI16 */
+  { "ci16", MIST32_OPERAND_CI16, HW_H_INT16, 15, 16,
+    { 0, { (const PTR) &mist32_cgen_ifld_table[MIST32_F_CI16] } }, 
+    { 0, { { { (1<<MACH_BASE), 0 } } } }  },
+/* cp16: 16bit word align imm for CI16 */
+  { "cp16", MIST32_OPERAND_CP16, HW_H_INT16, 15, 16,
+    { 0, { (const PTR) &mist32_cgen_ifld_table[MIST32_F_CP16] } }, 
+    { 0, { { { (1<<MACH_BASE), 0 } } } }  },
+/* p16: 16bit absolute unsigned address */
+  { "p16", MIST32_OPERAND_P16, HW_H_IADDR, 15, 16,
+    { 0, { (const PTR) &mist32_cgen_ifld_table[MIST32_F_P16] } }, 
+    { 0|A(ABS_ADDR), { { { (1<<MACH_BASE), 0 } } } }  },
+/* up16r: 16bit relative unsigned address */
+  { "up16r", MIST32_OPERAND_UP16R, HW_H_IADDR, 15, 16,
+    { 0, { (const PTR) &mist32_cgen_ifld_table[MIST32_F_UP16R] } }, 
+    { 0|A(PCREL_ADDR), { { { (1<<MACH_BASE), 0 } } } }  },
+/* p16r: 16bit relative address */
+  { "p16r", MIST32_OPERAND_P16R, HW_H_IADDR, 15, 16,
+    { 0, { (const PTR) &mist32_cgen_ifld_table[MIST32_F_P16R] } }, 
+    { 0|A(PCREL_ADDR), { { { (1<<MACH_BASE), 0 } } } }  },
 /* i16l: 16 bit immediate, lo */
   { "i16l", MIST32_OPERAND_I16L, HW_H_INT16, 4, 16,
     { 2, { (const PTR) &MIST32_F_I16_MULTI_IFIELD[0] } }, 
@@ -412,10 +422,6 @@ const CGEN_OPERAND mist32_cgen_operand_table[] =
   { "i16h", MIST32_OPERAND_I16H, HW_H_UINT16, 4, 16,
     { 2, { (const PTR) &MIST32_F_UI16_MULTI_IFIELD[0] } }, 
     { 0|A(VIRTUAL), { { { (1<<MACH_BASE), 0 } } } }  },
-/* i32: 32bit immediate for li */
-  { "i32", MIST32_OPERAND_I32, HW_H_UINT, 0, 0,
-    { 0, { (const PTR) 0 } }, 
-    { 0|A(SEM_ONLY), { { { (1<<MACH_BASE), 0 } } } }  },
 /* sentinel */
   { 0, 0, 0, 0, 0,
     { 0, { (const PTR) 0 } },
@@ -1061,7 +1067,7 @@ static const CGEN_IBASE mist32_cgen_insn_table[MAX_INSNS] =
     MIST32_INSN_SRPFLAGW, "srpflagw", "srpflagw", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
   },
-/* srspadd $p16 */
+/* srspadd $cp16 */
   {
     MIST32_INSN_SRSPADD, "srspadd", "srspadd", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }

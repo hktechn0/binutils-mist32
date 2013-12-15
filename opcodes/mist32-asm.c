@@ -203,6 +203,12 @@ mist32_cgen_parse_operand (CGEN_CPU_DESC cd,
     case MIST32_OPERAND_CC :
       errmsg = cgen_parse_keyword (cd, strp, & mist32_cgen_opval_h_cc, & fields->f_cc);
       break;
+    case MIST32_OPERAND_CI16 :
+      errmsg = cgen_parse_signed_integer (cd, strp, MIST32_OPERAND_CI16, (long *) (& fields->f_ci16));
+      break;
+    case MIST32_OPERAND_CP16 :
+      errmsg = cgen_parse_signed_integer (cd, strp, MIST32_OPERAND_CP16, (long *) (& fields->f_cp16));
+      break;
     case MIST32_OPERAND_I11 :
       errmsg = cgen_parse_signed_integer (cd, strp, MIST32_OPERAND_I11, (long *) (& fields->f_i11));
       break;
