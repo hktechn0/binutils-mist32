@@ -164,14 +164,22 @@
 						  (ifield f-i16l)))
 					 (const #x8000))))
 )
-(dnmf f-ui16  "16 bit unsigned immediate"  () UINT
+(dnmf f-ui16 "16 bit unsigned immediate"  () UINT
       (f-i16h f-i16l)
       (sequence () ; insert
 		(set (ifield f-i16h) (srl (ifield f-ui16) (const 5)))
 		(set (ifield f-i16l) (and (ifield f-ui16) (const #x1f))))
       (sequence () ; extract
 		(set (ifield f-ui16) (or (sll (ifield f-i16h) (const 5))
-					(ifield f-i16l))))
+					 (ifield f-i16l))))
+)
+
+(dnf f-ci16 "16 bit immediate for C format" () 15 16)
+(df  f-cp16 "16 bit word align immediate for C foramt" ()
+    15 16 INT
+    ; 2 shiftned to right, 16bit -> 18bit
+    ((value pc) (sra WI (and WI value (const -4)) (const 2)))
+    ((value pc) (sll WI value (const 2)))
 )
 
 (df f-p16 "16 bit absolute address" (ABS-ADDR)
@@ -265,17 +273,20 @@
 (dnop rs    "source register"                 () h-gr     f-rs)
 (dnop cc    "condition code"                  () h-cc     f-cc)
 
-(dnop p16   "16bit absolute unsigned address" () h-iaddr  f-p16)
-(dnop up16r "16bit relative unsigned address" () h-iaddr  f-up16r)
-(dnop p16r  "16bit relative address"          () h-iaddr  f-p16r)
+(dnop i11   "11bit immediate"                 () h-int11  f-i11)
+(dnop ui11  "11bit unsigned immediate"        () h-uint11 f-ui11)
+(dnop i11w  "11bit word align immediate"      () h-int11  f-i11w)
 
 (dnop p11b  "11bit byte align address"        () h-iaddr  f-p11b)
 (dnop p11h  "11bit half word align address"   () h-iaddr  f-p11h)
 (dnop p11w  "11bit word align address"        () h-iaddr  f-p11w)
 
-(dnop i11   "11bit immediate"                 () h-int11  f-i11)
-(dnop ui11  "11bit unsigned immediate"        () h-uint11 f-ui11)
-(dnop i11w  "11bit word align immediate"      () h-int11  f-i11w)
+(dnop ci16  "16bit immediate for CI16"        () h-int16  f-ci16)
+(dnop cp16  "16bit word align imm for CI16"   () h-int16  f-cp16)
+
+(dnop p16   "16bit absolute unsigned address" () h-iaddr  f-p16)
+(dnop up16r "16bit relative unsigned address" () h-iaddr  f-up16r)
+(dnop p16r  "16bit relative address"          () h-iaddr  f-p16r)
 
 (define-operand (name i16l)
   (comment "16 bit immediate, lo")
@@ -298,8 +309,6 @@
   (index f-ui16)
   (handlers (parse "hi16"))
 )
-
-(dnop i32   "32bit immediate for li"  (SEM-ONLY) h-uint    f-nil)
 
 ; Instructions Macro
 
@@ -449,7 +458,7 @@
 	 (.str mnemonic " reg")
 	 ()
 	 (.str mnemonic " $rd")
-	 (+ EXT_0 opcode ISIMM_0 AFE_0 (f-reserve1 0) rd  (f-reserve3 0))
+	 (+ EXT_0 opcode ISIMM_0 AFE_0 (f-reserve1 0) rd (f-reserve3 0))
 	 ()
 	 ()
 	 )
@@ -462,12 +471,12 @@
 	 (.str mnemonic " reg")
 	 ()
 	 (.str mnemonic " $rd")
-	 (+ EXT_0 opcode ISIMM_0 AFE_0 (f-reserve1 0) rd  (f-reserve3 0))
+	 (+ EXT_0 opcode ISIMM_0 AFE_0 (f-reserve1 0) rd (f-reserve3 0))
 	 ()
 	 ()
 	 )
     (dni (.sym mnemonic "i")
-	 (.str mnemonic " reg/uimm11")
+	 (.str mnemonic " uimm11")
 	 () 
 	 (.str mnemonic " $ui11")
 	 (+ EXT_0 opcode ISIMM_1 AFE_0 (f-reserve2 0) ui11)
@@ -559,8 +568,8 @@
     (dni mnemonic
 	 (.str mnemonic " addr16_word")
 	 ()
-	 (.str mnemonic " $p16")
-	 (+ EXT_0 opcode ISIMM_1 AFE_0 p16)
+	 (.str mnemonic " $cp16")
+	 (+ EXT_0 opcode ISIMM_1 AFE_0 cp16)
 	 ()
 	 ()
 	 )
