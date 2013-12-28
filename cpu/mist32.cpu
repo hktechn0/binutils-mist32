@@ -129,7 +129,7 @@
 		(set (ifield f-p11b) (or (sll (ifield f-p11hi) (const 5))
 					 (ifield f-p11lo))))
 )
-(dnmf f-p11h "11 bit halfword align absolute address" (ABS-ADDR) UINT
+(dnmf f-p11h "11 bit half-word align absolute address" (ABS-ADDR) UINT
       (f-p11hi f-p11lo)
       (sequence () ; insert
 		(set (ifield f-p11hi) (srl (ifield f-p11h) (const 6)))
@@ -174,8 +174,8 @@
 					 (ifield f-i16l))))
 )
 
-(dnf f-ci16 "16 bit immediate for C format" () 15 16)
-(df  f-cp16 "16 bit word align immediate for C foramt" ()
+(dnf f-ci16  "16 bit immediate for C format" () 15 16)
+(df  f-ci16w "16 bit word align immediate for C foramt" ()
     15 16 INT
     ; 2 shiftned to right, 16bit -> 18bit
     ((value pc) (sra WI (and WI value (const -4)) (const 2)))
@@ -277,12 +277,12 @@
 (dnop ui11  "11bit unsigned immediate"        () h-uint11 f-ui11)
 (dnop i11w  "11bit word align immediate"      () h-int11  f-i11w)
 
-(dnop p11b  "11bit byte align address"        () h-iaddr  f-p11b)
-(dnop p11h  "11bit half word align address"   () h-iaddr  f-p11h)
-(dnop p11w  "11bit word align address"        () h-iaddr  f-p11w)
+(dnop p11b  "11bit byte align address"        () h-addr   f-p11b)
+(dnop p11h  "11bit half-word align address"   () h-addr   f-p11h)
+(dnop p11w  "11bit word align address"        () h-addr   f-p11w)
 
 (dnop ci16  "16bit immediate for CI16"        () h-int16  f-ci16)
-(dnop cp16  "16bit word align imm for CI16"   () h-int16  f-cp16)
+(dnop ci16w "16bit word align imm for CI16"   () h-int16  f-ci16w)
 
 (dnop p16   "16bit absolute unsigned address" () h-iaddr  f-p16)
 (dnop up16r "16bit relative unsigned address" () h-iaddr  f-up16r)
@@ -584,13 +584,13 @@
     )
 )
 ; CI16 Word Align Address Format
-(define-pmacro (cp16-op mnemonic opcode)
+(define-pmacro (ci16w-op mnemonic opcode)
   (begin
     (dni mnemonic
 	 (.str mnemonic " addr16_word")
 	 ()
-	 (.str mnemonic " $cp16")
-	 (+ EXT_0 opcode ISIMM_1 AFE_0 cp16)
+	 (.str mnemonic " $ci16w")
+	 (+ EXT_0 opcode ISIMM_1 AFE_0 ci16w)
 	 ()
 	 ()
 	 )
@@ -801,7 +801,7 @@
 (o1-op      srfrchw         OP_246)
 (o1-op      srpflagw        OP_247)
 ;; 248 - 254
-(cp16-op    srspadd         OP_255)
+(ci16w-op   srspadd         OP_255)
 
 ; Other
 (c-op       nop             OP_256)

@@ -206,8 +206,8 @@ mist32_cgen_parse_operand (CGEN_CPU_DESC cd,
     case MIST32_OPERAND_CI16 :
       errmsg = cgen_parse_signed_integer (cd, strp, MIST32_OPERAND_CI16, (long *) (& fields->f_ci16));
       break;
-    case MIST32_OPERAND_CP16 :
-      errmsg = cgen_parse_signed_integer (cd, strp, MIST32_OPERAND_CP16, (long *) (& fields->f_cp16));
+    case MIST32_OPERAND_CI16W :
+      errmsg = cgen_parse_signed_integer (cd, strp, MIST32_OPERAND_CI16W, (long *) (& fields->f_ci16w));
       break;
     case MIST32_OPERAND_I11 :
       errmsg = cgen_parse_signed_integer (cd, strp, MIST32_OPERAND_I11, (long *) (& fields->f_i11));

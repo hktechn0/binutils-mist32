@@ -266,7 +266,7 @@ const CGEN_IFLD mist32_cgen_ifld_table[] =
   { MIST32_F_I16, "f-i16", 0, 0, 0, 0,{ 0|A(VIRTUAL), { { { (1<<MACH_BASE), 0 } } } }  },
   { MIST32_F_UI16, "f-ui16", 0, 0, 0, 0,{ 0|A(VIRTUAL), { { { (1<<MACH_BASE), 0 } } } }  },
   { MIST32_F_CI16, "f-ci16", 0, 32, 15, 16, { 0, { { { (1<<MACH_BASE), 0 } } } }  },
-  { MIST32_F_CP16, "f-cp16", 0, 32, 15, 16, { 0, { { { (1<<MACH_BASE), 0 } } } }  },
+  { MIST32_F_CI16W, "f-ci16w", 0, 32, 15, 16, { 0, { { { (1<<MACH_BASE), 0 } } } }  },
   { MIST32_F_P16, "f-p16", 0, 32, 15, 16, { 0|A(ABS_ADDR), { { { (1<<MACH_BASE), 0 } } } }  },
   { MIST32_F_UP16R, "f-up16r", 0, 32, 15, 16, { 0|A(PCREL_ADDR), { { { (1<<MACH_BASE), 0 } } } }  },
   { MIST32_F_P16R, "f-p16r", 0, 32, 15, 16, { 0|A(PCREL_ADDR), { { { (1<<MACH_BASE), 0 } } } }  },
@@ -379,24 +379,24 @@ const CGEN_OPERAND mist32_cgen_operand_table[] =
     { 2, { (const PTR) &MIST32_F_I11W_MULTI_IFIELD[0] } }, 
     { 0|A(VIRTUAL), { { { (1<<MACH_BASE), 0 } } } }  },
 /* p11b: 11bit byte align address */
-  { "p11b", MIST32_OPERAND_P11B, HW_H_IADDR, 4, 11,
+  { "p11b", MIST32_OPERAND_P11B, HW_H_ADDR, 4, 11,
     { 2, { (const PTR) &MIST32_F_P11B_MULTI_IFIELD[0] } }, 
     { 0|A(ABS_ADDR)|A(VIRTUAL), { { { (1<<MACH_BASE), 0 } } } }  },
-/* p11h: 11bit half word align address */
-  { "p11h", MIST32_OPERAND_P11H, HW_H_IADDR, 4, 11,
+/* p11h: 11bit half-word align address */
+  { "p11h", MIST32_OPERAND_P11H, HW_H_ADDR, 4, 11,
     { 2, { (const PTR) &MIST32_F_P11H_MULTI_IFIELD[0] } }, 
     { 0|A(ABS_ADDR)|A(VIRTUAL), { { { (1<<MACH_BASE), 0 } } } }  },
 /* p11w: 11bit word align address */
-  { "p11w", MIST32_OPERAND_P11W, HW_H_IADDR, 4, 11,
+  { "p11w", MIST32_OPERAND_P11W, HW_H_ADDR, 4, 11,
     { 2, { (const PTR) &MIST32_F_P11W_MULTI_IFIELD[0] } }, 
     { 0|A(ABS_ADDR)|A(VIRTUAL), { { { (1<<MACH_BASE), 0 } } } }  },
 /* ci16: 16bit immediate for CI16 */
   { "ci16", MIST32_OPERAND_CI16, HW_H_INT16, 15, 16,
     { 0, { (const PTR) &mist32_cgen_ifld_table[MIST32_F_CI16] } }, 
     { 0, { { { (1<<MACH_BASE), 0 } } } }  },
-/* cp16: 16bit word align imm for CI16 */
-  { "cp16", MIST32_OPERAND_CP16, HW_H_INT16, 15, 16,
-    { 0, { (const PTR) &mist32_cgen_ifld_table[MIST32_F_CP16] } }, 
+/* ci16w: 16bit word align imm for CI16 */
+  { "ci16w", MIST32_OPERAND_CI16W, HW_H_INT16, 15, 16,
+    { 0, { (const PTR) &mist32_cgen_ifld_table[MIST32_F_CI16W] } }, 
     { 0, { { { (1<<MACH_BASE), 0 } } } }  },
 /* p16: 16bit absolute unsigned address */
   { "p16", MIST32_OPERAND_P16, HW_H_IADDR, 15, 16,
@@ -1072,7 +1072,7 @@ static const CGEN_IBASE mist32_cgen_insn_table[MAX_INSNS] =
     MIST32_INSN_SRPFLAGW, "srpflagw", "srpflagw", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
   },
-/* srspadd $cp16 */
+/* srspadd $ci16w */
   {
     MIST32_INSN_SRSPADD, "srspadd", "srspadd", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
