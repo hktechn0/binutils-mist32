@@ -174,12 +174,45 @@
 					 (ifield f-i16l))))
 )
 
+(df  f-d6b  "6 bit byte displacement" ()
+     15 6 INT
+     ((value pc) (sra WI value (const 0)))
+     ((value pc) (sll WI value (const 0)))
+)
+(dnf f-ud6b  "6 bit unsigned byte displacement" ()
+     15 6
+)
+(df  f-d6h  "6 bit half-word displacement" ()
+     15 6 INT
+     ; 1 shiftned to right, 6bit -> 7bit
+     ((value pc) (sra WI (and WI value (const -2)) (const 1)))
+     ((value pc) (sll WI value (const 1)))
+)
+(df  f-ud6h "6 bit unsigned half-word displacement" ()
+     15 6 UINT
+     ; 1 shiftned to right, 6bit -> 7bit
+     ((value pc) (srl WI (and WI value (const -2)) (const 1)))
+     ((value pc) (sll WI value (const 1)))
+)
+(df  f-d6w  "6 bit word displacement" ()
+     15 6 INT
+     ; 2 shiftned to right, 6bit -> 8bit
+     ((value pc) (sra WI (and WI value (const -4)) (const 2)))
+     ((value pc) (sll WI value (const 2)))
+)
+(df  f-ud6w "6 bit unsigned word displacement" ()
+     15 6 UINT
+     ; 2 shiftned to right, 6bit -> 8bit
+     ((value pc) (srl WI (and WI value (const -4)) (const 2)))
+     ((value pc) (sll WI value (const 2)))
+)
+
 (dnf f-ci16  "16 bit immediate for C format" () 15 16)
 (df  f-ci16w "16 bit word align immediate for C foramt" ()
-    15 16 INT
-    ; 2 shiftned to right, 16bit -> 18bit
-    ((value pc) (sra WI (and WI value (const -4)) (const 2)))
-    ((value pc) (sll WI value (const 2)))
+     15 16 INT
+     ; 2 shiftned to right, 16bit -> 18bit
+     ((value pc) (sra WI (and WI value (const -4)) (const 2)))
+     ((value pc) (sll WI value (const 2)))
 )
 
 (df f-p16 "16 bit absolute address" (ABS-ADDR)
@@ -188,16 +221,16 @@
     ((value pc) (srl WI (and WI pc (const -4)) (const 2)))
     ((value pc) (sll WI value (const 2)))
 )
-(df f-up16r "16 bit unsigned PC relative address" (PCREL-ADDR)
-    15 16 UINT
-    ; 2 shifted to right, 16bit -> 18bit
-    ((value pc) (srl WI (sub WI value (and WI pc (const -4))) (const 2)))
-    ((value pc) (add WI (sll WI value (const 2)) (and WI pc (const -4))))
-)
 (df f-p16r "16 bit signed PC relative address" (PCREL-ADDR)
     15 16 INT
     ; 2 shifted to right, 16bit -> 18bit
     ((value pc) (sra WI (sub WI value (and WI pc (const -4))) (const 2)))
+    ((value pc) (add WI (sll WI value (const 2)) (and WI pc (const -4))))
+)
+(df f-up16r "16 bit unsigned PC relative address" (PCREL-ADDR)
+    15 16 UINT
+    ; 2 shifted to right, 16bit -> 18bit
+    ((value pc) (srl WI (sub WI value (and WI pc (const -4))) (const 2)))
     ((value pc) (add WI (sll WI value (const 2)) (and WI pc (const -4))))
 )
 
@@ -213,11 +246,13 @@
 (define-normal-insn-enum insn-op1 "insn opcode enums" () OP_ f-op
   (.map .str (.iota 1024))
 )
-
 (define-normal-insn-enum insn-isimm "insn is immediate" () ISIMM_ f-isimm
   ("0" "1")
 )
 (define-normal-insn-enum insn-afe "insn afe enums" () AFE_ f-afe
+  ("0")
+)
+(define-normal-insn-enum insn-disp "insn displacement enums" () DISP_ f-d6b
   ("0")
 )
 
@@ -240,6 +275,8 @@
 )
 
 ; hardware: immediate
+(dnh h-int6   "6 bit int"   () (immediate (INT   6)) () () ())
+(dnh h-uint6  "6 bit uint"  () (immediate (UINT  6)) () () ())
 (dnh h-int11  "11 bit int"  () (immediate (INT  11)) () () ())
 (dnh h-uint11 "11 bit uint" () (immediate (UINT 11)) () () ())
 (dnh h-int16  "16 bit int"  () (immediate (INT  16)) () () ())
@@ -272,6 +309,13 @@
 (dnop rd    "destination register"            () h-gr     f-rd)
 (dnop rs    "source register"                 () h-gr     f-rs)
 (dnop cc    "condition code"                  () h-cc     f-cc)
+
+(dnop d6b   "6bit byte displacement"          () h-int6   f-d6b)
+(dnop ud6b  "6bit byte unsigned displacement" () h-uint6  f-ud6b)
+(dnop d6h   "6bit half-word displacement"     () h-int6   f-d6h)
+(dnop ud6h  "6bit half-word unsigned disp"    () h-uint6  f-ud6h)
+(dnop d6w   "6bit word displacement"          () h-int6   f-d6w)
+(dnop ud6w  "6bit word unsigned displacement" () h-uint6  f-ud6w)
 
 (dnop i11   "11bit immediate"                 () h-int11  f-i11)
 (dnop ui11  "11bit unsigned immediate"        () h-uint11 f-ui11)
@@ -395,7 +439,7 @@
 	 (.str mnemonic " reg/reg")
 	 ()
 	 (.str mnemonic " $rd,$rs")
-	 (+ EXT_0 opcode ISIMM_0 AFE_0 (f-reserve1 0) rd rs)
+	 (+ EXT_0 opcode ISIMM_0 AFE_0 DISP_0 rd rs)
 	 ()
 	 ()
 	 )
@@ -409,7 +453,20 @@
 	 )
     )
 )
-; O2-I11 Half Word Align Address Format
+; O2 with Byte Align Displacement Format
+(define-pmacro (o2dispb-op mnemonic opcode)
+  (begin
+    (dni mnemonic
+	 (.str mnemonic " reg/reg/disp6")
+	 ()
+	 (.str mnemonic " $rd,$rs,$d6b")
+	 (+ EXT_0 opcode ISIMM_0 AFE_0 d6b rd rs)
+	 ()
+	 ()
+	 )
+    )
+)
+; O2-I11 Half-word Align Address Format
 (define-pmacro (o2-p11h-op mnemonic opcode)
   (begin
     (dni mnemonic
@@ -425,6 +482,19 @@
 	 () 
 	 (.str mnemonic " $rd,$p11h")
 	 (+ EXT_0 opcode ISIMM_1 AFE_0 p11h rd)
+	 ()
+	 ()
+	 )
+    )
+)
+; O2 with Half-word Align Displacement Format
+(define-pmacro (o2disph-op mnemonic opcode)
+  (begin
+    (dni mnemonic
+	 (.str mnemonic " reg/reg/disp6_halfword")
+	 ()
+	 (.str mnemonic " $rd,$rs,$d6h")
+	 (+ EXT_0 opcode ISIMM_0 AFE_0 d6h rd rs)
 	 ()
 	 ()
 	 )
@@ -446,6 +516,19 @@
 	 () 
 	 (.str mnemonic " $rd,$p11w")
 	 (+ EXT_0 opcode ISIMM_1 AFE_0 p11w rd)
+	 ()
+	 ()
+	 )
+    )
+)
+; O2 with Word Align Displacement Format
+(define-pmacro (o2dispw-op mnemonic opcode)
+  (begin
+    (dni mnemonic
+	 (.str mnemonic " reg/reg/disp6_word")
+	 ()
+	 (.str mnemonic " $rd,$rs,$d6w")
+	 (+ EXT_0 opcode ISIMM_0 AFE_0 d6w rd rs)
 	 ()
 	 ()
 	 )
@@ -736,6 +819,12 @@
 ;; 138 - 143
 (o1-op      pop             OP_144)
 ;; 145 - 159
+(o2dispb-op ldd8            OP_154)
+(o2disph-op ldd16           OP_155)
+(o2dispw-op ldd32           OP_156)
+(o2dispb-op std8            OP_157)
+(o2disph-op std16           OP_158)
+(o2dispw-op std32           OP_159)
 
 ; Branch
 (bur-op     bur             OP_160)

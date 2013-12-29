@@ -75,6 +75,10 @@ static const CGEN_IFMT ifmt_lil ATTRIBUTE_UNUSED = {
   32, 32, 0xffe00000, { { F (F_EXT) }, { F (F_OP) }, { F (F_RD) }, { F (F_I16) }, { 0 } }
 };
 
+static const CGEN_IFMT ifmt_ld8 ATTRIBUTE_UNUSED = {
+  32, 32, 0xfffffc00, { { F (F_EXT) }, { F (F_OP) }, { F (F_ISIMM) }, { F (F_AFE) }, { F (F_D6B) }, { F (F_RD) }, { F (F_RS) }, { 0 } }
+};
+
 static const CGEN_IFMT ifmt_ld8i ATTRIBUTE_UNUSED = {
   32, 32, 0xffff0000, { { F (F_EXT) }, { F (F_OP) }, { F (F_ISIMM) }, { F (F_AFE) }, { F (F_RD) }, { F (F_P11B) }, { 0 } }
 };
@@ -93,6 +97,18 @@ static const CGEN_IFMT ifmt_pushi ATTRIBUTE_UNUSED = {
 
 static const CGEN_IFMT ifmt_pushpc ATTRIBUTE_UNUSED = {
   32, 32, 0xffffffff, { { F (F_EXT) }, { F (F_OP) }, { F (F_ISIMM) }, { F (F_AFE) }, { F (F_RESERVE1) }, { F (F_RESERVE2) }, { F (F_RESERVE3) }, { 0 } }
+};
+
+static const CGEN_IFMT ifmt_ldd8 ATTRIBUTE_UNUSED = {
+  32, 32, 0xffff0000, { { F (F_EXT) }, { F (F_OP) }, { F (F_ISIMM) }, { F (F_AFE) }, { F (F_D6B) }, { F (F_RD) }, { F (F_RS) }, { 0 } }
+};
+
+static const CGEN_IFMT ifmt_ldd16 ATTRIBUTE_UNUSED = {
+  32, 32, 0xffff0000, { { F (F_EXT) }, { F (F_OP) }, { F (F_ISIMM) }, { F (F_AFE) }, { F (F_D6H) }, { F (F_RD) }, { F (F_RS) }, { 0 } }
+};
+
+static const CGEN_IFMT ifmt_ldd32 ATTRIBUTE_UNUSED = {
+  32, 32, 0xffff0000, { { F (F_EXT) }, { F (F_OP) }, { F (F_ISIMM) }, { F (F_AFE) }, { F (F_D6W) }, { F (F_RD) }, { F (F_RS) }, { 0 } }
 };
 
 static const CGEN_IFMT ifmt_bur ATTRIBUTE_UNUSED = {
@@ -484,7 +500,7 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
   {
     { 0, 0, 0, 0 },
     { { MNEM, ' ', OP (RD), ',', OP (RS), 0 } },
-    & ifmt_add, { 0x10000000 }
+    & ifmt_ld8, { 0x10000000 }
   },
 /* ld8 $rd,$p11b */
   {
@@ -520,7 +536,7 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
   {
     { 0, 0, 0, 0 },
     { { MNEM, ' ', OP (RD), ',', OP (RS), 0 } },
-    & ifmt_add, { 0x10600000 }
+    & ifmt_ld8, { 0x10600000 }
   },
 /* st8 $rd,$p11b */
   {
@@ -575,6 +591,42 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
     { 0, 0, 0, 0 },
     { { MNEM, ' ', OP (RD), 0 } },
     & ifmt_clr, { 0x12000000 }
+  },
+/* ldd8 $rd,$rs,$d6b */
+  {
+    { 0, 0, 0, 0 },
+    { { MNEM, ' ', OP (RD), ',', OP (RS), ',', OP (D6B), 0 } },
+    & ifmt_ldd8, { 0x13400000 }
+  },
+/* ldd16 $rd,$rs,$d6h */
+  {
+    { 0, 0, 0, 0 },
+    { { MNEM, ' ', OP (RD), ',', OP (RS), ',', OP (D6H), 0 } },
+    & ifmt_ldd16, { 0x13600000 }
+  },
+/* ldd32 $rd,$rs,$d6w */
+  {
+    { 0, 0, 0, 0 },
+    { { MNEM, ' ', OP (RD), ',', OP (RS), ',', OP (D6W), 0 } },
+    & ifmt_ldd32, { 0x13800000 }
+  },
+/* std8 $rd,$rs,$d6b */
+  {
+    { 0, 0, 0, 0 },
+    { { MNEM, ' ', OP (RD), ',', OP (RS), ',', OP (D6B), 0 } },
+    & ifmt_ldd8, { 0x13a00000 }
+  },
+/* std16 $rd,$rs,$d6h */
+  {
+    { 0, 0, 0, 0 },
+    { { MNEM, ' ', OP (RD), ',', OP (RS), ',', OP (D6H), 0 } },
+    & ifmt_ldd16, { 0x13c00000 }
+  },
+/* std32 $rd,$rs,$d6w */
+  {
+    { 0, 0, 0, 0 },
+    { { MNEM, ' ', OP (RD), ',', OP (RS), ',', OP (D6W), 0 } },
+    & ifmt_ldd32, { 0x13e00000 }
   },
 /* bur $rd,$cc */
   {

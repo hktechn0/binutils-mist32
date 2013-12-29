@@ -579,6 +579,27 @@ mist32_cgen_insert_operand (CGEN_CPU_DESC cd,
         errmsg = insert_normal (cd, value, 0|(1<<CGEN_IFLD_SIGNED), 0, 15, 16, 32, total_length, buffer);
       }
       break;
+    case MIST32_OPERAND_D6B :
+      {
+        long value = fields->f_d6b;
+        value = ((SI) (value) >> (0));
+        errmsg = insert_normal (cd, value, 0|(1<<CGEN_IFLD_SIGNED), 0, 15, 6, 32, total_length, buffer);
+      }
+      break;
+    case MIST32_OPERAND_D6H :
+      {
+        long value = fields->f_d6h;
+        value = ((SI) (((value) & (-2))) >> (1));
+        errmsg = insert_normal (cd, value, 0|(1<<CGEN_IFLD_SIGNED), 0, 15, 6, 32, total_length, buffer);
+      }
+      break;
+    case MIST32_OPERAND_D6W :
+      {
+        long value = fields->f_d6w;
+        value = ((SI) (((value) & (-4))) >> (2));
+        errmsg = insert_normal (cd, value, 0|(1<<CGEN_IFLD_SIGNED), 0, 15, 6, 32, total_length, buffer);
+      }
+      break;
     case MIST32_OPERAND_I11 :
       {
 {
@@ -697,6 +718,23 @@ mist32_cgen_insert_operand (CGEN_CPU_DESC cd,
     case MIST32_OPERAND_RS :
       errmsg = insert_normal (cd, fields->f_rs, 0, 0, 4, 5, 32, total_length, buffer);
       break;
+    case MIST32_OPERAND_UD6B :
+      errmsg = insert_normal (cd, fields->f_ud6b, 0, 0, 15, 6, 32, total_length, buffer);
+      break;
+    case MIST32_OPERAND_UD6H :
+      {
+        long value = fields->f_ud6h;
+        value = ((USI) (((value) & (-2))) >> (1));
+        errmsg = insert_normal (cd, value, 0, 0, 15, 6, 32, total_length, buffer);
+      }
+      break;
+    case MIST32_OPERAND_UD6W :
+      {
+        long value = fields->f_ud6w;
+        value = ((USI) (((value) & (-4))) >> (2));
+        errmsg = insert_normal (cd, value, 0, 0, 15, 6, 32, total_length, buffer);
+      }
+      break;
     case MIST32_OPERAND_UI11 :
       {
 {
@@ -787,6 +825,30 @@ mist32_cgen_extract_operand (CGEN_CPU_DESC cd,
         length = extract_normal (cd, ex_info, insn_value, 0|(1<<CGEN_IFLD_SIGNED), 0, 15, 16, 32, total_length, pc, & value);
         value = ((value) << (2));
         fields->f_ci16w = value;
+      }
+      break;
+    case MIST32_OPERAND_D6B :
+      {
+        long value;
+        length = extract_normal (cd, ex_info, insn_value, 0|(1<<CGEN_IFLD_SIGNED), 0, 15, 6, 32, total_length, pc, & value);
+        value = ((value) << (0));
+        fields->f_d6b = value;
+      }
+      break;
+    case MIST32_OPERAND_D6H :
+      {
+        long value;
+        length = extract_normal (cd, ex_info, insn_value, 0|(1<<CGEN_IFLD_SIGNED), 0, 15, 6, 32, total_length, pc, & value);
+        value = ((value) << (1));
+        fields->f_d6h = value;
+      }
+      break;
+    case MIST32_OPERAND_D6W :
+      {
+        long value;
+        length = extract_normal (cd, ex_info, insn_value, 0|(1<<CGEN_IFLD_SIGNED), 0, 15, 6, 32, total_length, pc, & value);
+        value = ((value) << (2));
+        fields->f_d6w = value;
       }
       break;
     case MIST32_OPERAND_I11 :
@@ -888,6 +950,25 @@ mist32_cgen_extract_operand (CGEN_CPU_DESC cd,
     case MIST32_OPERAND_RS :
       length = extract_normal (cd, ex_info, insn_value, 0, 0, 4, 5, 32, total_length, pc, & fields->f_rs);
       break;
+    case MIST32_OPERAND_UD6B :
+      length = extract_normal (cd, ex_info, insn_value, 0, 0, 15, 6, 32, total_length, pc, & fields->f_ud6b);
+      break;
+    case MIST32_OPERAND_UD6H :
+      {
+        long value;
+        length = extract_normal (cd, ex_info, insn_value, 0, 0, 15, 6, 32, total_length, pc, & value);
+        value = ((value) << (1));
+        fields->f_ud6h = value;
+      }
+      break;
+    case MIST32_OPERAND_UD6W :
+      {
+        long value;
+        length = extract_normal (cd, ex_info, insn_value, 0, 0, 15, 6, 32, total_length, pc, & value);
+        value = ((value) << (2));
+        fields->f_ud6w = value;
+      }
+      break;
     case MIST32_OPERAND_UI11 :
       {
         length = extract_normal (cd, ex_info, insn_value, 0, 0, 15, 6, 32, total_length, pc, & fields->f_i11h);
@@ -965,6 +1046,15 @@ mist32_cgen_get_int_operand (CGEN_CPU_DESC cd ATTRIBUTE_UNUSED,
     case MIST32_OPERAND_CI16W :
       value = fields->f_ci16w;
       break;
+    case MIST32_OPERAND_D6B :
+      value = fields->f_d6b;
+      break;
+    case MIST32_OPERAND_D6H :
+      value = fields->f_d6h;
+      break;
+    case MIST32_OPERAND_D6W :
+      value = fields->f_d6w;
+      break;
     case MIST32_OPERAND_I11 :
       value = fields->f_i11;
       break;
@@ -997,6 +1087,15 @@ mist32_cgen_get_int_operand (CGEN_CPU_DESC cd ATTRIBUTE_UNUSED,
       break;
     case MIST32_OPERAND_RS :
       value = fields->f_rs;
+      break;
+    case MIST32_OPERAND_UD6B :
+      value = fields->f_ud6b;
+      break;
+    case MIST32_OPERAND_UD6H :
+      value = fields->f_ud6h;
+      break;
+    case MIST32_OPERAND_UD6W :
+      value = fields->f_ud6w;
       break;
     case MIST32_OPERAND_UI11 :
       value = fields->f_ui11;
@@ -1036,6 +1135,15 @@ mist32_cgen_get_vma_operand (CGEN_CPU_DESC cd ATTRIBUTE_UNUSED,
     case MIST32_OPERAND_CI16W :
       value = fields->f_ci16w;
       break;
+    case MIST32_OPERAND_D6B :
+      value = fields->f_d6b;
+      break;
+    case MIST32_OPERAND_D6H :
+      value = fields->f_d6h;
+      break;
+    case MIST32_OPERAND_D6W :
+      value = fields->f_d6w;
+      break;
     case MIST32_OPERAND_I11 :
       value = fields->f_i11;
       break;
@@ -1068,6 +1176,15 @@ mist32_cgen_get_vma_operand (CGEN_CPU_DESC cd ATTRIBUTE_UNUSED,
       break;
     case MIST32_OPERAND_RS :
       value = fields->f_rs;
+      break;
+    case MIST32_OPERAND_UD6B :
+      value = fields->f_ud6b;
+      break;
+    case MIST32_OPERAND_UD6H :
+      value = fields->f_ud6h;
+      break;
+    case MIST32_OPERAND_UD6W :
+      value = fields->f_ud6w;
       break;
     case MIST32_OPERAND_UI11 :
       value = fields->f_ui11;
@@ -1114,6 +1231,15 @@ mist32_cgen_set_int_operand (CGEN_CPU_DESC cd ATTRIBUTE_UNUSED,
     case MIST32_OPERAND_CI16W :
       fields->f_ci16w = value;
       break;
+    case MIST32_OPERAND_D6B :
+      fields->f_d6b = value;
+      break;
+    case MIST32_OPERAND_D6H :
+      fields->f_d6h = value;
+      break;
+    case MIST32_OPERAND_D6W :
+      fields->f_d6w = value;
+      break;
     case MIST32_OPERAND_I11 :
       fields->f_i11 = value;
       break;
@@ -1146,6 +1272,15 @@ mist32_cgen_set_int_operand (CGEN_CPU_DESC cd ATTRIBUTE_UNUSED,
       break;
     case MIST32_OPERAND_RS :
       fields->f_rs = value;
+      break;
+    case MIST32_OPERAND_UD6B :
+      fields->f_ud6b = value;
+      break;
+    case MIST32_OPERAND_UD6H :
+      fields->f_ud6h = value;
+      break;
+    case MIST32_OPERAND_UD6W :
+      fields->f_ud6w = value;
       break;
     case MIST32_OPERAND_UI11 :
       fields->f_ui11 = value;
@@ -1182,6 +1317,15 @@ mist32_cgen_set_vma_operand (CGEN_CPU_DESC cd ATTRIBUTE_UNUSED,
     case MIST32_OPERAND_CI16W :
       fields->f_ci16w = value;
       break;
+    case MIST32_OPERAND_D6B :
+      fields->f_d6b = value;
+      break;
+    case MIST32_OPERAND_D6H :
+      fields->f_d6h = value;
+      break;
+    case MIST32_OPERAND_D6W :
+      fields->f_d6w = value;
+      break;
     case MIST32_OPERAND_I11 :
       fields->f_i11 = value;
       break;
@@ -1214,6 +1358,15 @@ mist32_cgen_set_vma_operand (CGEN_CPU_DESC cd ATTRIBUTE_UNUSED,
       break;
     case MIST32_OPERAND_RS :
       fields->f_rs = value;
+      break;
+    case MIST32_OPERAND_UD6B :
+      fields->f_ud6b = value;
+      break;
+    case MIST32_OPERAND_UD6H :
+      fields->f_ud6h = value;
+      break;
+    case MIST32_OPERAND_UD6W :
+      fields->f_ud6w = value;
       break;
     case MIST32_OPERAND_UI11 :
       fields->f_ui11 = value;
