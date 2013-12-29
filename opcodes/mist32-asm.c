@@ -209,6 +209,15 @@ mist32_cgen_parse_operand (CGEN_CPU_DESC cd,
     case MIST32_OPERAND_CI16W :
       errmsg = cgen_parse_signed_integer (cd, strp, MIST32_OPERAND_CI16W, (long *) (& fields->f_ci16w));
       break;
+    case MIST32_OPERAND_D6B :
+      errmsg = cgen_parse_signed_integer (cd, strp, MIST32_OPERAND_D6B, (long *) (& fields->f_d6b));
+      break;
+    case MIST32_OPERAND_D6H :
+      errmsg = cgen_parse_signed_integer (cd, strp, MIST32_OPERAND_D6H, (long *) (& fields->f_d6h));
+      break;
+    case MIST32_OPERAND_D6W :
+      errmsg = cgen_parse_signed_integer (cd, strp, MIST32_OPERAND_D6W, (long *) (& fields->f_d6w));
+      break;
     case MIST32_OPERAND_I11 :
       errmsg = cgen_parse_signed_integer (cd, strp, MIST32_OPERAND_I11, (long *) (& fields->f_i11));
       break;
@@ -261,6 +270,15 @@ mist32_cgen_parse_operand (CGEN_CPU_DESC cd,
       break;
     case MIST32_OPERAND_RS :
       errmsg = cgen_parse_keyword (cd, strp, & mist32_cgen_opval_h_gr, & fields->f_rs);
+      break;
+    case MIST32_OPERAND_UD6B :
+      errmsg = cgen_parse_unsigned_integer (cd, strp, MIST32_OPERAND_UD6B, (unsigned long *) (& fields->f_ud6b));
+      break;
+    case MIST32_OPERAND_UD6H :
+      errmsg = cgen_parse_unsigned_integer (cd, strp, MIST32_OPERAND_UD6H, (unsigned long *) (& fields->f_ud6h));
+      break;
+    case MIST32_OPERAND_UD6W :
+      errmsg = cgen_parse_unsigned_integer (cd, strp, MIST32_OPERAND_UD6W, (unsigned long *) (& fields->f_ud6w));
       break;
     case MIST32_OPERAND_UI11 :
       errmsg = cgen_parse_unsigned_integer (cd, strp, MIST32_OPERAND_UI11, (unsigned long *) (& fields->f_ui11));
