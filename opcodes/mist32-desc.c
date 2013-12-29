@@ -225,6 +225,8 @@ const CGEN_HW_ENTRY mist32_cgen_hw_table[] =
   { "h-iaddr", HW_H_IADDR, CGEN_ASM_NONE, 0, { 0, { { { (1<<MACH_BASE), 0 } } } } },
   { "h-pc", HW_H_PC, CGEN_ASM_NONE, 0, { 0|A(PC), { { { (1<<MACH_BASE), 0 } } } } },
   { "h-gr", HW_H_GR, CGEN_ASM_KEYWORD, (PTR) & mist32_cgen_opval_h_gr, { 0, { { { (1<<MACH_BASE), 0 } } } } },
+  { "h-int6", HW_H_INT6, CGEN_ASM_NONE, 0, { 0, { { { (1<<MACH_BASE), 0 } } } } },
+  { "h-uint6", HW_H_UINT6, CGEN_ASM_NONE, 0, { 0, { { { (1<<MACH_BASE), 0 } } } } },
   { "h-int11", HW_H_INT11, CGEN_ASM_NONE, 0, { 0, { { { (1<<MACH_BASE), 0 } } } } },
   { "h-uint11", HW_H_UINT11, CGEN_ASM_NONE, 0, { 0, { { { (1<<MACH_BASE), 0 } } } } },
   { "h-int16", HW_H_INT16, CGEN_ASM_NONE, 0, { 0, { { { (1<<MACH_BASE), 0 } } } } },
@@ -265,11 +267,17 @@ const CGEN_IFLD mist32_cgen_ifld_table[] =
   { MIST32_F_I16L, "f-i16l", 0, 32, 4, 5, { 0, { { { (1<<MACH_BASE), 0 } } } }  },
   { MIST32_F_I16, "f-i16", 0, 0, 0, 0,{ 0|A(VIRTUAL), { { { (1<<MACH_BASE), 0 } } } }  },
   { MIST32_F_UI16, "f-ui16", 0, 0, 0, 0,{ 0|A(VIRTUAL), { { { (1<<MACH_BASE), 0 } } } }  },
+  { MIST32_F_D6B, "f-d6b", 0, 32, 15, 6, { 0, { { { (1<<MACH_BASE), 0 } } } }  },
+  { MIST32_F_UD6B, "f-ud6b", 0, 32, 15, 6, { 0, { { { (1<<MACH_BASE), 0 } } } }  },
+  { MIST32_F_D6H, "f-d6h", 0, 32, 15, 6, { 0, { { { (1<<MACH_BASE), 0 } } } }  },
+  { MIST32_F_UD6H, "f-ud6h", 0, 32, 15, 6, { 0, { { { (1<<MACH_BASE), 0 } } } }  },
+  { MIST32_F_D6W, "f-d6w", 0, 32, 15, 6, { 0, { { { (1<<MACH_BASE), 0 } } } }  },
+  { MIST32_F_UD6W, "f-ud6w", 0, 32, 15, 6, { 0, { { { (1<<MACH_BASE), 0 } } } }  },
   { MIST32_F_CI16, "f-ci16", 0, 32, 15, 16, { 0, { { { (1<<MACH_BASE), 0 } } } }  },
   { MIST32_F_CI16W, "f-ci16w", 0, 32, 15, 16, { 0, { { { (1<<MACH_BASE), 0 } } } }  },
   { MIST32_F_P16, "f-p16", 0, 32, 15, 16, { 0|A(ABS_ADDR), { { { (1<<MACH_BASE), 0 } } } }  },
-  { MIST32_F_UP16R, "f-up16r", 0, 32, 15, 16, { 0|A(PCREL_ADDR), { { { (1<<MACH_BASE), 0 } } } }  },
   { MIST32_F_P16R, "f-p16r", 0, 32, 15, 16, { 0|A(PCREL_ADDR), { { { (1<<MACH_BASE), 0 } } } }  },
+  { MIST32_F_UP16R, "f-up16r", 0, 32, 15, 16, { 0|A(PCREL_ADDR), { { { (1<<MACH_BASE), 0 } } } }  },
   { MIST32_F_RESERVE1, "f-reserve1", 0, 32, 15, 6, { 0|A(RESERVED), { { { (1<<MACH_BASE), 0 } } } }  },
   { MIST32_F_RESERVE2, "f-reserve2", 0, 32, 9, 5, { 0|A(RESERVED), { { { (1<<MACH_BASE), 0 } } } }  },
   { MIST32_F_RESERVE3, "f-reserve3", 0, 32, 4, 5, { 0|A(RESERVED), { { { (1<<MACH_BASE), 0 } } } }  },
@@ -365,6 +373,30 @@ const CGEN_OPERAND mist32_cgen_operand_table[] =
 /* cc: condition code */
   { "cc", MIST32_OPERAND_CC, HW_H_CC, 19, 4,
     { 0, { (const PTR) &mist32_cgen_ifld_table[MIST32_F_CC] } }, 
+    { 0, { { { (1<<MACH_BASE), 0 } } } }  },
+/* d6b: 6bit byte displacement */
+  { "d6b", MIST32_OPERAND_D6B, HW_H_INT6, 15, 6,
+    { 0, { (const PTR) &mist32_cgen_ifld_table[MIST32_F_D6B] } }, 
+    { 0, { { { (1<<MACH_BASE), 0 } } } }  },
+/* ud6b: 6bit byte unsigned displacement */
+  { "ud6b", MIST32_OPERAND_UD6B, HW_H_UINT6, 15, 6,
+    { 0, { (const PTR) &mist32_cgen_ifld_table[MIST32_F_UD6B] } }, 
+    { 0, { { { (1<<MACH_BASE), 0 } } } }  },
+/* d6h: 6bit half-word displacement */
+  { "d6h", MIST32_OPERAND_D6H, HW_H_INT6, 15, 6,
+    { 0, { (const PTR) &mist32_cgen_ifld_table[MIST32_F_D6H] } }, 
+    { 0, { { { (1<<MACH_BASE), 0 } } } }  },
+/* ud6h: 6bit half-word unsigned disp */
+  { "ud6h", MIST32_OPERAND_UD6H, HW_H_UINT6, 15, 6,
+    { 0, { (const PTR) &mist32_cgen_ifld_table[MIST32_F_UD6H] } }, 
+    { 0, { { { (1<<MACH_BASE), 0 } } } }  },
+/* d6w: 6bit word displacement */
+  { "d6w", MIST32_OPERAND_D6W, HW_H_INT6, 15, 6,
+    { 0, { (const PTR) &mist32_cgen_ifld_table[MIST32_F_D6W] } }, 
+    { 0, { { { (1<<MACH_BASE), 0 } } } }  },
+/* ud6w: 6bit word unsigned displacement */
+  { "ud6w", MIST32_OPERAND_UD6W, HW_H_UINT6, 15, 6,
+    { 0, { (const PTR) &mist32_cgen_ifld_table[MIST32_F_UD6W] } }, 
     { 0, { { { (1<<MACH_BASE), 0 } } } }  },
 /* i11: 11bit immediate */
   { "i11", MIST32_OPERAND_I11, HW_H_INT11, 4, 11,
@@ -805,6 +837,36 @@ static const CGEN_IBASE mist32_cgen_insn_table[MAX_INSNS] =
 /* pop $rd */
   {
     MIST32_INSN_POP, "pop", "pop", 32,
+    { 0, { { { (1<<MACH_BASE), 0 } } } }
+  },
+/* ldd8 $rd,$rs,$d6b */
+  {
+    MIST32_INSN_LDD8, "ldd8", "ldd8", 32,
+    { 0, { { { (1<<MACH_BASE), 0 } } } }
+  },
+/* ldd16 $rd,$rs,$d6h */
+  {
+    MIST32_INSN_LDD16, "ldd16", "ldd16", 32,
+    { 0, { { { (1<<MACH_BASE), 0 } } } }
+  },
+/* ldd32 $rd,$rs,$d6w */
+  {
+    MIST32_INSN_LDD32, "ldd32", "ldd32", 32,
+    { 0, { { { (1<<MACH_BASE), 0 } } } }
+  },
+/* std8 $rd,$rs,$d6b */
+  {
+    MIST32_INSN_STD8, "std8", "std8", 32,
+    { 0, { { { (1<<MACH_BASE), 0 } } } }
+  },
+/* std16 $rd,$rs,$d6h */
+  {
+    MIST32_INSN_STD16, "std16", "std16", 32,
+    { 0, { { { (1<<MACH_BASE), 0 } } } }
+  },
+/* std32 $rd,$rs,$d6w */
+  {
+    MIST32_INSN_STD32, "std32", "std32", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
   },
 /* bur $rd,$cc */
