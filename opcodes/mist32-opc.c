@@ -268,6 +268,30 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
     { { MNEM, ' ', OP (RD), ',', OP (RS), 0 } },
     & ifmt_add, { 0x1200000 }
   },
+/* umull $rd,$rs */
+  {
+    { 0, 0, 0, 0 },
+    { { MNEM, ' ', OP (RD), ',', OP (RS), 0 } },
+    & ifmt_add, { 0x1400000 }
+  },
+/* umull $rd,$ui11 */
+  {
+    { 0, 0, 0, 0 },
+    { { MNEM, ' ', OP (RD), ',', OP (UI11), 0 } },
+    & ifmt_udivi, { 0x1500000 }
+  },
+/* umulh $rd,$rs */
+  {
+    { 0, 0, 0, 0 },
+    { { MNEM, ' ', OP (RD), ',', OP (RS), 0 } },
+    & ifmt_add, { 0x1600000 }
+  },
+/* umulh $rd,$ui11 */
+  {
+    { 0, 0, 0, 0 },
+    { { MNEM, ' ', OP (RD), ',', OP (UI11), 0 } },
+    & ifmt_udivi, { 0x1700000 }
+  },
 /* addc $rd,$rs */
   {
     { 0, 0, 0, 0 },
@@ -285,6 +309,54 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
     { 0, 0, 0, 0 },
     { { MNEM, ' ', OP (RD), ',', OP (RS), 0 } },
     & ifmt_add, { 0x2200000 }
+  },
+/* max $rd,$rs */
+  {
+    { 0, 0, 0, 0 },
+    { { MNEM, ' ', OP (RD), ',', OP (RS), 0 } },
+    & ifmt_add, { 0x2600000 }
+  },
+/* max $rd,$i11 */
+  {
+    { 0, 0, 0, 0 },
+    { { MNEM, ' ', OP (RD), ',', OP (I11), 0 } },
+    & ifmt_addi, { 0x2700000 }
+  },
+/* min $rd,$rs */
+  {
+    { 0, 0, 0, 0 },
+    { { MNEM, ' ', OP (RD), ',', OP (RS), 0 } },
+    & ifmt_add, { 0x2800000 }
+  },
+/* min $rd,$i11 */
+  {
+    { 0, 0, 0, 0 },
+    { { MNEM, ' ', OP (RD), ',', OP (I11), 0 } },
+    & ifmt_addi, { 0x2900000 }
+  },
+/* umax $rd,$rs */
+  {
+    { 0, 0, 0, 0 },
+    { { MNEM, ' ', OP (RD), ',', OP (RS), 0 } },
+    & ifmt_add, { 0x2a00000 }
+  },
+/* umax $rd,$ui11 */
+  {
+    { 0, 0, 0, 0 },
+    { { MNEM, ' ', OP (RD), ',', OP (UI11), 0 } },
+    & ifmt_udivi, { 0x2b00000 }
+  },
+/* umin $rd,$rs */
+  {
+    { 0, 0, 0, 0 },
+    { { MNEM, ' ', OP (RD), ',', OP (RS), 0 } },
+    & ifmt_add, { 0x2c00000 }
+  },
+/* umin $rd,$ui11 */
+  {
+    { 0, 0, 0, 0 },
+    { { MNEM, ' ', OP (RD), ',', OP (UI11), 0 } },
+    & ifmt_udivi, { 0x2d00000 }
   },
 /* sext8 $rd,$rs */
   {
