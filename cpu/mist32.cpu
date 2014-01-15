@@ -756,12 +756,19 @@
 (o2-i11-op  div             OP_7)
 (o2-i11-op  mod             OP_8)
 (o2-op      neg             OP_9)
-;; 10 - 13
+(o2-ui11-op umull           OP_10)
+(o2-ui11-op umulh           OP_11)
+;; 12, 13
 (o2-op      addc            OP_14)
 ;; 15
 (o2-op      inc             OP_16)
 (o2-op      dec             OP_17)
-;; 18 - 27
+;; 18
+(o2-i11-op  max             OP_19)
+(o2-i11-op  min             OP_20)
+(o2-ui11-op umax            OP_21)
+(o2-ui11-op umin            OP_22)
+;; 23 - 27
 (o2-op      sext8           OP_28)
 (o2-op      sext16          OP_29)
 ;; 30 - 32
@@ -903,3 +910,5 @@
 (o1-ui11-op swi             OP_288)
 (o2-p11w-op tas             OP_289)
 (c-op       idts            OP_290)
+;; 291      ldl
+;; 292      stc
