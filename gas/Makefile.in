@@ -427,6 +427,7 @@ TARGET_CPU_CFILES = \
 	config/tc-metag.c \
 	config/tc-microblaze.c \
 	config/tc-mips.c \
+	config/tc-mist32.c \
 	config/tc-mmix.c \
 	config/tc-mn10200.c \
 	config/tc-mn10300.c \
@@ -499,6 +500,7 @@ TARGET_CPU_HFILES = \
 	config/tc-metag.h \
 	config/tc-microblaze.h \
 	config/tc-mips.h \
+	config/tc-mist32.h \
 	config/tc-mmix.h \
 	config/tc-mn10200.h \
 	config/tc-mn10300.h \
@@ -848,6 +850,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tc-metag.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tc-microblaze.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tc-mips.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tc-mist32.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tc-mmix.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tc-mn10200.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tc-mn10300.Po@am__quote@
@@ -1383,6 +1386,20 @@ tc-mips.obj: config/tc-mips.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='config/tc-mips.c' object='tc-mips.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o tc-mips.obj `if test -f 'config/tc-mips.c'; then $(CYGPATH_W) 'config/tc-mips.c'; else $(CYGPATH_W) '$(srcdir)/config/tc-mips.c'; fi`
+
+tc-mist32.o: config/tc-mist32.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT tc-mist32.o -MD -MP -MF $(DEPDIR)/tc-mist32.Tpo -c -o tc-mist32.o `test -f 'config/tc-mist32.c' || echo '$(srcdir)/'`config/tc-mist32.c
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/tc-mist32.Tpo $(DEPDIR)/tc-mist32.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='config/tc-mist32.c' object='tc-mist32.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o tc-mist32.o `test -f 'config/tc-mist32.c' || echo '$(srcdir)/'`config/tc-mist32.c
+
+tc-mist32.obj: config/tc-mist32.c
+@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT tc-mist32.obj -MD -MP -MF $(DEPDIR)/tc-mist32.Tpo -c -o tc-mist32.obj `if test -f 'config/tc-mist32.c'; then $(CYGPATH_W) 'config/tc-mist32.c'; else $(CYGPATH_W) '$(srcdir)/config/tc-mist32.c'; fi`
+@am__fastdepCC_TRUE@	$(am__mv) $(DEPDIR)/tc-mist32.Tpo $(DEPDIR)/tc-mist32.Po
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='config/tc-mist32.c' object='tc-mist32.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -o tc-mist32.obj `if test -f 'config/tc-mist32.c'; then $(CYGPATH_W) 'config/tc-mist32.c'; else $(CYGPATH_W) '$(srcdir)/config/tc-mist32.c'; fi`
 
 tc-mmix.o: config/tc-mmix.c
 @am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -MT tc-mmix.o -MD -MP -MF $(DEPDIR)/tc-mmix.Tpo -c -o tc-mmix.o `test -f 'config/tc-mmix.c' || echo '$(srcdir)/'`config/tc-mmix.c
