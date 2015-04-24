@@ -869,7 +869,9 @@
 (o1-op      srfrclr         OP_213)
 (o1-op      srfrchr         OP_214)
 (o1-op      srpflagr        OP_215)
-;; 216 - 223
+(o1-op      srfi0r          OP_216)
+(o1-op      srfi1r          OP_217)
+;; 218 - 223
 
 ; System Write
 (o1-op      srspw           OP_224)
