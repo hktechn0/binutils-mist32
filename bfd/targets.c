@@ -718,6 +718,7 @@ extern const bfd_target mep_elf32_le_vec;
 extern const bfd_target metag_elf32_vec;
 extern const bfd_target microblaze_elf32_vec;
 extern const bfd_target microblaze_elf32_le_vec;
+extern const bfd_target mist32_elf32_vec;
 extern const bfd_target mips_aout_be_vec;
 extern const bfd_target mips_aout_le_vec;
 extern const bfd_target mips_ecoff_be_vec;
@@ -1174,6 +1175,7 @@ static const bfd_target * const _bfd_target_vector[] =
 	&metag_elf32_vec,
 
 	&microblaze_elf32_vec,
+	&mist32_elf32_vec,
 
 #if 0
 	/* No one seems to use this.  */
