@@ -1105,6 +1105,13 @@ case "${targ}" in
     # Generic vectors
     targ_selvecs="${targ_selvecs} mips_elf32_trad_be_vec mips_elf32_trad_le_vec mips_elf32_ntrad_be_vec mips_elf64_trad_be_vec mips_elf32_ntrad_le_vec mips_elf64_trad_le_vec"
     ;;
+#endif
+
+  mist32-*-elf)
+    targ_defvec=mist32_elf32_vec
+    ;;
+
+#ifdef BFD64
   mmix-*-*)
     targ_defvec=mmix_elf64_vec
     targ_selvecs=mmix_mmo_vec

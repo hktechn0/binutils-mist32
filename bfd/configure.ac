@@ -844,6 +844,7 @@ do
     metag_elf32_vec)		 tb="$tb elf32-metag.lo elf32.lo $elf" ;;
     microblaze_elf32_vec)	 tb="$tb elf32-microblaze.lo elf32.lo $elf" ;;
     microblaze_elf32_le_vec)	 tb="$tb elf32-microblaze.lo elf32.lo $elf" ;;
+    mist32_elf32_vec)		 tb="$tb elf32-mist32.lo elf32.lo $elf" ;;
     mips_ecoff_be_vec)		 tb="$tb coff-mips.lo ecoff.lo ecofflink.lo" ;;
     mips_ecoff_le_vec)		 tb="$tb coff-mips.lo ecoff.lo ecofflink.lo" ;;
     mips_ecoff_bele_vec)	 tb="$tb coff-mips.lo ecoff.lo ecofflink.lo" ;;

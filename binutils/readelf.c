@@ -125,6 +125,7 @@
 #include "elf/metag.h"
 #include "elf/microblaze.h"
 #include "elf/mips.h"
+#include "elf/mist32.h"
 #include "elf/mmix.h"
 #include "elf/mn10200.h"
 #include "elf/mn10300.h"
@@ -706,6 +707,7 @@ guess_is_rela (unsigned int e_machine)
     case EM_MCORE:
     case EM_CYGNUS_MEP:
     case EM_METAG:
+    case EM_MIST32:
     case EM_MMIX:
     case EM_MN10200:
     case EM_CYGNUS_MN10200:
@@ -1408,6 +1410,10 @@ dump_relocations (FILE * file,
 
 	case EM_ALTERA_NIOS2:
 	  rtype = elf_nios2_reloc_type (type);
+	  break;
+
+	case EM_MIST32:
+	  rtype = elf_mist32_reloc_type (type);
 	  break;
 	}
 
@@ -2178,6 +2184,7 @@ get_machine_name (unsigned e_machine)
     case EM_TILEGX:		return "Tilera TILE-Gx multicore architecture family";
     case EM_CUDA:		return "NVIDIA CUDA architecture";
     case EM_XGATE:		return "Motorola XGATE embedded processor";
+    case EM_MIST32:		return "mist32 architecture";
     default:
       snprintf (buff, sizeof (buff), _("<unknown>: 0x%x"), e_machine);
       return buff;

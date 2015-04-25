@@ -380,6 +380,10 @@ changequote([,])dnl
 	fi
 	;;
 
+      mist32)
+	using_cgen=yes
+	;;
+
       mt)
         using_cgen=yes
 	;;

@@ -291,6 +291,7 @@ case $basic_machine in
 	| mipsisa64sr71k | mipsisa64sr71kel \
 	| mipsr5900 | mipsr5900el \
 	| mipstx39 | mipstx39el \
+	| mist32 \
 	| mn10200 | mn10300 \
 	| moxie \
 	| mt \
@@ -411,6 +412,7 @@ case $basic_machine in
 	| mipsisa64sr71k-* | mipsisa64sr71kel-* \
 	| mipsr5900-* | mipsr5900el-* \
 	| mipstx39-* | mipstx39el-* \
+	| mist32-* \
 	| mmix-* \
 	| mt-* \
 	| msp430-* \

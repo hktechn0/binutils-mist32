@@ -1,0 +1,17 @@
+/* mist32 opcode support.  -*- C -*-
+   Copyright (C) 2011 Hirotaka Kawata
+   This file is part of CGEN.  */
+
+/* -- opc.h */
+
+#undef  CGEN_DIS_HASH_SIZE
+#define CGEN_DIS_HASH_SIZE 256
+#undef  CGEN_DIS_HASH
+#define CGEN_DIS_HASH(buffer, value) ((unsigned char *) (buffer))[3]
+
+/* ??? Until cgen disassembler complete and functioning well, redirect back
+   to old disassembler.  
+#define CGEN_PRINT_INSN(od, pc, info) print_insn_mist32_orig (pc, info)
+*/
+
+/* -- */
