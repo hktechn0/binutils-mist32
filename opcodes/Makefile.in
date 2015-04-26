@@ -350,6 +350,7 @@ HFILES = \
 	mcore-opc.h \
 	mep-desc.h mep-opc.h \
 	microblaze-opc.h \
+	mist32-desc.h mist32-opc.h \
 	mt-desc.h mt-opc.h \
 	score-opc.h \
 	sh-opc.h \
@@ -467,6 +468,11 @@ TARGET_LIBOPCODES_CFILES = \
 	mips-dis.c \
 	mips-opc.c \
 	mips16-opc.c \
+	mist32-desc.c \
+	mist32-opc.c \
+	mist32-ibld.c \
+	mist32-asm.c \
+	mist32-dis.c \
 	mmix-dis.c \
 	mmix-opc.c \
 	moxie-dis.c \
@@ -594,6 +600,7 @@ CLEANFILES = \
 	stamp-epiphany stamp-fr30 stamp-frv stamp-ip2k stamp-iq2000 stamp-lm32 \
 	stamp-m32c stamp-m32r stamp-mep stamp-mt \
 	stamp-or1k stamp-xc16x stamp-xstormy16 \
+	stamp-mist32 \
 	libopcodes.a stamp-lib
 
 CGENDIR = @cgendir@
@@ -607,7 +614,7 @@ CGENDEPS = \
 	$(CGENDIR)/opc-opinst.scm \
 	cgen-asm.in cgen-dis.in cgen-ibld.in
 
-CGEN_CPUS = epiphany fr30 frv ip2k iq2000 lm32 m32c m32r mep mt or1k xc16x xstormy16
+CGEN_CPUS = epiphany fr30 frv ip2k iq2000 lm32 m32c m32r mep mist32 mt or1k xc16x xstormy16
 @CGEN_MAINT_FALSE@EPIPHANY_DEPS = 
 @CGEN_MAINT_TRUE@EPIPHANY_DEPS = stamp-epiphany
 @CGEN_MAINT_FALSE@FR30_DEPS = 
@@ -626,6 +633,8 @@ CGEN_CPUS = epiphany fr30 frv ip2k iq2000 lm32 m32c m32r mep mt or1k xc16x xstor
 @CGEN_MAINT_TRUE@M32R_DEPS = stamp-m32r
 @CGEN_MAINT_FALSE@MEP_DEPS = 
 @CGEN_MAINT_TRUE@MEP_DEPS = stamp-mep
+@CGEN_MAINT_FALSE@MIST32_DEPS = 
+@CGEN_MAINT_TRUE@MIST32_DEPS = stamp-mist32
 @CGEN_MAINT_FALSE@MT_DEPS = 
 @CGEN_MAINT_TRUE@MT_DEPS = stamp-mt
 @CGEN_MAINT_FALSE@OR1K_DEPS = 
@@ -867,6 +876,11 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mips-dis.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mips-opc.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mips16-opc.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mist32-asm.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mist32-desc.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mist32-dis.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mist32-ibld.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mist32-opc.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mmix-dis.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mmix-opc.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/moxie-dis.Plo@am__quote@
@@ -1358,6 +1372,12 @@ $(srcdir)/mep-desc.h $(srcdir)/mep-desc.c $(srcdir)/mep-opc.h $(srcdir)/mep-opc.
 stamp-mep: $(CGENDEPS) $(CPUDIR)/mep.cpu $(CPUDIR)/mep-default.cpu $(CPUDIR)/mep-core.cpu $(CPUDIR)/mep-h1.cpu $(CPUDIR)/mep-ext-cop.cpu $(CPUDIR)/mep-sample-ucidsp.cpu $(CPUDIR)/mep-rhcop.cpu $(CPUDIR)/mep-fmax.cpu $(CPUDIR)/mep.opc
 	$(MAKE) run-cgen arch=mep prefix=mep options= \
 		archfile=$(CPUDIR)/mep.cpu opcfile=$(CPUDIR)/mep.opc extrafiles=
+
+$(srcdir)/mist32-desc.h $(srcdir)/mist32-desc.c $(srcdir)/mist32-opc.h $(srcdir)/mist32-opc.c $(srcdir)/mist32-ibld.c $(srcdir)/mist32-asm.c $(srcdir)/mist32-dis.c: $(MIST32_DEPS)
+	@true
+stamp-mist32: $(CGENDEPS) $(srcdir)/../cpu/mist32.cpu $(srcdir)/../cpu/mist32.opc
+	$(MAKE) run-cgen arch=mist32 prefix=mist32 options= \
+		archfile=$(srcdir)/../cpu/mist32.cpu opcfile=$(srcdir)/../cpu/mist32.opc extrafiles=
 
 $(srcdir)/mt-desc.h $(srcdir)/mt-desc.c $(srcdir)/mt-opc.h $(srcdir)/mt-opc.c $(srcdir)/mt-ibld.c $(srcdir)/mt-asm.c $(srcdir)/mt-dis.c: $(MT_DEPS)
 	@true

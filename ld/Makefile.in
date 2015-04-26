@@ -554,6 +554,7 @@ ALL_EMULATION_SOURCES = \
 	eelf32metag.c \
 	eelf32microblazeel.c \
 	eelf32microblaze.c \
+	eelf32mist32.c \
 	eelf32moxie.c \
 	emoxiebox.c \
 	eelf32mt.c \
@@ -1173,6 +1174,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/eelf32microblaze.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/eelf32microblazeel.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/eelf32mipswindiss.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/eelf32mist32.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/eelf32moxie.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/eelf32mt.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/eelf32or1k.Po@am__quote@
@@ -2595,6 +2597,9 @@ eelf32microblazeel.c: $(srcdir)/emulparams/elf32microblazeel.sh \
 
 eelf32microblaze.c: $(srcdir)/emulparams/elf32microblaze.sh \
   $(ELF_DEPS) $(srcdir)/scripttempl/elfmicroblaze.sc ${GEN_DEPENDS}
+
+eelf32mist32.c: $(srcdir)/emulparams/elf32mist32.sh \
+  $(ELF_GEN_DEPS) $(srcdir)/scripttempl/elf.sc ${GEN_DEPENDS}
 
 eelf32mipswindiss.c: $(srcdir)/emulparams/elf32mipswindiss.sh $(ELF_DEPS) \
   $(srcdir)/scripttempl/elf.sc ${GEN_DEPENDS}
