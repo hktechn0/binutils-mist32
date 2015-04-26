@@ -1,5 +1,5 @@
 /* mist32 ELF support for BFD.
-   Copyright 1999, 2000, 2010 Free Software Foundation, Inc.
+   Copyright 2011 Free Software Foundation, Inc.
    Written by Hirotaka Kawata <hirotaka@techno-st.net>
 
    This file is part of BFD, the Binary File Descriptor library.
@@ -23,10 +23,15 @@
 
 #include "elf/reloc-macros.h"
 
-
+/* Relocations.  */
 START_RELOC_NUMBERS (elf_mist32_reloc_type)
-     RELOC_NUMBER (R_MIST32_NONE, 0)
-     RELOC_NUMBER (R_MIST32_32, 1)
+  RELOC_NUMBER (R_MIST32_NONE, 0)
+  RELOC_NUMBER (R_MIST32_INSN_REL_16, 1)
+  RELOC_NUMBER (R_MIST32_INSN_REL_U16, 2)
+  RELOC_NUMBER (R_MIST32_INSN_ABS_16, 3)
+  RELOC_NUMBER (R_MIST32_8, 4)
+  RELOC_NUMBER (R_MIST32_16, 5)
+  RELOC_NUMBER (R_MIST32_32, 6)
 END_RELOC_NUMBERS (R_MIST32_max)
 
 #endif /* _ELF_MIST32_H */

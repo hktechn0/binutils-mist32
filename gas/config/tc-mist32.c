@@ -1,6 +1,7 @@
 /* tc-mist32.c -- Assembler for the mist32.
    Copyright 2011
    Free Software Foundation. Inc.
+   Contributed by Hirotaka Kawata <hirotaka@techno-st.net>
 
    This file is part of GAS, the GNU Assembler.
 
@@ -25,21 +26,10 @@
 #include "opcodes/mist32-desc.h"
 #include "opcodes/mist32-opc.h"
 #include "cgen.h"
-#include "elf/common.h"
-#include "elf/mist32.h"
-#include "libbfd.h"
-#include "safe-ctype.h"
 
-const char comment_chars[]        = ";";
-const char line_comment_chars[]   = "#;";
-const char line_separator_chars[] = "";
-const char EXP_CHARS[]            = "eE";
-const char FLT_CHARS[]            = "RrFf";
+typedef struct mist32_insn mist32_insn;
 
-#define DEFAULT_MACHINE bfd_mach_mist32
-static unsigned long mist32_mach = bfd_mach_mist32;
-
-typedef struct
+struct mist32_insn
 {
   const CGEN_INSN *	insn;
   const CGEN_INSN *	orig_insn;
@@ -56,15 +46,34 @@ typedef struct
   int                   num_fixups;
   fixS *                fixups [GAS_CGEN_MAX_FIXUPS];
   int                   indices [MAX_OPERAND_INSTANCES];
-}
-mist32_insn;
+};
+
+const char comment_chars[]        = ";";
+const char line_comment_chars[]   = "#;";
+const char line_separator_chars[] = "";
+const char EXP_CHARS[]            = "eE";
+const char FLT_CHARS[]            = "RrFf";
 
 /* options */
 const char *md_shortopts = "";
+
 struct option md_longopts[] = {
   {NULL, no_argument, NULL, 0}
 };
 size_t md_longopts_size = sizeof (md_longopts);
+
+unsigned long mist32_machine = 0; /* default */
+
+int
+md_parse_option (int c ATTRIBUTE_UNUSED, char * arg ATTRIBUTE_UNUSED)
+{
+  return 0;
+}
+
+void
+md_show_usage (FILE * stream ATTRIBUTE_UNUSED)
+{
+}
 
 /* support pseudo-opts */
 const pseudo_typeS md_pseudo_table[] =
@@ -72,23 +81,6 @@ const pseudo_typeS md_pseudo_table[] =
   { NULL, 	NULL, 		0 }
 };
 
-
-int
-md_parse_option (int c, char * arg ATTRIBUTE_UNUSED)
-{
-  switch(c)
-    {
-    default:
-      break;
-    }
-  return 0;
-}
-
-void
-md_show_usage (FILE * stream)
-{
-  fprintf (stream, _(" mist32 specific command line options:\n"));
-}
 
 void
 md_begin (void)
@@ -105,13 +97,6 @@ md_begin (void)
 
   /* This is a callback from cgen to gas to parse operands.  */
   cgen_set_parse_operand_fn (gas_cgen_cpu_desc, gas_cgen_parse_operand);
-
-  /* Set the ELF flags if desired. */
-  /*  if (m32c_flags)
-      bfd_set_private_flags (stdoutput, m32c_flags);*/
-
-  /* Set the machine type */
-  bfd_default_set_arch_mach (stdoutput, bfd_arch_mist32, mist32_mach);
 }
 
 void
@@ -119,12 +104,9 @@ md_assemble (char *str)
 {
   mist32_insn insn;
   char *errmsg;
-  finished_insnS results;
   
   /* Initialize GAS's cgen interface for a new instruction.  */
   gas_cgen_init_parse ();
-  
-  memset (&insn, 0, sizeof (insn));
   
   insn.insn = mist32_cgen_assemble_insn
     (gas_cgen_cpu_desc, str, & insn.fields, insn.buffer, &errmsg);
@@ -137,8 +119,9 @@ md_assemble (char *str)
   
   /* Doesn't really matter what we pass for RELAX_P here.  */
   gas_cgen_finish_insn (insn.insn, insn.buffer,
-			CGEN_FIELDS_BITSIZE (& insn.fields), 1, &results);
+			CGEN_FIELDS_BITSIZE (& insn.fields), 1, NULL);
 }
+
 
 /* The syntax in the manual says constants begin with '#'.
    We just ignore it.  */
@@ -166,11 +149,14 @@ md_undefined_symbol (char *name ATTRIBUTE_UNUSED)
   return 0;
 }
 
-char *
-md_atof (int type, char *litP, int *sizeP)
+
+/* Interface to relax_segment.  */
+int
+md_estimate_size_before_relax (fragS *fragP ATTRIBUTE_UNUSED, segT segment ATTRIBUTE_UNUSED)
 {
-  return ieee_md_atof (type, litP, sizeP, TRUE);
-}
+  /* No assembler relaxation is defined (or necessary) for this port.  */
+  abort ();
+} 
 
 void
 md_convert_frag (bfd *   abfd ATTRIBUTE_UNUSED,
@@ -180,6 +166,12 @@ md_convert_frag (bfd *   abfd ATTRIBUTE_UNUSED,
   /* No assembler relaxation is defined (or necessary) for this port.  */
   abort ();
 }
+
+
+/* Functions concerning relocs.  */
+
+/* The location from which a PC relative jump should be calculated,
+   given a PC relative reloc.  */
 
 long
 md_pcrel_from_section (fixS * fixP, segT sec)
@@ -191,56 +183,9 @@ md_pcrel_from_section (fixS * fixP, segT sec)
        Let the linker figure it out.  */
     return 0;
 
-  return (fixP->fx_frag->fr_address + fixP->fx_where);
+  return (fixP->fx_frag->fr_address + fixP->fx_where) & ~3;
 }
 
-void
-md_number_to_chars (char * buf, valueT val, int n)
-{
-  number_to_chars_bigendian (buf, val, n);
-}
-
-
-int
-md_estimate_size_before_relax (fragS *fragP ATTRIBUTE_UNUSED, segT segment ATTRIBUTE_UNUSED)
-{
-  /* No assembler relaxation is defined (or necessary) for this port.  */
-  abort ();
-} 
-
-arelent *
-tc_gen_reloc (asection *sec, fixS *fx)
-{
-  /*  if (fx->fx_r_type == BFD_RELOC_M32C_RL_JUMP
-      || fx->fx_r_type == BFD_RELOC_M32C_RL_1ADDR
-      || fx->fx_r_type == BFD_RELOC_M32C_RL_2ADDR)*/
-  if(0)
-    {
-      arelent * reloc;
- 
-      reloc = xmalloc (sizeof (* reloc));
- 
-      reloc->sym_ptr_ptr = xmalloc (sizeof (asymbol *));
-      *reloc->sym_ptr_ptr = symbol_get_bfdsym (fx->fx_addsy);
-      reloc->address = fx->fx_frag->fr_address + fx->fx_where;
-      reloc->howto = bfd_reloc_type_lookup (stdoutput, fx->fx_r_type);
-      reloc->addend = fx->fx_offset;
-      return reloc;
-
-    }
-  return gas_cgen_tc_gen_reloc (sec, fx);
-}
-
-void
-md_apply_fix (struct fix *f, valueT *t, segT s)
-{
-  /*  if (f->fx_r_type == BFD_RELOC_M32C_RL_JUMP
-      || f->fx_r_type == BFD_RELOC_M32C_RL_1ADDR
-      || f->fx_r_type == BFD_RELOC_M32C_RL_2ADDR)
-    return;
-  */
-  gas_cgen_md_apply_fix (f, t, s);
-}
 
 /* Return the bfd reloc type for OPERAND of INSN at fixup FIXP.
    Returns BFD_RELOC_NONE if no reloc type can be found.
@@ -249,17 +194,67 @@ md_apply_fix (struct fix *f, valueT *t, segT s)
 bfd_reloc_code_real_type
 md_cgen_lookup_reloc (const CGEN_INSN *    insn ATTRIBUTE_UNUSED,
 		      const CGEN_OPERAND * operand,
-		      fixS *               fixP ATTRIBUTE_UNUSED)
+		      fixS *               fixP)
 {
+  /*
+    case MIST32_OPERAND_xx:
+    fixP->fx_pcrel = 1;
+    return BFD_RELOC_MIST32_xx;
+  */
   switch (operand->type)
     {
-    case MIST32_OPERAND_I11:  return BFD_RELOC_NONE;
-      /*
-	case MIST32_OPERAND_xx: fixP->fx_pcrel = 1; return BFD_RELOC_32;
-      */
+    case MIST32_OPERAND_P16:
+      fixP->fx_pcrel = 0;
+      return BFD_RELOC_MIST32_ABS_16;
+
+    case MIST32_OPERAND_P16R:
+      fixP->fx_pcrel = 1;
+      return BFD_RELOC_MIST32_REL_16;
+    case MIST32_OPERAND_SP16R:
+      fixP->fx_pcrel = 1;
+      return BFD_RELOC_MIST32_REL_U16;
+      
     default : /* Avoid -Wall warning.  */
       break;
     }
 
   return BFD_RELOC_NONE;
+}
+
+
+/* Write a value out to the object file, using the appropriate endianness.  */
+
+void
+md_number_to_chars (char * buf, valueT val, int n)
+{
+  number_to_chars_bigendian (buf, val, n);
+}
+
+/* Turn a string in input_line_pointer into a floating point constant of type
+   type, and store the appropriate bytes in *litP.  The number of LITTLENUMS
+   emitted is stored in *sizeP .  An error message is returned, or NULL on OK.
+*/
+
+/* Equal to MAX_PRECISION in atof-ieee.c.  */
+#define MAX_LITTLENUMS 6
+
+char *
+md_atof (int type, char *litP, int *sizeP)
+{
+  return ieee_md_atof (type, litP, sizeP, TRUE);
+}
+
+
+/* Return true if can adjust the reloc to be relative to its section
+   (such as .data) instead of relative to some symbol.  */
+
+bfd_boolean
+mist32_fix_adjustable (fixS * fixP)
+{
+  /* We need the symbol name for the VTABLE entries.  */
+  if (fixP->fx_r_type == BFD_RELOC_VTABLE_INHERIT
+      || fixP->fx_r_type == BFD_RELOC_VTABLE_ENTRY)
+    return 0;
+
+  return 1;
 }
