@@ -28,6 +28,7 @@
 
 static reloc_howto_type mist32_elf_howto_table[]=
 {
+  /* This reloc does nothing.  */
   HOWTO (R_MIST32_NONE,	        /* type */
 	 0,			/* rightshift */
 	 0,			/* size (0 = byte, 1 = short, 2 = long) */
@@ -42,6 +43,82 @@ static reloc_howto_type mist32_elf_howto_table[]=
 	 0,			/* dst_mask */
 	 FALSE),		/* pcrel_offset */
 
+  /* A PC relative signed 16 bit relocation, right shifted by 2.  */
+  HOWTO (R_MIST32_INSN_REL_16,  /* type */
+	 2,			/* rightshift */
+	 2,			/* size (0 = byte, 1 = short, 2 = long) */
+	 16,			/* bitsize */
+	 TRUE,			/* pc_relative */
+	 0,			/* bitpos */
+	 complain_overflow_signed, /* complain_on_overflow */
+	 bfd_elf_generic_reloc,	/* special_function */
+	 "R_MIST32_INSN_REL_16", /* name */
+	 FALSE,			/* partial_inplace */
+	 0x00000000,		/* src_mask */
+	 0x0000ffff,		/* dst_mask */
+	 FALSE),		/* pcrel_offset */
+
+  /* A PC relative unsigned 16 bit relocation, right shifted by 2.  */
+  HOWTO (R_MIST32_INSN_REL_U16, /* type */
+	 2,			/* rightshift */
+	 2,			/* size (0 = byte, 1 = short, 2 = long) */
+	 16,			/* bitsize */
+	 TRUE,			/* pc_relative */
+	 0,			/* bitpos */
+	 complain_overflow_signed, /* complain_on_overflow */
+	 bfd_elf_generic_reloc,	/* special_function */
+	 "R_MIST32_INSN_REL_U16", /* name */
+	 FALSE,			/* partial_inplace */
+	 0x00000000,		/* src_mask */
+	 0x0000ffff,		/* dst_mask */
+	 FALSE),		/* pcrel_offset */
+
+  /* A absolute 16 bit relocation, right shifted by 2.  */
+  HOWTO (R_MIST32_INSN_ABS_16,  /* type */
+	 2,			/* rightshift */
+	 2,			/* size (0 = byte, 1 = short, 2 = long) */
+	 16,			/* bitsize */
+	 FALSE,			/* pc_relative */
+	 0,			/* bitpos */
+	 complain_overflow_unsigned, /* complain_on_overflow */
+	 bfd_elf_generic_reloc,	/* special_function */
+	 "R_MIST32_INSN_ABS_16", /* name */
+	 FALSE,			/* partial_inplace */
+	 0x00000000,		/* src_mask */
+	 0x0000ffff,		/* dst_mask */
+	 FALSE),		/* pcrel_offset */
+
+  /* A 8 bit absolute relocation.  */
+  HOWTO (R_MIST32_8,		/* type */
+	 0,			/* rightshift */
+	 0,			/* size (0 = byte, 1 = short, 2 = long) */
+	 8,			/* bitsize */
+	 FALSE,			/* pc_relative */
+	 0,			/* bitpos */
+	 complain_overflow_bitfield, /* complain_on_overflow */
+	 bfd_elf_generic_reloc,	/* special_function */
+	 "R_MIST32_8",		/* name */
+	 TRUE,			/* partial_inplace */
+	 0x00000000,		/* src_mask */
+	 0x000000ff,		/* dst_mask */
+	 FALSE),		/* pcrel_offset */
+
+  /* A 16 bit absolute relocation.  */
+  HOWTO (R_MIST32_16,		/* type */
+	 0,			/* rightshift */
+	 1,			/* size (0 = byte, 1 = short, 2 = long) */
+	 16,			/* bitsize */
+	 FALSE,			/* pc_relative */
+	 0,			/* bitpos */
+	 complain_overflow_bitfield, /* complain_on_overflow */
+	 bfd_elf_generic_reloc,	/* special_function */
+	 "R_MIST32_16",		/* name */
+	 TRUE,			/* partial_inplace */
+	 0x00000000,		/* src_mask */
+	 0x0000ffff,		/* dst_mask */
+	 FALSE),		/* pcrel_offset */
+
+  /* A 32 bit absolute relocation.  */
   HOWTO (R_MIST32_32,		/* type */
 	 0,			/* rightshift */
 	 2,			/* size (0 = byte, 1 = short, 2 = long) */
@@ -51,11 +128,14 @@ static reloc_howto_type mist32_elf_howto_table[]=
 	 complain_overflow_bitfield, /* complain_on_overflow */
 	 bfd_elf_generic_reloc,	/* special_function */
 	 "R_MIST32_32",		/* name */
-	 FALSE,			/* partial_inplace */
-	 0,			/* src_mask */
+	 TRUE,			/* partial_inplace */
+	 0x00000000,		/* src_mask */
 	 0xffffffff,		/* dst_mask */
 	 FALSE),		/* pcrel_offset */
+
 };
+
+/* Map BFD reloc types to OpenRISC ELF reloc types.  */
 
 struct mist32_reloc_map
 {
@@ -67,6 +147,11 @@ static const struct mist32_reloc_map mist32_reloc_map [] =
 {
   { BFD_RELOC_NONE,		R_MIST32_NONE },
   { BFD_RELOC_32,		R_MIST32_32 },
+  { BFD_RELOC_16,		R_MIST32_16 },
+  { BFD_RELOC_8,		R_MIST32_8 },
+  { BFD_RELOC_MIST32_REL_16,	R_MIST32_INSN_REL_16 },
+  { BFD_RELOC_MIST32_REL_U16,	R_MIST32_INSN_REL_U16 },
+  { BFD_RELOC_MIST32_ABS_16,	R_MIST32_INSN_ABS_16 },
 };
 
 static reloc_howto_type *
@@ -113,14 +198,18 @@ mist32_info_to_howto_rela
 
 
 
-#define TARGET_BIG_SYM		mist32_elf32_vec
-#define TARGET_BIG_NAME		"elf32-mist32"
 #define ELF_ARCH		bfd_arch_mist32
 #define ELF_MACHINE_CODE	EM_MIST32
+#define ELF_MACHINE_ALT1	EM_MIST32
 #define ELF_MAXPAGESIZE  	0x4000
+
+#define TARGET_BIG_SYM		mist32_elf32_vec
+#define TARGET_BIG_NAME		"elf32-mist32"
+
+#define elf_info_to_howto_rel		NULL
+#define elf_info_to_howto		mist32_info_to_howto_rela
 
 #define bfd_elf32_bfd_reloc_type_lookup mist32_reloc_type_lookup
 #define bfd_elf32_bfd_reloc_name_lookup mist32_reloc_name_lookup
-#define elf_info_to_howto		mist32_info_to_howto_rela
 
 #include "elf32-target.h"

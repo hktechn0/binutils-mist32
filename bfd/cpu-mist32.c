@@ -1,6 +1,6 @@
-/* BFD library support routines for mist32.
+/* BFD support for the mist32 architecture.
    Copyright 2011 Free Software Foundation, Inc.
-   Written by Hirotaka Kawata (hirotaka@techno-st.net)
+   Written by Hirotaka Kawata <hirotaka@techno-st.net>
 
    This file is part of BFD, the Binary File Descriptor library.
 
@@ -32,7 +32,7 @@ const bfd_arch_info_type bfd_mist32_arch =
    0,				/* Machine number - 0 for now.  */
    "mist32",			/* Architecture name.  */
    "mist32",			/* Printable name.  */
-   3,				/* Section align power.  */
+   4,				/* Section align power.  */
    TRUE,			/* This is the default architecture.  */
    bfd_default_compatible,	/* Architecture comparison function.  */
    bfd_default_scan,		/* String to architecture conversion.  */
