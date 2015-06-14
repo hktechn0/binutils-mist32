@@ -501,7 +501,7 @@ mist32_elf_check_relocs (bfd *abfd,
 
 #define ELF_ARCH		bfd_arch_mist32
 #define ELF_MACHINE_CODE	EM_MIST32
-#define ELF_MAXPAGESIZE  	0x4000
+#define ELF_MAXPAGESIZE  	0x1000
 
 #define TARGET_BIG_SYM		mist32_elf32_vec
 #define TARGET_BIG_NAME		"elf32-mist32"
