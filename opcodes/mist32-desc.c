@@ -756,12 +756,12 @@ static const CGEN_IBASE mist32_cgen_insn_table[MAX_INSNS] =
   },
 /* clrb $rd,$ui11 */
   {
-    MIST32_INSN_CLRB, "clrb", "clrb", 32,
+    MIST32_INSN_CLRBI, "clrbi", "clrb", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
   },
 /* setb $rd,$ui11 */
   {
-    MIST32_INSN_SETB, "setb", "setb", 32,
+    MIST32_INSN_SETBI, "setbi", "setb", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
   },
 /* clr $rd */
