@@ -22,7 +22,7 @@
 
 (include "simplify.inc")
 
-; Attributes
+;; Attributes
 
 (define-arch
   (name mist32)
@@ -68,7 +68,7 @@
 	)
 )
 
-; Instruction fields
+;; Instruction fields
 
 (dnf f-ext   "extended bit"       () 31 1)
 (dnf f-op    "opcode"             () 30 10)
@@ -238,7 +238,7 @@
 (dnf f-reserve2 "reserved field"  (RESERVED) 9 5)
 (dnf f-reserve3 "reserved field"  (RESERVED) 4 5)
 
-; Enums
+;; Enums
 
 (define-normal-insn-enum insn-ext "insn ext enums" () EXT_ f-ext
   ("0")
@@ -252,11 +252,8 @@
 (define-normal-insn-enum insn-afe "insn afe enums" () AFE_ f-afe
   ("0")
 )
-(define-normal-insn-enum insn-disp "insn displacement enums" () DISP_ f-d6b
-  ("0")
-)
 
-; Hardware
+;; Hardware
 
 ; hardware: register
 (dnh h-pc "program counter" (PC) (pc SI) () () ())
@@ -304,7 +301,7 @@
      () ()
 )
 
-; Operands
+;; Operands
 
 (dnop rd    "destination register"            () h-gr     f-rd)
 (dnop rs    "source register"                 () h-gr     f-rs)
@@ -354,7 +351,9 @@
   (handlers (parse "hi16"))
 )
 
-; Instructions Macro
+;; Instructions Macro
+
+;; 2 Operands Formats
 
 ; O2 Format
 (define-pmacro (o2-op mnemonic opcode)
@@ -369,17 +368,9 @@
 	 )
     )
 )
-; O2-I11 Format
-(define-pmacro (o2-i11-op mnemonic opcode)
+; I11 Format
+(define-pmacro (i11-op mnemonic opcode)
   (begin
-    (dni mnemonic
-	 (.str mnemonic " reg/reg")
-	 ()
-	 (.str mnemonic " $rd,$rs")
-	 (+ EXT_0 opcode ISIMM_0 AFE_0 (f-reserve1 0) rd rs)
-	 ()
-	 ()
-	 )
     (dni (.sym mnemonic "i")
 	 (.str mnemonic " reg/imm11")
 	 () 
@@ -390,17 +381,9 @@
 	 )
     )
 )
-; O2-I11 Unsigned Format
-(define-pmacro (o2-ui11-op mnemonic opcode)
+; I11 Unsigned Format
+(define-pmacro (ui11-op mnemonic opcode)
   (begin
-    (dni mnemonic
-	 (.str mnemonic " reg/reg")
-	 ()
-	 (.str mnemonic " $rd,$rs")
-	 (+ EXT_0 opcode ISIMM_0 AFE_0 (f-reserve1 0) rd rs)
-	 ()
-	 ()
-	 )
     (dni (.sym mnemonic "i")
 	 (.str mnemonic " reg/uimm11")
 	 () 
@@ -411,17 +394,24 @@
 	 )
     )
 )
+; O2-I11 Format
+(define-pmacro (o2-i11-op mnemonic opcode)
+  (begin
+    (o2-op mnemonic opcode)
+    (i11-op mnemonic opcode)
+    )
+)
+; O2-I11 Unsigned Format
+(define-pmacro (o2-ui11-op mnemonic opcode)
+  (begin
+    (o2-op mnemonic opcode)
+    (ui11-op mnemonic opcode)
+    )
+)
 ; O2-I11 Word Align Immediate Format (for movepc)
 (define-pmacro (o2-i11w-op mnemonic opcode)
   (begin
-    (dni mnemonic
-	 (.str mnemonic " reg/reg")
-	 ()
-	 (.str mnemonic " $rd,$rs")
-	 (+ EXT_0 opcode ISIMM_0 AFE_0 (f-reserve1 0) rd rs)
-	 ()
-	 ()
-	 )
+    (o2-op mnemonic opcode)
     (dni (.sym mnemonic "i")
 	 (.str mnemonic " reg/imm11_word")
 	 () 
@@ -435,14 +425,7 @@
 ; O2-I11 Byte Align Address Format
 (define-pmacro (o2-p11b-op mnemonic opcode)
   (begin
-    (dni mnemonic
-	 (.str mnemonic " reg/reg")
-	 ()
-	 (.str mnemonic " $rd,$rs")
-	 (+ EXT_0 opcode ISIMM_0 AFE_0 DISP_0 rd rs)
-	 ()
-	 ()
-	 )
+    (o2-op mnemonic opcode)
     (dni (.sym mnemonic "i")
 	 (.str mnemonic " reg/addr11_byte")
 	 () 
@@ -469,14 +452,7 @@
 ; O2-I11 Half-word Align Address Format
 (define-pmacro (o2-p11h-op mnemonic opcode)
   (begin
-    (dni mnemonic
-	 (.str mnemonic " reg/reg")
-	 ()
-	 (.str mnemonic " $rd,$rs")
-	 (+ EXT_0 opcode ISIMM_0 AFE_0 (f-reserve1 0) rd rs)
-	 ()
-	 ()
-	 )
+    (o2-op mnemonic opcode)
     (dni (.sym mnemonic "i")
 	 (.str mnemonic " reg/addr11_halfword")
 	 () 
@@ -503,14 +479,7 @@
 ; O2-I11 Word Align Address Format
 (define-pmacro (o2-p11w-op mnemonic opcode)
   (begin
-    (dni mnemonic
-	 (.str mnemonic " reg/reg")
-	 ()
-	 (.str mnemonic " $rd,$rs")
-	 (+ EXT_0 opcode ISIMM_0 AFE_0 (f-reserve1 0) rd rs)
-	 ()
-	 ()
-	 )
+    (o2-op mnemonic opcode)
     (dni (.sym mnemonic "i")
 	 (.str mnemonic " reg/addr11_word")
 	 () 
@@ -534,87 +503,6 @@
 	 )
     )
 )
-; O1 Format
-(define-pmacro (o1-op mnemonic opcode)
-  (begin
-    (dni mnemonic
-	 (.str mnemonic " reg")
-	 ()
-	 (.str mnemonic " $rd")
-	 (+ EXT_0 opcode ISIMM_0 AFE_0 (f-reserve1 0) rd (f-reserve3 0))
-	 ()
-	 ()
-	 )
-    )
-)
-; O1-I11 Unsigned Format
-(define-pmacro (o1-ui11-op mnemonic opcode)
-  (begin
-    (dni mnemonic
-	 (.str mnemonic " reg")
-	 ()
-	 (.str mnemonic " $rd")
-	 (+ EXT_0 opcode ISIMM_0 AFE_0 (f-reserve1 0) rd (f-reserve3 0))
-	 ()
-	 ()
-	 )
-    (dni (.sym mnemonic "i")
-	 (.str mnemonic " uimm11")
-	 () 
-	 (.str mnemonic " $ui11")
-	 (+ EXT_0 opcode ISIMM_1 AFE_0 (f-reserve2 0) ui11)
-	 ()
-	 ()
-	 )
-    )
-)
-; O1-CI16 Format
-(define-pmacro (o1-ci16-op mnemonic opcode)
-  (begin
-    (dni mnemonic
-	 (.str mnemonic " reg")
-	 ()
-	 (.str mnemonic " $rd")
-	 (+ EXT_0 opcode ISIMM_0 AFE_0 (f-reserve1 0) rd (f-reserve3 0))
-	 ()
-	 ()
-	 )
-    (dni (.sym mnemonic "i")
-	 (.str mnemonic " imm16")
-	 ()
-	 (.str mnemonic " $ci16")
-	 (+ EXT_0 opcode ISIMM_1 AFE_0 ci16)
-	 ()
-	 ()
-	 )
-    )
-)
-; I11 Format
-(define-pmacro (i11-op mnemonic opcode)
-  (begin
-    (dni mnemonic
-	 (.str mnemonic " reg/imm11")
-	 () 
-	 (.str mnemonic " $rd,$i11")
-	 (+ EXT_0 opcode ISIMM_1 AFE_0 i11 rd)
-	 ()
-	 ()
-	 )
-    )
-)
-; I11 Unsigned Format
-(define-pmacro (ui11-op mnemonic opcode)
-  (begin
-    (dni mnemonic
-	 (.str mnemonic " reg/uimm11")
-	 () 
-	 (.str mnemonic " $rd,$ui11")
-	 (+ EXT_0 opcode ISIMM_1 AFE_0 ui11 rd)
-	 ()
-	 ()
-	 )
-    )
-)
 ; I16 Format
 (define-pmacro (i16l-op mnemonic opcode)
   (begin
@@ -628,6 +516,7 @@
 	 )
     )
 )
+; I16 Format for hi() immediate
 (define-pmacro (i16h-op mnemonic opcode)
   (begin
     (dni mnemonic
@@ -653,6 +542,53 @@
 	 )
     )
 )
+
+;; 1 Operand Formats
+
+; O1 Format
+(define-pmacro (o1-op mnemonic opcode)
+  (begin
+    (dni mnemonic
+	 (.str mnemonic " reg")
+	 ()
+	 (.str mnemonic " $rd")
+	 (+ EXT_0 opcode ISIMM_0 AFE_0 (f-reserve1 0) rd (f-reserve3 0))
+	 ()
+	 ()
+	 )
+    )
+)
+; O1-I11 Unsigned Format
+(define-pmacro (o1-ui11-op mnemonic opcode)
+  (begin
+    (o1-op mnemonic opcode)
+    (dni (.sym mnemonic "i")
+	 (.str mnemonic " uimm11")
+	 () 
+	 (.str mnemonic " $ui11")
+	 (+ EXT_0 opcode ISIMM_1 AFE_0 (f-reserve2 0) ui11)
+	 ()
+	 ()
+	 )
+    )
+)
+; O1-CI16 Format
+(define-pmacro (o1-ci16-op mnemonic opcode)
+  (begin
+    (o1-op mnemonic opcode)
+    (dni (.sym mnemonic "i")
+	 (.str mnemonic " imm16")
+	 ()
+	 (.str mnemonic " $ci16")
+	 (+ EXT_0 opcode ISIMM_1 AFE_0 ci16)
+	 ()
+	 ()
+	 )
+    )
+)
+
+;; C Formats, No operands
+
 ; C Format
 (define-pmacro (c-op mnemonic opcode)
   (begin
@@ -678,9 +614,12 @@
 	 ()
 	 )
     )
-)
-; JO1, JI16 (JMP) Format, absolute address
-(define-pmacro (b-op mnemonic opcode)
+  )
+
+;; JUMP Formats
+
+; Common branch through register macro
+(define-pmacro (b-reg-op mnemonic opcode)
   (begin
     (dni mnemonic
 	 (.str mnemonic " reg/cc")
@@ -690,6 +629,12 @@
 	 ()
 	 ()
 	 )
+    )
+)
+; JO1, JI16 (JMP) Format, absolute address
+(define-pmacro (b-op mnemonic opcode)
+  (begin
+    (b-reg-op mnemonic opcode)
     (dni (.sym mnemonic "i")
 	 (.str mnemonic " uaddr16/cc")
 	 () 
@@ -703,14 +648,7 @@
 ; JO1, JI16 (JMP) Format, unsigned PC relative
 (define-pmacro (bur-op mnemonic opcode)
   (begin
-    (dni mnemonic
-	 (.str mnemonic " reg/cc")
-	 ()
-	 (.str mnemonic " $rd,$cc")
-	 (+ EXT_0 opcode ISIMM_0 cc (f-reserve1 0) rd (f-reserve3 0))
-	 ()
-	 ()
-	 )
+    (b-reg-op mnemonic opcode)
     (dni (.sym mnemonic "i")
 	 (.str mnemonic " uaddr16 (PC relative)/cc")
 	 () 
@@ -724,14 +662,7 @@
 ; JO1, JI16 (JMP) Format, signed PC relative
 (define-pmacro (br-op mnemonic opcode)
   (begin
-    (dni mnemonic
-	 (.str mnemonic " reg/cc")
-	 ()
-	 (.str mnemonic " $rd,$cc")
-	 (+ EXT_0 opcode ISIMM_0 cc (f-reserve1 0) rd (f-reserve3 0))	
-	 ()
-	 ()
-	 )
+    (b-reg-op mnemonic opcode)
     (dni (.sym mnemonic "i")
 	 (.str mnemonic " addr16 (PC relative)/cc")
 	 () 
@@ -743,7 +674,7 @@
     )
 )
 
-; Instructions
+;; Instructions
 
 ; Arithmetic
 (o2-i11-op  add             OP_0)

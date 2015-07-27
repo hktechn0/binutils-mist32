@@ -332,11 +332,6 @@ typedef enum insn_afe {
   AFE_0
 } INSN_AFE;
 
-/* Enum declaration for insn displacement enums.  */
-typedef enum insn_disp {
-  DISP_0
-} INSN_DISP;
-
 /* Attributes.  */
 
 /* Enum declaration for machine type selection.  */
