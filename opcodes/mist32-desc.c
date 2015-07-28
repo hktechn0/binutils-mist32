@@ -514,26 +514,6 @@ static const CGEN_IBASE mist32_cgen_insn_table[MAX_INSNS] =
     MIST32_INSN_MULHI, "mulhi", "mulh", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
   },
-/* udiv $rd,$rs */
-  {
-    MIST32_INSN_UDIV, "udiv", "udiv", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* udiv $rd,$ui11 */
-  {
-    MIST32_INSN_UDIVI, "udivi", "udiv", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* umod $rd,$rs */
-  {
-    MIST32_INSN_UMOD, "umod", "umod", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* umod $rd,$ui11 */
-  {
-    MIST32_INSN_UMODI, "umodi", "umod", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
 /* cmp $rd,$rs */
   {
     MIST32_INSN_CMP, "cmp", "cmp", 32,
@@ -542,31 +522,6 @@ static const CGEN_IBASE mist32_cgen_insn_table[MAX_INSNS] =
 /* cmp $rd,$i11 */
   {
     MIST32_INSN_CMPI, "cmpi", "cmp", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* div $rd,$rs */
-  {
-    MIST32_INSN_DIV, "div", "div", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* div $rd,$i11 */
-  {
-    MIST32_INSN_DIVI, "divi", "div", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* mod $rd,$rs */
-  {
-    MIST32_INSN_MOD, "mod", "mod", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* mod $rd,$i11 */
-  {
-    MIST32_INSN_MODI, "modi", "mod", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* neg $rd,$rs */
-  {
-    MIST32_INSN_NEG, "neg", "neg", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
   },
 /* umull $rd,$rs */
@@ -602,46 +557,6 @@ static const CGEN_IBASE mist32_cgen_insn_table[MAX_INSNS] =
 /* dec $rd,$rs */
   {
     MIST32_INSN_DEC, "dec", "dec", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* max $rd,$rs */
-  {
-    MIST32_INSN_MAX, "max", "max", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* max $rd,$i11 */
-  {
-    MIST32_INSN_MAXI, "maxi", "max", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* min $rd,$rs */
-  {
-    MIST32_INSN_MIN, "min", "min", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* min $rd,$i11 */
-  {
-    MIST32_INSN_MINI, "mini", "min", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* umax $rd,$rs */
-  {
-    MIST32_INSN_UMAX, "umax", "umax", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* umax $rd,$ui11 */
-  {
-    MIST32_INSN_UMAXI, "umaxi", "umax", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* umin $rd,$rs */
-  {
-    MIST32_INSN_UMIN, "umin", "umin", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* umin $rd,$ui11 */
-  {
-    MIST32_INSN_UMINI, "umini", "umin", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
   },
 /* sext8 $rd,$rs */
@@ -682,26 +597,6 @@ static const CGEN_IBASE mist32_cgen_insn_table[MAX_INSNS] =
 /* sar $rd,$ui11 */
   {
     MIST32_INSN_SARI, "sari", "sar", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* rol $rd,$rs */
-  {
-    MIST32_INSN_ROL, "rol", "rol", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* rol $rd,$ui11 */
-  {
-    MIST32_INSN_ROLI, "roli", "rol", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* ror $rd,$rs */
-  {
-    MIST32_INSN_ROR, "ror", "ror", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* ror $rd,$ui11 */
-  {
-    MIST32_INSN_RORI, "rori", "ror", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
   },
 /* and $rd,$rs */
@@ -772,26 +667,6 @@ static const CGEN_IBASE mist32_cgen_insn_table[MAX_INSNS] =
 /* set $rd */
   {
     MIST32_INSN_SET, "set", "set", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* revb $rd,$rs */
-  {
-    MIST32_INSN_REVB, "revb", "revb", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* rev8 $rd,$rs */
-  {
-    MIST32_INSN_REV8, "rev8", "rev8", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* getb $rd,$rs */
-  {
-    MIST32_INSN_GETB, "getb", "getb", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* getb $rd,$ui11 */
-  {
-    MIST32_INSN_GETBI, "getbi", "getb", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
   },
 /* get8 $rd,$rs */
@@ -889,11 +764,6 @@ static const CGEN_IBASE mist32_cgen_insn_table[MAX_INSNS] =
     MIST32_INSN_PUSHI, "pushi", "push", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
   },
-/* pushpc */
-  {
-    MIST32_INSN_PUSHPC, "pushpc", "pushpc", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
 /* pop $rd */
   {
     MIST32_INSN_POP, "pop", "pop", 32,
@@ -964,89 +834,14 @@ static const CGEN_IBASE mist32_cgen_insn_table[MAX_INSNS] =
     MIST32_INSN_IB, "ib", "ib", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
   },
-/* burn $rd,$cc */
-  {
-    MIST32_INSN_BURN, "burn", "burn", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* burn $up16r,$cc */
-  {
-    MIST32_INSN_BURNI, "burni", "burn", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* brn $rd,$cc */
-  {
-    MIST32_INSN_BRN, "brn", "brn", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* brn $p16r,$cc */
-  {
-    MIST32_INSN_BRNI, "brni", "brn", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* bn $rd,$cc */
-  {
-    MIST32_INSN_BN, "bn", "bn", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* bn $p16,$cc */
-  {
-    MIST32_INSN_BNI, "bni", "bn", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
 /* srspr $rd */
   {
     MIST32_INSN_SRSPR, "srspr", "srspr", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
   },
-/* srpdtr $rd */
-  {
-    MIST32_INSN_SRPDTR, "srpdtr", "srpdtr", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* srpidr $rd */
-  {
-    MIST32_INSN_SRPIDR, "srpidr", "srpidr", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* srcidr $rd */
-  {
-    MIST32_INSN_SRCIDR, "srcidr", "srcidr", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* srmoder $rd */
-  {
-    MIST32_INSN_SRMODER, "srmoder", "srmoder", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
 /* srieir $rd */
   {
     MIST32_INSN_SRIEIR, "srieir", "srieir", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* srtisr $rd */
-  {
-    MIST32_INSN_SRTISR, "srtisr", "srtisr", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* srkpdtr $rd */
-  {
-    MIST32_INSN_SRKPDTR, "srkpdtr", "srkpdtr", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* srmmur $rd */
-  {
-    MIST32_INSN_SRMMUR, "srmmur", "srmmur", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* sriosr $rd */
-  {
-    MIST32_INSN_SRIOSR, "sriosr", "sriosr", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* srtidr $rd */
-  {
-    MIST32_INSN_SRTIDR, "srtidr", "srtidr", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
   },
 /* srppsr $rd */
@@ -1057,21 +852,6 @@ static const CGEN_IBASE mist32_cgen_insn_table[MAX_INSNS] =
 /* srppcr $rd */
   {
     MIST32_INSN_SRPPCR, "srppcr", "srppcr", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* sruspr $rd */
-  {
-    MIST32_INSN_SRUSPR, "sruspr", "sruspr", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* srppdtr $rd */
-  {
-    MIST32_INSN_SRPPDTR, "srppdtr", "srppdtr", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* srptidr $rd */
-  {
-    MIST32_INSN_SRPTIDR, "srptidr", "srptidr", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
   },
 /* srpsr $rd */
@@ -1114,11 +894,6 @@ static const CGEN_IBASE mist32_cgen_insn_table[MAX_INSNS] =
     MIST32_INSN_SRSPW, "srspw", "srspw", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
   },
-/* srpdtw $rd */
-  {
-    MIST32_INSN_SRPDTW, "srpdtw", "srpdtw", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
 /* srieiw $rd */
   {
     MIST32_INSN_SRIEIW, "srieiw", "srieiw", 32,
@@ -1127,26 +902,6 @@ static const CGEN_IBASE mist32_cgen_insn_table[MAX_INSNS] =
 /* srieiw $ui11 */
   {
     MIST32_INSN_SRIEIWI, "srieiwi", "srieiw", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* srtisw $rd */
-  {
-    MIST32_INSN_SRTISW, "srtisw", "srtisw", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* srkpdtw $rd */
-  {
-    MIST32_INSN_SRKPDTW, "srkpdtw", "srkpdtw", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* srmmuw $rd */
-  {
-    MIST32_INSN_SRMMUW, "srmmuw", "srmmuw", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* srmmuw $ui11 */
-  {
-    MIST32_INSN_SRMMUWI, "srmmuwi", "srmmuw", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
   },
 /* srppsw $rd */
@@ -1162,16 +917,6 @@ static const CGEN_IBASE mist32_cgen_insn_table[MAX_INSNS] =
 /* sruspw $rd */
   {
     MIST32_INSN_SRUSPW, "sruspw", "sruspw", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* srppdtw $rd */
-  {
-    MIST32_INSN_SRPPDTW, "srppdtw", "srppdtw", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* srptidw $rd */
-  {
-    MIST32_INSN_SRPTIDW, "srptidw", "srptidw", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
   },
 /* sridtw $rd */
@@ -1199,11 +944,6 @@ static const CGEN_IBASE mist32_cgen_insn_table[MAX_INSNS] =
     MIST32_INSN_SRFRCHW, "srfrchw", "srfrchw", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
   },
-/* srpflagw $rd */
-  {
-    MIST32_INSN_SRPFLAGW, "srpflagw", "srpflagw", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
 /* srspadd $ci16w */
   {
     MIST32_INSN_SRSPADD, "srspadd", "srspadd", 32,
@@ -1212,11 +952,6 @@ static const CGEN_IBASE mist32_cgen_insn_table[MAX_INSNS] =
 /* nop */
   {
     MIST32_INSN_NOP, "nop", "nop", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* halt */
-  {
-    MIST32_INSN_HALT, "halt", "halt", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
   },
 /* move $rd,$rs */
@@ -1232,26 +967,6 @@ static const CGEN_IBASE mist32_cgen_insn_table[MAX_INSNS] =
 /* movepc $rd,$i11w */
   {
     MIST32_INSN_MOVEPCI, "movepci", "movepc", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* swi $rd */
-  {
-    MIST32_INSN_SWI, "swi", "swi", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* swi $ui11 */
-  {
-    MIST32_INSN_SWII, "swii", "swi", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* tas $rd,$rs */
-  {
-    MIST32_INSN_TAS, "tas", "tas", 32,
-    { 0, { { { (1<<MACH_BASE), 0 } } } }
-  },
-/* tas $rd,$p11w */
-  {
-    MIST32_INSN_TASI, "tasi", "tas", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
   },
 /* idts */

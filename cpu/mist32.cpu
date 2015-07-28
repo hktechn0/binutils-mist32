@@ -681,12 +681,12 @@
 (o2-i11-op  sub             OP_1)
 (o2-i11-op  mull            OP_2)
 (o2-i11-op  mulh            OP_3)
-(o2-ui11-op udiv            OP_4)
-(o2-ui11-op umod            OP_5)
+; S udiv
+; S umod
 (o2-i11-op  cmp             OP_6)
-(o2-i11-op  div             OP_7)
-(o2-i11-op  mod             OP_8)
-(o2-op      neg             OP_9)
+; S div
+; S mod
+; S neg
 (o2-ui11-op umull           OP_10)
 (o2-ui11-op umulh           OP_11)
 ;; 12, 13
@@ -695,10 +695,10 @@
 (o2-op      inc             OP_16)
 (o2-op      dec             OP_17)
 ;; 18
-(o2-i11-op  max             OP_19)
-(o2-i11-op  min             OP_20)
-(o2-ui11-op umax            OP_21)
-(o2-ui11-op umin            OP_22)
+; S max
+; S min
+; S umax
+; S umin
 ;; 23 - 27
 (o2-op      sext8           OP_28)
 (o2-op      sext16          OP_29)
@@ -713,8 +713,8 @@
 ;; 66 - 68
 (o2-ui11-op sar             OP_69)
 ;; 70 - 71
-(o2-ui11-op rol             OP_72)
-(o2-ui11-op ror             OP_73)
+; S rol
+; S ror
 ;; 74 - 95
 
 ; Logic
@@ -733,9 +733,9 @@
 (ui11-op    setb            OP_109)
 (o1-op      clr             OP_110)
 (o1-op      set             OP_111)
-(o2-op      revb            OP_112)
-(o2-op      rev8            OP_113)
-(o2-ui11-op getb            OP_114)
+; S revb
+; S rev8
+; S getb
 (o2-ui11-op get8            OP_115)
 ;; 116 - 117
 (i16l-op    lil             OP_118)
@@ -753,7 +753,7 @@
 (o2-p11w-op st32            OP_133)
 ;; 134 - 135
 (o1-ci16-op push            OP_136)
-(c-op       pushpc          OP_137)
+; S pushpc
 ;; 138 - 143
 (o1-op      pop             OP_144)
 ;; 145 - 159
@@ -770,31 +770,16 @@
 (b-op       b               OP_162)
 (c-op       ib              OP_163)
 ;; 164 - 175
-(bur-op     burn            OP_176)
-(br-op      brn             OP_177)
-(b-op       bn              OP_178)
+; S burn
+; S brn
+; S bn
 ;; 179 - 191
 
 ; System Read
 (o1-op      srspr           OP_192)
-(o1-op      srpdtr          OP_193)
-(o1-op      srpidr          OP_194)
-(o1-op      srcidr          OP_195)
-(o1-op      srmoder         OP_196)
 (o1-op      srieir          OP_197)
-;(o1-op     srtisr          OP_198)
-;(o1-op     srkpdtr         OP_199)
-(o1-op      srtisr          OP_200)
-(o1-op      srkpdtr         OP_201)
-(o1-op      srmmur          OP_202)
-(o1-op      sriosr          OP_203)
-(o1-op      srtidr          OP_204)
 (o1-op      srppsr          OP_205)
 (o1-op      srppcr          OP_206)
-(o1-op      sruspr          OP_207)
-(o1-op      srppdtr         OP_208)
-(o1-op      srptidr         OP_209)
-;; 210      sridtr
 (o1-op      srpsr           OP_211)
 (c-op       srfrcr          OP_212)
 (o1-op      srfrclr         OP_213)
@@ -806,42 +791,28 @@
 
 ; System Write
 (o1-op      srspw           OP_224)
-(o1-op      srpdtw          OP_225)
-;; 226      srpidw
-;; 227      srcidw
-;; 228      srmodew
 (o1-ui11-op srieiw          OP_229)
-;(o1-op     srsieiw         OP_230)
-;(o1-op     srhieiw         OP_231)
-(o1-op      srtisw          OP_232)
-(o1-op      srkpdtw         OP_233)
-(o1-ui11-op srmmuw          OP_234)
-;; 235      sriosw
-;; 236      srtidw
 (o1-op      srppsw          OP_237)
 (o1-op      srppcw          OP_238)
 (o1-op      sruspw          OP_239)
-(o1-op      srppdtw         OP_240)
-(o1-op      srptidw         OP_241)
 (o1-op      sridtw          OP_242)
 (o1-op      srpsw           OP_243)
 (c-op       srfrcw          OP_244)
 (o1-op      srfrclw         OP_245)
 (o1-op      srfrchw         OP_246)
-(o1-op      srpflagw        OP_247)
 ;; 248 - 254
 (ci16w-op   srspadd         OP_255)
 
 ; Other
 (c-op       nop             OP_256)
-(c-op       halt            OP_257)
+; S halt
 (o2-op      move            OP_258)
 (o2-i11w-op movepc          OP_259)
 ;; 260 - 287
 
 ; OS Support
-(o1-ui11-op swi             OP_288)
-(o2-p11w-op tas             OP_289)
+; S swi
+; S tas
 (c-op       idts            OP_290)
 ;; 291      ldl
 ;; 292      stc

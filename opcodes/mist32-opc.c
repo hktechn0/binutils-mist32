@@ -55,7 +55,7 @@ static const CGEN_IFMT ifmt_addi ATTRIBUTE_UNUSED = {
   32, 32, 0xffff0000, { { F (F_EXT) }, { F (F_OP) }, { F (F_ISIMM) }, { F (F_AFE) }, { F (F_RD) }, { F (F_I11) }, { 0 } }
 };
 
-static const CGEN_IFMT ifmt_udivi ATTRIBUTE_UNUSED = {
+static const CGEN_IFMT ifmt_umulli ATTRIBUTE_UNUSED = {
   32, 32, 0xffff0000, { { F (F_EXT) }, { F (F_OP) }, { F (F_ISIMM) }, { F (F_AFE) }, { F (F_RD) }, { F (F_UI11) }, { 0 } }
 };
 
@@ -91,10 +91,6 @@ static const CGEN_IFMT ifmt_pushi ATTRIBUTE_UNUSED = {
   32, 32, 0xffff0000, { { F (F_EXT) }, { F (F_OP) }, { F (F_ISIMM) }, { F (F_AFE) }, { F (F_CI16) }, { 0 } }
 };
 
-static const CGEN_IFMT ifmt_pushpc ATTRIBUTE_UNUSED = {
-  32, 32, 0xffffffff, { { F (F_EXT) }, { F (F_OP) }, { F (F_ISIMM) }, { F (F_AFE) }, { F (F_RESERVE1) }, { F (F_RESERVE2) }, { F (F_RESERVE3) }, { 0 } }
-};
-
 static const CGEN_IFMT ifmt_ldd8 ATTRIBUTE_UNUSED = {
   32, 32, 0xffff0000, { { F (F_EXT) }, { F (F_OP) }, { F (F_ISIMM) }, { F (F_AFE) }, { F (F_D6B) }, { F (F_RD) }, { F (F_RS) }, { 0 } }
 };
@@ -121,6 +117,10 @@ static const CGEN_IFMT ifmt_bri ATTRIBUTE_UNUSED = {
 
 static const CGEN_IFMT ifmt_bi ATTRIBUTE_UNUSED = {
   32, 32, 0xfff00000, { { F (F_EXT) }, { F (F_OP) }, { F (F_ISIMM) }, { F (F_CC) }, { F (F_P16) }, { 0 } }
+};
+
+static const CGEN_IFMT ifmt_ib ATTRIBUTE_UNUSED = {
+  32, 32, 0xffffffff, { { F (F_EXT) }, { F (F_OP) }, { F (F_ISIMM) }, { F (F_AFE) }, { F (F_RESERVE1) }, { F (F_RESERVE2) }, { F (F_RESERVE3) }, { 0 } }
 };
 
 static const CGEN_IFMT ifmt_srieiwi ATTRIBUTE_UNUSED = {
@@ -198,30 +198,6 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
     { { MNEM, ' ', OP (RD), ',', OP (I11), 0 } },
     & ifmt_addi, { 0x700000 }
   },
-/* udiv $rd,$rs */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), ',', OP (RS), 0 } },
-    & ifmt_add, { 0x800000 }
-  },
-/* udiv $rd,$ui11 */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), ',', OP (UI11), 0 } },
-    & ifmt_udivi, { 0x900000 }
-  },
-/* umod $rd,$rs */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), ',', OP (RS), 0 } },
-    & ifmt_add, { 0xa00000 }
-  },
-/* umod $rd,$ui11 */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), ',', OP (UI11), 0 } },
-    & ifmt_udivi, { 0xb00000 }
-  },
 /* cmp $rd,$rs */
   {
     { 0, 0, 0, 0 },
@@ -234,36 +210,6 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
     { { MNEM, ' ', OP (RD), ',', OP (I11), 0 } },
     & ifmt_addi, { 0xd00000 }
   },
-/* div $rd,$rs */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), ',', OP (RS), 0 } },
-    & ifmt_add, { 0xe00000 }
-  },
-/* div $rd,$i11 */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), ',', OP (I11), 0 } },
-    & ifmt_addi, { 0xf00000 }
-  },
-/* mod $rd,$rs */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), ',', OP (RS), 0 } },
-    & ifmt_add, { 0x1000000 }
-  },
-/* mod $rd,$i11 */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), ',', OP (I11), 0 } },
-    & ifmt_addi, { 0x1100000 }
-  },
-/* neg $rd,$rs */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), ',', OP (RS), 0 } },
-    & ifmt_add, { 0x1200000 }
-  },
 /* umull $rd,$rs */
   {
     { 0, 0, 0, 0 },
@@ -274,7 +220,7 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
   {
     { 0, 0, 0, 0 },
     { { MNEM, ' ', OP (RD), ',', OP (UI11), 0 } },
-    & ifmt_udivi, { 0x1500000 }
+    & ifmt_umulli, { 0x1500000 }
   },
 /* umulh $rd,$rs */
   {
@@ -286,7 +232,7 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
   {
     { 0, 0, 0, 0 },
     { { MNEM, ' ', OP (RD), ',', OP (UI11), 0 } },
-    & ifmt_udivi, { 0x1700000 }
+    & ifmt_umulli, { 0x1700000 }
   },
 /* addc $rd,$rs */
   {
@@ -305,54 +251,6 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
     { 0, 0, 0, 0 },
     { { MNEM, ' ', OP (RD), ',', OP (RS), 0 } },
     & ifmt_add, { 0x2200000 }
-  },
-/* max $rd,$rs */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), ',', OP (RS), 0 } },
-    & ifmt_add, { 0x2600000 }
-  },
-/* max $rd,$i11 */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), ',', OP (I11), 0 } },
-    & ifmt_addi, { 0x2700000 }
-  },
-/* min $rd,$rs */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), ',', OP (RS), 0 } },
-    & ifmt_add, { 0x2800000 }
-  },
-/* min $rd,$i11 */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), ',', OP (I11), 0 } },
-    & ifmt_addi, { 0x2900000 }
-  },
-/* umax $rd,$rs */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), ',', OP (RS), 0 } },
-    & ifmt_add, { 0x2a00000 }
-  },
-/* umax $rd,$ui11 */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), ',', OP (UI11), 0 } },
-    & ifmt_udivi, { 0x2b00000 }
-  },
-/* umin $rd,$rs */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), ',', OP (RS), 0 } },
-    & ifmt_add, { 0x2c00000 }
-  },
-/* umin $rd,$ui11 */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), ',', OP (UI11), 0 } },
-    & ifmt_udivi, { 0x2d00000 }
   },
 /* sext8 $rd,$rs */
   {
@@ -376,7 +274,7 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
   {
     { 0, 0, 0, 0 },
     { { MNEM, ' ', OP (RD), ',', OP (UI11), 0 } },
-    & ifmt_udivi, { 0x8100000 }
+    & ifmt_umulli, { 0x8100000 }
   },
 /* shr $rd,$rs */
   {
@@ -388,7 +286,7 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
   {
     { 0, 0, 0, 0 },
     { { MNEM, ' ', OP (RD), ',', OP (UI11), 0 } },
-    & ifmt_udivi, { 0x8300000 }
+    & ifmt_umulli, { 0x8300000 }
   },
 /* sar $rd,$rs */
   {
@@ -400,31 +298,7 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
   {
     { 0, 0, 0, 0 },
     { { MNEM, ' ', OP (RD), ',', OP (UI11), 0 } },
-    & ifmt_udivi, { 0x8b00000 }
-  },
-/* rol $rd,$rs */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), ',', OP (RS), 0 } },
-    & ifmt_add, { 0x9000000 }
-  },
-/* rol $rd,$ui11 */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), ',', OP (UI11), 0 } },
-    & ifmt_udivi, { 0x9100000 }
-  },
-/* ror $rd,$rs */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), ',', OP (RS), 0 } },
-    & ifmt_add, { 0x9200000 }
-  },
-/* ror $rd,$ui11 */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), ',', OP (UI11), 0 } },
-    & ifmt_udivi, { 0x9300000 }
+    & ifmt_umulli, { 0x8b00000 }
   },
 /* and $rd,$rs */
   {
@@ -490,13 +364,13 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
   {
     { 0, 0, 0, 0 },
     { { MNEM, ' ', OP (RD), ',', OP (UI11), 0 } },
-    & ifmt_udivi, { 0xd900000 }
+    & ifmt_umulli, { 0xd900000 }
   },
 /* setb $rd,$ui11 */
   {
     { 0, 0, 0, 0 },
     { { MNEM, ' ', OP (RD), ',', OP (UI11), 0 } },
-    & ifmt_udivi, { 0xdb00000 }
+    & ifmt_umulli, { 0xdb00000 }
   },
 /* clr $rd */
   {
@@ -510,30 +384,6 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
     { { MNEM, ' ', OP (RD), 0 } },
     & ifmt_clr, { 0xde00000 }
   },
-/* revb $rd,$rs */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), ',', OP (RS), 0 } },
-    & ifmt_add, { 0xe000000 }
-  },
-/* rev8 $rd,$rs */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), ',', OP (RS), 0 } },
-    & ifmt_add, { 0xe200000 }
-  },
-/* getb $rd,$rs */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), ',', OP (RS), 0 } },
-    & ifmt_add, { 0xe400000 }
-  },
-/* getb $rd,$ui11 */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), ',', OP (UI11), 0 } },
-    & ifmt_udivi, { 0xe500000 }
-  },
 /* get8 $rd,$rs */
   {
     { 0, 0, 0, 0 },
@@ -544,7 +394,7 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
   {
     { 0, 0, 0, 0 },
     { { MNEM, ' ', OP (RD), ',', OP (UI11), 0 } },
-    & ifmt_udivi, { 0xe700000 }
+    & ifmt_umulli, { 0xe700000 }
   },
 /* lil $rd,$i16l */
   {
@@ -648,12 +498,6 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
     { { MNEM, ' ', OP (CI16), 0 } },
     & ifmt_pushi, { 0x11100000 }
   },
-/* pushpc */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, 0 } },
-    & ifmt_pushpc, { 0x11200000 }
-  },
 /* pop $rd */
   {
     { 0, 0, 0, 0 },
@@ -736,43 +580,7 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
   {
     { 0, 0, 0, 0 },
     { { MNEM, 0 } },
-    & ifmt_pushpc, { 0x14600000 }
-  },
-/* burn $rd,$cc */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), ',', OP (CC), 0 } },
-    & ifmt_bur, { 0x16000000 }
-  },
-/* burn $up16r,$cc */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (UP16R), ',', OP (CC), 0 } },
-    & ifmt_buri, { 0x16100000 }
-  },
-/* brn $rd,$cc */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), ',', OP (CC), 0 } },
-    & ifmt_bur, { 0x16200000 }
-  },
-/* brn $p16r,$cc */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (P16R), ',', OP (CC), 0 } },
-    & ifmt_bri, { 0x16300000 }
-  },
-/* bn $rd,$cc */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), ',', OP (CC), 0 } },
-    & ifmt_bur, { 0x16400000 }
-  },
-/* bn $p16,$cc */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (P16), ',', OP (CC), 0 } },
-    & ifmt_bi, { 0x16500000 }
+    & ifmt_ib, { 0x14600000 }
   },
 /* srspr $rd */
   {
@@ -780,65 +588,11 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
     { { MNEM, ' ', OP (RD), 0 } },
     & ifmt_clr, { 0x18000000 }
   },
-/* srpdtr $rd */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), 0 } },
-    & ifmt_clr, { 0x18200000 }
-  },
-/* srpidr $rd */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), 0 } },
-    & ifmt_clr, { 0x18400000 }
-  },
-/* srcidr $rd */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), 0 } },
-    & ifmt_clr, { 0x18600000 }
-  },
-/* srmoder $rd */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), 0 } },
-    & ifmt_clr, { 0x18800000 }
-  },
 /* srieir $rd */
   {
     { 0, 0, 0, 0 },
     { { MNEM, ' ', OP (RD), 0 } },
     & ifmt_clr, { 0x18a00000 }
-  },
-/* srtisr $rd */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), 0 } },
-    & ifmt_clr, { 0x19000000 }
-  },
-/* srkpdtr $rd */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), 0 } },
-    & ifmt_clr, { 0x19200000 }
-  },
-/* srmmur $rd */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), 0 } },
-    & ifmt_clr, { 0x19400000 }
-  },
-/* sriosr $rd */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), 0 } },
-    & ifmt_clr, { 0x19600000 }
-  },
-/* srtidr $rd */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), 0 } },
-    & ifmt_clr, { 0x19800000 }
   },
 /* srppsr $rd */
   {
@@ -852,24 +606,6 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
     { { MNEM, ' ', OP (RD), 0 } },
     & ifmt_clr, { 0x19c00000 }
   },
-/* sruspr $rd */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), 0 } },
-    & ifmt_clr, { 0x19e00000 }
-  },
-/* srppdtr $rd */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), 0 } },
-    & ifmt_clr, { 0x1a000000 }
-  },
-/* srptidr $rd */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), 0 } },
-    & ifmt_clr, { 0x1a200000 }
-  },
 /* srpsr $rd */
   {
     { 0, 0, 0, 0 },
@@ -880,7 +616,7 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
   {
     { 0, 0, 0, 0 },
     { { MNEM, 0 } },
-    & ifmt_pushpc, { 0x1a800000 }
+    & ifmt_ib, { 0x1a800000 }
   },
 /* srfrclr $rd */
   {
@@ -918,12 +654,6 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
     { { MNEM, ' ', OP (RD), 0 } },
     & ifmt_clr, { 0x1c000000 }
   },
-/* srpdtw $rd */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), 0 } },
-    & ifmt_clr, { 0x1c200000 }
-  },
 /* srieiw $rd */
   {
     { 0, 0, 0, 0 },
@@ -935,30 +665,6 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
     { 0, 0, 0, 0 },
     { { MNEM, ' ', OP (UI11), 0 } },
     & ifmt_srieiwi, { 0x1cb00000 }
-  },
-/* srtisw $rd */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), 0 } },
-    & ifmt_clr, { 0x1d000000 }
-  },
-/* srkpdtw $rd */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), 0 } },
-    & ifmt_clr, { 0x1d200000 }
-  },
-/* srmmuw $rd */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), 0 } },
-    & ifmt_clr, { 0x1d400000 }
-  },
-/* srmmuw $ui11 */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (UI11), 0 } },
-    & ifmt_srieiwi, { 0x1d500000 }
   },
 /* srppsw $rd */
   {
@@ -978,18 +684,6 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
     { { MNEM, ' ', OP (RD), 0 } },
     & ifmt_clr, { 0x1de00000 }
   },
-/* srppdtw $rd */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), 0 } },
-    & ifmt_clr, { 0x1e000000 }
-  },
-/* srptidw $rd */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), 0 } },
-    & ifmt_clr, { 0x1e200000 }
-  },
 /* sridtw $rd */
   {
     { 0, 0, 0, 0 },
@@ -1006,7 +700,7 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
   {
     { 0, 0, 0, 0 },
     { { MNEM, 0 } },
-    & ifmt_pushpc, { 0x1e800000 }
+    & ifmt_ib, { 0x1e800000 }
   },
 /* srfrclw $rd */
   {
@@ -1020,12 +714,6 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
     { { MNEM, ' ', OP (RD), 0 } },
     & ifmt_clr, { 0x1ec00000 }
   },
-/* srpflagw $rd */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), 0 } },
-    & ifmt_clr, { 0x1ee00000 }
-  },
 /* srspadd $ci16w */
   {
     { 0, 0, 0, 0 },
@@ -1036,13 +724,7 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
   {
     { 0, 0, 0, 0 },
     { { MNEM, 0 } },
-    & ifmt_pushpc, { 0x20000000 }
-  },
-/* halt */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, 0 } },
-    & ifmt_pushpc, { 0x20200000 }
+    & ifmt_ib, { 0x20000000 }
   },
 /* move $rd,$rs */
   {
@@ -1062,35 +744,11 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
     { { MNEM, ' ', OP (RD), ',', OP (I11W), 0 } },
     & ifmt_movepci, { 0x20700000 }
   },
-/* swi $rd */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), 0 } },
-    & ifmt_clr, { 0x24000000 }
-  },
-/* swi $ui11 */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (UI11), 0 } },
-    & ifmt_srieiwi, { 0x24100000 }
-  },
-/* tas $rd,$rs */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), ',', OP (RS), 0 } },
-    & ifmt_add, { 0x24200000 }
-  },
-/* tas $rd,$p11w */
-  {
-    { 0, 0, 0, 0 },
-    { { MNEM, ' ', OP (RD), ',', OP (P11W), 0 } },
-    & ifmt_ld32i, { 0x24300000 }
-  },
 /* idts */
   {
     { 0, 0, 0, 0 },
     { { MNEM, 0 } },
-    & ifmt_pushpc, { 0x24400000 }
+    & ifmt_ib, { 0x24400000 }
   },
 };
 
