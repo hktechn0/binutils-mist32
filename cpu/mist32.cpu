@@ -679,16 +679,12 @@
 ; Arithmetic
 (o2-i11-op  add             OP_0)
 (o2-i11-op  sub             OP_1)
-(o2-i11-op  mull            OP_2)
-(o2-i11-op  mulh            OP_3)
 ; S udiv
 ; S umod
 (o2-i11-op  cmp             OP_6)
 ; S div
 ; S mod
 ; S neg
-(o2-ui11-op umull           OP_10)
-(o2-ui11-op umulh           OP_11)
 ;; 12, 13
 (o2-op      addc            OP_14)
 ;; 15
