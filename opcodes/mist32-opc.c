@@ -264,6 +264,18 @@ static const CGEN_OPCODE mist32_cgen_insn_opcode_table[MAX_INSNS] =
     { { MNEM, ' ', OP (RD), ',', OP (RS), 0 } },
     & ifmt_add, { 0x3a00000 }
   },
+/* rand $rd,$rs */
+  {
+    { 0, 0, 0, 0 },
+    { { MNEM, ' ', OP (RD), ',', OP (RS), 0 } },
+    & ifmt_add, { 0x4000000 }
+  },
+/* rand $rd,$i11 */
+  {
+    { 0, 0, 0, 0 },
+    { { MNEM, ' ', OP (RD), ',', OP (I11), 0 } },
+    & ifmt_addi, { 0x4100000 }
+  },
 /* shl $rd,$rs */
   {
     { 0, 0, 0, 0 },

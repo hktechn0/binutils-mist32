@@ -569,6 +569,16 @@ static const CGEN_IBASE mist32_cgen_insn_table[MAX_INSNS] =
     MIST32_INSN_SEXT16, "sext16", "sext16", 32,
     { 0, { { { (1<<MACH_BASE), 0 } } } }
   },
+/* rand $rd,$rs */
+  {
+    MIST32_INSN_RAND, "rand", "rand", 32,
+    { 0, { { { (1<<MACH_BASE), 0 } } } }
+  },
+/* rand $rd,$i11 */
+  {
+    MIST32_INSN_RANDI, "randi", "rand", 32,
+    { 0, { { { (1<<MACH_BASE), 0 } } } }
+  },
 /* shl $rd,$rs */
   {
     MIST32_INSN_SHL, "shl", "shl", 32,

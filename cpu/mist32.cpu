@@ -703,6 +703,7 @@
 (o2-op      sext8           OP_28)
 (o2-op      sext16          OP_29)
 ;; 30 - 32
+(o2-i11-op  rand            OP_32)
 
 ; Floating
 ;; 32 - 63
